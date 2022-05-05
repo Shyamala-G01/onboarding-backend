@@ -2,7 +2,7 @@ const http = require("http");
 const port = process.env.PORT || 1337;
 var mysql = require("mysql");
   var con = mysql.createConnection({
-    host: "http://onboarding-backend.southindia.cloudapp.azure.com:3306",
+    host: "http://onboarding-backend.southindia.cloudapp.azure.com",
     user: "fullStack",
     password: "root@123",
   });
