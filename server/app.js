@@ -5,7 +5,7 @@ res.statusCode = 200;
 
 var mysql = require('mysql');
 var con = mysql.createConnection({
-    host: "localhost",
+    host: "onboarding-backend.southindia.cloudapp.azure.com:3306",
     user: "fullStack",
     password: "root@123"
   });
