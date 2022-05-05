@@ -11,7 +11,7 @@ var con = mysql.createConnection({
   });
   
   con.connect(function(err) {
-    if (err) console.log(err);
+    if (err) throw err;
     console.log("Connected!");
   });
 res.setHeader('Content-Type', 'text/html');
