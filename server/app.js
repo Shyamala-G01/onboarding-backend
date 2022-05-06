@@ -8,13 +8,12 @@ var mysql = require("mysql");
     database:"ON_BOARDING"
   });
 
-  con.connect(function (err) {
-   
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Connected!");
-    }
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query("SELECT * FROM roles", function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+    });
   });
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
