@@ -4,9 +4,8 @@ var mysql = require("mysql");
   var con = mysql.createConnection({
     host: "onboarding-backend.southindia.cloudapp.azure.com",
     port:3306,
-    user: "fullStack",
-    password: "root@123",
-    database:"ON_BOARDING"
+    user: "root",
+    password: ""
   });
 
   con.connect(function (err) {
