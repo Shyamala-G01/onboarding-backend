@@ -6,6 +6,7 @@ var mysql = require("mysql");
     port:3306,
     user: "fullStack",
     password: "root@123",
+    database:"ON_BOARDING"
   });
 
   con.connect(function (err) {
