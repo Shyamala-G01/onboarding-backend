@@ -1,8 +1,8 @@
 const http = require("http");
-require("dotenv").config();
+// require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-// const port = process.env.PORT || 1337;
+const PORT = process.env.PORT || 1337;
 
 const app = express();
 
@@ -17,6 +17,6 @@ app.get((req, res) => {
 });
 
 // Start the server
-app.listen(process.env.PORT, () => {
-  console.log(`Server running at port ` + process.env.PORT);
+app.listen(PORT, () => {
+  console.log(`Server running at port ` + PORT);
 });
