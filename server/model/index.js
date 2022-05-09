@@ -4,9 +4,9 @@ const { database } = require('../config/db.config');
 
 
 // Creating instance or Configuring
-const sequelize = new Sequelize(config.database, config.user, config.password,{
-    host : config.host,
-    dialect : config.dialect,
+const sequelize = new Sequelize("ON_BOARDING","fullStack","root@123",{
+    host : "localhost",
+    dialect : "mysql",
     operatorsAliases : true,
     pool : {
         max : 5,
