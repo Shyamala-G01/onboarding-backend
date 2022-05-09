@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // for url encoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get((req, res) => {
+app.get("/", (req, res) => {
   res.send({ message: "Hello" });
 });
 
