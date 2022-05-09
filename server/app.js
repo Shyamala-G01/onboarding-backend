@@ -1,26 +1,22 @@
 const http = require("http");
-const port = process.env.PORT || 1337;
+require("dotenv").config();
+const express = require("express");
+const bodyParser = require("body-parser");
+// const port = process.env.PORT || 1337;
 
-var mysql = require("mysql");
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "fullStack",
-  password: "root@123",
-  database: "ON_BOARDING",
+const app = express();
+
+// parse the incoming form data
+app.use(bodyParser.json());
+
+// for url encoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get((req, res) => {
+  res.json({ message: "Hello" });
 });
 
-con.connect(function (err) {
-  if (err) throw err;
-  con.query("SELECT * FROM roles", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-  });
-});
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/html");
-  res.end("<h1>Hello World</h1>");
-});
-server.listen(port, () => {
-  console.log(`Server running at port ` + port);
+// Start the server
+app.listen(process.env.PORT, () => {
+  console.log(`Server running at port ` + process.env.PORT);
 });
