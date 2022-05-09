@@ -1,4 +1,3 @@
-const { Sequelize, DataTypes } = require("sequelize/types");
 
 // Define the  admin schema
 module.exports = (sequelize, DataTypes) => {
