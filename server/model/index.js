@@ -6,7 +6,7 @@ const { database } = require('../config/db.config');
 // Creating instance or Configuring
 const sequelize = new Sequelize(config.database,config.user,config.password,{
     host : config.host,
-    dialect : config.dialect,
+    dialect : "mysql",
     operatorsAliases : true,
     pool : {
         max : 5,
