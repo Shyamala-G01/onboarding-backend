@@ -1,7 +1,7 @@
 // require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const router = require('./routes/admin.routes');
+const Router = require("./routes/admin.routes");
 const PORT = process.env.PORT || 1337;
 
 const app = express();
@@ -16,14 +16,8 @@ app.get("/", (req, res) => {
   res.send({ message: "Hello" });
 });
 
-
-
 // admin endpoint handler
-app.use('/api/admin',router)
-
-
-
-
+app.use("/api/admin", Router);
 
 // Start the server
 app.listen(PORT, () => {

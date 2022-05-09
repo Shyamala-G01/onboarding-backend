@@ -3,3 +3,5 @@ const Router = require('express').Router();
 
 
 Router.post('/',adminController.addAdmin)
+
+module.exports = Router
