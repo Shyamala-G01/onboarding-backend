@@ -23,7 +23,7 @@ const addAdmin = async (req, res) => {
 };
 
 const getAdmin=async(req,res)=>{
-   let email=req.email
+   let email=req.body.email
     let users= await admin.findOne({where:{email:email}  })
     res.send(users) 
 }
