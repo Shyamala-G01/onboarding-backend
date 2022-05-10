@@ -15,7 +15,7 @@ const getData = async (req, res) => {
         let token = jwt.sign({ id: data.id }, config.secret, {
           expiresIn: 86400,
         });
-        console.log(token);
+        console.log(data);
         res.status(200).send({
           id: data.id,
           role: data.role,
