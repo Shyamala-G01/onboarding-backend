@@ -22,4 +22,9 @@ const addAdmin = async (req, res) => {
   res.status(200).send(adminData);
 };
 
-module.exports = { addAdmin }
+const getAdmin=async(req,res)=>{
+   let email=req.email
+    let users= await admin.findOne({where:{email:email}  })
+    res.send(users) 
+}
+module.exports = { addAdmin, getAdmin }
