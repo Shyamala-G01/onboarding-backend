@@ -3,6 +3,5 @@ const Router = require('express').Router();
 
 
 Router.post('/',adminController.addAdmin)
-Router.get('/getAdmin',adminController.getAdmin)
 
 module.exports = Router
