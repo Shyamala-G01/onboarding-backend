@@ -2,15 +2,17 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const Router = require("./routes/admin.routes");
+const AuthRouter = require("./routes/auth.routes");
 const PORT = process.env.PORT || 1337;
 
 const app = express();
-const cors=require('cors')
-var corsOption={
-    origin:'http://localhost:4200'
-}
 
-app.use(cors(corsOption))
+const cors = require("cors");
+var corsOption = {
+  origin: "http://localhost:4200",
+};
+
+app.use(cors(corsOption));
 // parse the incoming form data
 app.use(bodyParser.json());
 
@@ -24,7 +26,10 @@ app.get("/", (req, res) => {
 // admin endpoint handler
 app.use("/api/admin", Router);
 
+// auth
+app.use('/api',AuthRouter)
+
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server running at port ` +PORT);
+  console.log(`Server running at port ` + PORT);
 });
