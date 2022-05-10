@@ -1,4 +1,4 @@
-require("dotenv").config({path:'./.env'});
+require("dotenv").config({path:'./.details.env'});
 const express = require("express");
 const bodyParser = require("body-parser");
 const Router = require("./routes/admin.routes");
