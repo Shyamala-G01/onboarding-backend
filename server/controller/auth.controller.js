@@ -18,7 +18,7 @@ const getData = async (req, res) => {
         console.log(data);
         res.status(200).send({
           id: data.id,
-          role: "admin",
+          role: req.body.role,
           name: data.name,
           email: data.email,
           accessToken: token,
