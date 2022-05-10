@@ -18,8 +18,13 @@ const addAdmin = async (req, res) => {
   };
   let pass = req.body.name + "@123";
   info.password = hashSync(pass, salt);
-  const admin = await admin.create(info);
-  res.status(200).send(admin);
+  const adminData = await admin.create(info);
+  res.status(200).send(adminData);
 };
 
-module.exports = { addAdmin }
+const getAdmin=async(req,res)=>{
+   let email=req.email
+    let users= await admin.findOne({where:{email:email}  })
+    res.send(users) 
+}
+module.exports = { addAdmin, getAdmin }
