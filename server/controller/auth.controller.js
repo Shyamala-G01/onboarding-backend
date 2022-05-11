@@ -18,7 +18,7 @@ const getData = async (req, res) => {
         console.log(data);
         res.status(200).send({
           id: data.id,
-          role:data.fk_admins_roles_role,
+          role: data.fk_admins_roles_role,
           name: data.name,
           email: data.email,
           accessToken: token,
@@ -47,7 +47,7 @@ const getData = async (req, res) => {
         console.log(token);
         res.status(200).send({
           id: data.id,
-          role: data.role,
+          role: data.fk_users_roles_role,
           name: data.name,
           email: data.email,
           accessToken: token,
