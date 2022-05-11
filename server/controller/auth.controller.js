@@ -1,7 +1,7 @@
 const db = require("../model/index");
 const config = require("../config/auth.config.js");
 const Admin = db.admin;
-// const user = db.user;
+const user = db.user;
 const jwt = require("jsonwebtoken");
 const { compareSync } = require("bcrypt");
 
