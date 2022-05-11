@@ -48,6 +48,7 @@ const addEmployee = async (req, res) => {
       created_by: req.body.created_by,
       updated_at: req.body.updated_at,
       updated_by: req.body.updated_by,
+      status : req.body.status,
     };
     let pass = req.body.name + "@123";
     info.password = hashSync(pass, salt);
