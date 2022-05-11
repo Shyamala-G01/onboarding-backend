@@ -32,6 +32,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.admin = require("./admin.model")(sequelize, DataTypes);
+db.user = require("./user.model")(sequelize, DataTypes);
 
 db.roles = require("./roles.model")(sequelize, DataTypes);
 
@@ -55,4 +56,15 @@ db.admin.belongsTo(db.roles, {
   as: "adminAlias",
   foreignKey: { name: "fk_admins_roles_role" },
 });
+
+db.roles.hasMany(db.user, {
+  as: "userAlias",
+  foreignKey: { name: "fk_users_roles_role" },
+});
+
+db.user.belongsTo(db.roles, {
+  as: "AliasRoles",
+  foreignKey: { name: "fk_users_roles_role" },
+});
+
 module.exports = db;

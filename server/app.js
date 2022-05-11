@@ -24,12 +24,12 @@ app.get("/", (req, res) => {
 });
 
 // admin endpoint handler
-app.use("/api/admin", Router);
+app.use("/api", Router);
 
 // auth
 app.use('/api',AuthRouter)
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server running at port ` + PORT);
+app.listen(process.env.PORT, () => {
+  console.log(`Server running at port ` + process.env.PORT);
 });
