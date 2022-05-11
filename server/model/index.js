@@ -31,10 +31,13 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// Adding the instances of models
 db.admin = require("./admin.model")(sequelize, DataTypes);
 db.user = require("./user.model")(sequelize, DataTypes);
-
 db.roles = require("./roles.model")(sequelize, DataTypes);
+db.personalInfo = require("./personalInfo.model")(sequelize, DataTypes);
+db.address = require("./address.model")(sequelize, DataTypes);
+
 
 // Syncing table with schema
 db.sequelize
@@ -65,6 +68,26 @@ db.roles.hasMany(db.user, {
 db.user.belongsTo(db.roles, {
   as: "AliasRoles",
   foreignKey: { name: "fk_users_roles_role" },
+});
+
+db.user.hasOne(db.personalInfo, {
+  foreignKey: "fk_person_users_id",
+  as: "personal_info",
+});
+
+db.personalInfo.belongsTo(db.user, {
+  foreignKey: "fk_person_users_id",
+  as: "users",
+});
+
+db.user.hasMany(db.address, {
+  foreignKey: "fk_address_users_id",
+  as: "address",
+});
+
+db.address.belongsTo(db.user, {
+  foreignKey: "fk_address_users_id",
+  as: "users",
 });
 
 module.exports = db;

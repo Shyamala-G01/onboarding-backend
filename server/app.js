@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Router = require("./routes/admin.routes");
 const AuthRouter = require("./routes/auth.routes");
+const userRouter = require("./routes/user.routes");
 const PORT = process.env.PORT || 1337;
 
 const app = express();
@@ -28,6 +29,9 @@ app.use("/api", Router);
 
 // auth
 app.use("/api", AuthRouter);
+
+// auth
+app.use("/api", userRouter);
 
 // Start the server
 app.listen(PORT, () => {
