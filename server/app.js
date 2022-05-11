@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
 app.use("/api", Router);
 
 // auth
-app.use('/api',AuthRouter)
+app.use("/api", AuthRouter);
 
 // Start the server
-app.listen(process.env.PORT, () => {
-  console.log(`Server running at port ` + process.env.PORT);
+app.listen(PORT, () => {
+  console.log(`Server running at port ` + PORT);
 });

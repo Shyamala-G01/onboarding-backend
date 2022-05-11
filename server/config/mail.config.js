@@ -11,6 +11,6 @@ const transporter= nodemailer.createTransport({
 const mailOptions={
     from:'shyamalagopal719@gmail.com',
     to:'',
-    subject:'Sending mail through node js on user added',
+    subject:'Welcome to Diggibyte Family',
 }
 module.exports={transporter, mailOptions}
