@@ -39,7 +39,7 @@ const addEmployee = async (req, res) => {
   const salt = genSaltSync(10);
 
   // already exit or not
-  const userMail = await user.findOne({ email: req.body.email });
+  const userMail = await user.findOne({ where: { email: req.body.email } });
   if (userMail) {
     res.send(userMail);
   } else {
