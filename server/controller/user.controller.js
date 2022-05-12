@@ -11,7 +11,9 @@ const addPersonalInfo = async (req, res) => {
     fk_person_users_id: req.body.fk_person_users_id,
     first_name: req.body.first_name,
     last_name: req.body.last_name,
-    dob: req.body.dob,
+    dob: `${req.body.dob.getFullYear()}-${
+      req.body.dob.getMonth() + 1
+    }-${req.body.dob.getDate()}`,
     gender: req.body.gender,
     mobile_number: req.body.mobile_number,
     alternate_number: req.body.alternate_number,
