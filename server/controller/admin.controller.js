@@ -67,6 +67,7 @@ const addEmployee = async (req, res) => {
 
   password:${info.password}`;
       transporter.sendMail(mailOptions, function (err, info) {
+        console.log("transporter");
         if (err) {
           console.log("err  " + err);
         } else {
