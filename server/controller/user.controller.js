@@ -1,3 +1,4 @@
+const { sequelize } = require("../model");
 const db = require("../model");
 const personalInfo = db.personalInfo;
 const address = db.address;
@@ -20,11 +21,14 @@ const addPersonalInfo = async (req, res) => {
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
   };
-  const userData = await personalInfo.create(personData);
+  // const userData = await personalInfo.create(personData);
+  const userData = await sequelize.query(
+    `INSERT INTO personalInfo(first_name, last_name,dob,gender,mobile_number,alternate_number,personal_email,photo,created_at,updated_at, updated_by,fk_person_users_id) VALUES(${personData.first_name},${personData.last_name},${personData.dob},${personData.gender},${personData.personal_email},${personData.mobile_number},${personData.alternate_number},${personData.photo},${personData.created_at},${personData.updated_at},${personData.updated_by})`
+  );
   if (userData) {
     res.status(200).send({ message: "Successful" });
-  }else{
-    res.status(400).send({ message: "Unsuccessful" }); 
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
   }
 };
 
@@ -35,5 +39,5 @@ const getAdmin = async (req, res) => {
 };
 
 module.exports = {
-    addPersonalInfo
-}
+  addPersonalInfo,
+};
