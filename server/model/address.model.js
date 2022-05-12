@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       pincode: {
         type: DataTypes.STRING,
       },
+      country: {
+        type: DataTypes.STRING,
+      },
       created_at: {
         type: DataTypes.DATE,
       },
