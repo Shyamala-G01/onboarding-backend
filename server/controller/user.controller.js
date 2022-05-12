@@ -48,6 +48,7 @@ const addPersonalInfo = async (req, res) => {
         "gender",
         "mobile_number",
         "alternate_number",
+        "personal_email",
         "photo",
         "created_at",
         "updated_at",
