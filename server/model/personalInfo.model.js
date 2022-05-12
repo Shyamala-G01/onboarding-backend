@@ -1,5 +1,8 @@
+const { personalInfo } = require(".");
+
 module.exports = (sequelize, DataTypes) => {
-  const PersnonalInfo = sequelize.define(
+
+  const PersonalInfo = sequelize.define(
     "personal_info",
     {
       first_name: {
@@ -42,5 +45,6 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
-  return PersnonalInfo;
+  PersonalInfo.removeAttribute('id');
+  return PersonalInfo;
 };
