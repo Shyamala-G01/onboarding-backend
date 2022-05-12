@@ -22,8 +22,39 @@ const addPersonalInfo = async (req, res) => {
     updated_by: req.body.updated_by,
   };
   // const userData = await personalInfo.create(personData);
-  const userData = await sequelize.query(
-    `INSERT INTO personal_info(first_name,last_name,dob,gender,mobile_number,alternate_number,personal_email,photo,created_at,updated_at,updated_by,fk_person_users_id) VALUES(${personData.first_name},${personData.last_name},${personData.dob},${personData.gender},${personData.mobile_number},${personData.alternate_number},${personData.personal_email},${personData.photo},${personData.created_at},${personData.updated_at},${personData.updated_by},${personData.fk_person_users_id})`
+  // const userData = await sequelize.query(
+  //   `INSERT INTO personal_info(first_name,last_name,dob,gender,mobile_number,alternate_number,personal_email,photo,created_at,updated_at,updated_by,fk_person_users_id) VALUES(${personData.first_name},${personData.last_name},${personData.dob},${personData.gender},${personData.mobile_number},${personData.alternate_number},${personData.personal_email},${personData.photo},${personData.created_at},${personData.updated_at},${personData.updated_by},${personData.fk_person_users_id})`
+  // );
+  const userData = await personalInfo.create(
+    {
+      first_name: personData.first_name,
+      last_name: personData.last_name,
+      dob: personData.dob,
+      gender: personData.gender,
+      mobile_number: personData.mobile_number,
+      alternate_number: personData.alternate_number,
+      personal_email: personData.personal_email,
+      photo: personData.photo,
+      created_at: personData.created_at,
+      updated_at: personData.updated_at,
+      updated_by: personData.updated_by,
+      fk_person_users_id: personData.fk_person_users_id,
+    },
+    {
+      fields: [
+        "first_name",
+        "last_name",
+        "dob",
+        "gender",
+        "mobile_number",
+        "alternate_number",
+        "photo",
+        "created_at",
+        "updated_at",
+        "updated_by",
+        "fk_person_users_id",
+      ],
+    }
   );
   if (userData) {
     res.status(200).send({ message: "Successful" });
