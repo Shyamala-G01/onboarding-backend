@@ -1,14 +1,14 @@
 //to send mail v should install nodemailer
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
-    host: 'smtppro.zoho.in',
+  service: "gmail",
   auth: {
-    user: "test@diggibyte.com",
-    pass: "Full$tack@!@#!!",
+    user: "subrathkumarpatra1996@gmail.com",
+    pass: "sunil@2.2",
   },
 });
 const mailOptions = {
-  from: "test@diggibyte.com",
+  from: "subrathkumarpatra1996@gmail.com",
   subject: "Welcome to Diggibyte Family",
 };
 module.exports = { transporter, mailOptions };
