@@ -59,26 +59,25 @@ const addEmployee = async (req, res) => {
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
+      // sending mail after registration
+
+      //to send mail on adding user
+      mailOptions.to = `${info.email}`;
+      mailOptions.text = `username: ${info.email}
+
+  password:${info.password}`;
+      transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+          console.log("err  " + err);
+        } else {
+          console.log("mail sent" + info.response);
+        }
+      });
+
       res.status(200).send({ message: "Registered Successfully" });
     } else {
       res.status(404).send({ message: "Can't Register" });
     }
-  }
-
-  // sending mail after registration
-  if (userData) {
-    //to send mail on adding user
-    mailOptions.to = `${info.email}`;
-    mailOptions.text = `username: ${info.email}
-
-  password:${info.password}`;
-    transporter.sendMail(mailOptions, function (err, info) {
-      if (err) {
-        console.log("err  " + err);
-      } else {
-        console.log("mail sent" + info.response);
-      }
-    });
   }
 };
 
