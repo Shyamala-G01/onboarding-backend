@@ -41,7 +41,7 @@ const addEmployee = async (req, res) => {
   // already exit or not
   const userMail = await user.findOne({ email: req.body.email });
   if (userMail) {
-    res.send({ message: "User already exist!" });
+    res.send(userMail);
   } else {
     let info = {
       id: req.body.id,
