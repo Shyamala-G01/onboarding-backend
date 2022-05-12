@@ -53,13 +53,13 @@ const getData = async (req, res) => {
           accessToken: token,
         });
       } else {
-        res.json({
+        res.send({
           status: 400,
           message: "invalid password",
         });
       }
     } else {
-      res.json({
+      res.send({
         status: 400,
         message: "user not found",
       });

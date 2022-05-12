@@ -1,5 +1,3 @@
-const { personalInfo } = require(".");
-
 module.exports = (sequelize, DataTypes) => {
 
   const PersonalInfo = sequelize.define(
