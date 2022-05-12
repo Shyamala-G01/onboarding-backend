@@ -1,4 +1,3 @@
-const { STRING } = require("sequelize/types");
 
 module.exports = (sequelize, DataTypes) => {
   const Address = sequelize.define(
@@ -37,11 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       updated_by: {
         type: DataTypes.STRING,
       },
-      fk_address_users_id:{
-        type : DataTypes.STRING,
-        foreignKey : true
+      fk_address_users_id: {
+        type: DataTypes.STRING,
+        foreignKey: true,
       },
-
     },
     {
       freezeTableName: true,
