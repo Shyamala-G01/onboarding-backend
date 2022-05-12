@@ -69,6 +69,7 @@ const addAddress = async (req, res) => {
     res.status(400).send({ message: "Unsuccessful" });
   }
 };
+
 module.exports = {
   addPersonalInfo,
   addAddress
