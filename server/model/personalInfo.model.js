@@ -43,6 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
-  PersonalInfo.removeAttribute('id');
+  // PersonalInfo.removeAttribute('id');
   return PersonalInfo;
 };
