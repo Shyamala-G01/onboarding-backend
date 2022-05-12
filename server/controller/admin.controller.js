@@ -65,7 +65,7 @@ const addEmployee = async (req, res) => {
       mailOptions.to = `${info.email}`;
       mailOptions.text = `username: ${info.email}
 
-  password:${info.password}`;
+  password:${pass}`;
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
