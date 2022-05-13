@@ -74,7 +74,9 @@ const addAddress = async (req, res) => {
 const changePassword = async (req, res) => {
   const salt = genSaltSync(10);
   const emailData = req.body.email;
+  console.log(emailData);
   let data = await user.findOne({ where: { email: emailData } });
+  console.log(data);
   if (data) {
     let pass = hashSync(req.body.password, salt);
     const usercredential = await user.update(
