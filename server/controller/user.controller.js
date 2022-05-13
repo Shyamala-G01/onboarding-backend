@@ -1,7 +1,9 @@
 const { sequelize } = require("../model");
 const db = require("../model");
+const { genSaltSync, hashSync } = require("bcrypt");
 const personalInfo = db.personalInfo;
 const address = db.address;
+const user = db.user;
 
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
@@ -70,7 +72,25 @@ const addAddress = async (req, res) => {
   }
 };
 
+const changePassword = async (req,res) =>{
+  const salt = genSaltSync(10);
+  let data = await user.findOne({ where: { email: req.body.email } });
+  if(data){
+    let pass = hashSync(req.body.password, salt)
+    const usercredential = await user.update({ password : pass },{ where:{ email: req.body.email}});
+    if(usercredential){
+      res.status(200).send({ message: "Password Updated successfully" });
+    }else{
+      res.status(400).send({ message: "Password cannot be updated" });
+    }
+  }else{
+    res.status(400).send({ message: "Email does not exit" });
+  }
+}
+
+
 module.exports = {
   addPersonalInfo,
-  addAddress
+  addAddress,
+  changePassword 
 };

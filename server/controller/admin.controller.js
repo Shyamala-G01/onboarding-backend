@@ -77,7 +77,7 @@ const addEmployee = async (req, res) => {
 
       res.status(200).send({ message: "Registered Successfully" });
     } else {
-      res.status(404).send({ message: "Can't Register" });
+      res.status(404).send({ message: "Cannot Register" });
     }
   }
 };
