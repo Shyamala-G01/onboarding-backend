@@ -80,7 +80,8 @@ const changePassword = async (req, res) => {
   if (data) {
     let pass = hashSync(req.body.password, salt);
     const usercredential = await user.update(
-      { password: pass },
+      { password: pass, password_status: req.body.password_status },
+
       { where: { email: emailData } }
     );
     if (usercredential) {
