@@ -21,7 +21,7 @@ const getData = async (req, res) => {
           role: data.fk_admins_roles_role,
           name: data.name,
           email: data.email,
-          pass : data.password_status, 
+
           accessToken: token,
         });
       } else {
@@ -51,6 +51,7 @@ const getData = async (req, res) => {
           role: data.fk_users_roles_role,
           name: data.name,
           email: data.email,
+          pass: data.password_status,
           accessToken: token,
         });
       } else {
@@ -78,7 +79,7 @@ const verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token,config.secret, (err, decoded) => {
+  jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
         message: "Unauthorized!",
