@@ -46,25 +46,24 @@ const addPersonalInfo = async (req, res) => {
   }
 };
 
-
 // Address
 const addAddress = async (req, res) => {
   console.log(req.body);
   const info = {
-    type : req.body.type,
-    house_no : req.body.house_no,
+    type: req.body.type,
+    house_no: req.body.house_no,
     street: req.body.street,
-    locality : req.body.locality,
-    city : req.body.city,
-    state : req.body.state,
-    pincode : req.body.pincode,
-    country : req.body.country,
-    created_at : req.body.created_at,
-    updated_at : req.body.updated_at,
-    updated_by : req.body.updated_by,
-    fk_address_users_id : req.body.fk_address_users_id,
+    locality: req.body.locality,
+    city: req.body.city,
+    state: req.body.state,
+    pincode: req.body.pincode,
+    country: req.body.country,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_address_users_id: req.body.fk_address_users_id,
   };
-  const userData = await address.create(info)
+  const userData = await address.create(info);
   if (userData) {
     res.status(200).send({ message: "Successful" });
   } else {
@@ -72,25 +71,28 @@ const addAddress = async (req, res) => {
   }
 };
 
-const changePassword = async (req,res) =>{
+const changePassword = async (req, res) => {
   const salt = genSaltSync(10);
-  let data = await user.findOne({ where: { email: req.body.email } });
-  if(data){
-    let pass = hashSync(req.body.password, salt)
-    const usercredential = await user.update({ password : pass },{ where:{ email: req.body.email}});
-    if(usercredential){
+  const emailData = req.body.email;
+  let data = await user.findOne({ where: { email: emailData } });
+  if (data) {
+    let pass = hashSync(req.body.password, salt);
+    const usercredential = await user.update(
+      { password: pass },
+      { where: { email: emailData } }
+    );
+    if (usercredential) {
       res.status(200).send({ message: "Password Updated successfully" });
-    }else{
+    } else {
       res.status(400).send({ message: "Password cannot be updated" });
     }
-  }else{
+  } else {
     res.status(400).send({ message: "Email does not exit" });
   }
-}
-
+};
 
 module.exports = {
   addPersonalInfo,
   addAddress,
-  changePassword 
+  changePassword,
 };
