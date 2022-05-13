@@ -79,6 +79,7 @@ const changePassword = async (req, res) => {
   console.log(data);
   if (data) {
     let pass = hashSync(req.body.password, salt);
+    console.log(req.body.password_status);
     const usercredential = await user.update(
       { password: pass, password_status: req.body.password_status },
 
