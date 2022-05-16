@@ -123,19 +123,19 @@ const addEmployment = async (req, res) => {
   }
 };
 
-
 const getEmployemnt = async (req, res) => {
   let id = req.params.id;
-  let employmentData = await employmentDetails.findOne({ where: { fk_employment_users_id : id } });
+  let employmentData = await employmentDetails.findAll({
+    where: { fk_employment_users_id: id },
+  });
+  console.log(employmentData);
   res.send(employmentData);
-  console.log(employmentData)
 };
-
 
 module.exports = {
   addPersonalInfo,
   addAddress,
   changePassword,
   addEmployment,
-  getEmployemnt
+  getEmployemnt,
 };
