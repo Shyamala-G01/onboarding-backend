@@ -71,6 +71,9 @@ const addAddress = async (req, res) => {
   }
 };
 
+
+
+
 const changePassword = async (req, res) => {
   const salt = genSaltSync(10);
   const emailData = req.body.email;
@@ -95,8 +98,36 @@ const changePassword = async (req, res) => {
   }
 };
 
+
+// Address
+const addEmployment = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    type: req.body.type,
+    house_no: req.body.house_no,
+    street: req.body.street,
+    locality: req.body.locality,
+    city: req.body.city,
+    state: req.body.state,
+    pincode: req.body.pincode,
+    country: req.body.country,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_address_users_id: req.body.fk_address_users_id,
+  };
+  // const userData = await address.create(info);
+  // if (userData) {
+  //   res.status(200).send({ message: "Successful" });
+  // } else {
+  //   res.status(400).send({ message: "Unsuccessful" });
+  // }
+};
+
+
 module.exports = {
   addPersonalInfo,
   addAddress,
   changePassword,
+  addEmployment
 };

@@ -17,5 +17,10 @@ Router.post(
   authController.verifyToken,
   userController.changePassword
 );
+Router.post(
+  "/addEmployment",
+  authController.verifyToken,
+  userController.addEmployment
+);
 
 module.exports = Router;
