@@ -36,7 +36,7 @@ Router.delete(
   userController.deleteEmployemnt
 );
 
-Router.patch(
+Router.put(
   "/updateEmployment/:id",
   authController.verifyToken,
   userController.updateEmployemnt
