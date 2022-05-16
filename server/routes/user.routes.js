@@ -29,10 +29,18 @@ Router.get(
   authController.verifyToken,
   userController.getEmployemnt
 );
+
+
 Router.delete(
   "/deleteEmployment/:id",
   authController.verifyToken,
   userController.deleteEmployemnt
+);
+
+Router.put(
+  "/updateEmployment/:id",
+  authController.verifyToken,
+  userController.updateEmployemnt
 );
 
 module.exports = Router;

@@ -134,10 +134,26 @@ const getEmployemnt = async (req, res) => {
 
 const updateEmployemnt = async (req, res) => {
   let id = req.params.id;
-  let employmentData = await employmentDetails.findAll({
+  const info = {
+    org_name: req.body.organizationName,
+    joining_date: req.body.joiningDate,
+    relieving_date: req.body.relievingDate,
+    relieving_letter: req.body.relievingLetter,
+    offer_letter: req.body.offerLetter,
+    pay_slip1: req.body.payslip1,
+    pay_slip2: req.body.payslip2,
+    pay_slip3: req.body.payslip3,
+    hr_name: req.body.hr_name,
+    notice_date: req.body.noticePeriodEndDate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_employment_users_id: req.body.fk_employment_users_id,
+  };
+  let employmentData = await employmentDetails.update(info, {
     where: { fk_employment_users_id: id },
   });
-  console.log(employmentData);
+  // console.log(employmentData);
   res.send(employmentData);
 };
 
@@ -147,7 +163,7 @@ const deleteEmployemnt = async (req, res) => {
     where: { id: id },
   });
   // console.log(employmentData);
-  res.send({ message : "deleted"});
+  res.send({ message: "deleted" });
 };
 
 module.exports = {
