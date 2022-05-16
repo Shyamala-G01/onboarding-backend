@@ -29,5 +29,10 @@ Router.get(
   authController.verifyToken,
   userController.getEmployemnt
 );
+Router.delete(
+  "/deleteEmployment/:id",
+  authController.verifyToken,
+  userController.deleteEmployemnt
+);
 
 module.exports = Router;

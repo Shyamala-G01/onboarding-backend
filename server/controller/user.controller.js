@@ -132,10 +132,30 @@ const getEmployemnt = async (req, res) => {
   res.send(employmentData);
 };
 
+const updateEmployemnt = async (req, res) => {
+  let id = req.params.id;
+  let employmentData = await employmentDetails.findAll({
+    where: { fk_employment_users_id: id },
+  });
+  console.log(employmentData);
+  res.send(employmentData);
+};
+
+const deleteEmployemnt = async (req, res) => {
+  let id = req.params.id;
+  let employmentData = await employmentDetails.destroy({
+    where: { id: id },
+  });
+  // console.log(employmentData);
+  res.send(employmentData);
+};
+
 module.exports = {
   addPersonalInfo,
   addAddress,
   changePassword,
   addEmployment,
   getEmployemnt,
+  updateEmployemnt,
+  deleteEmployemnt
 };
