@@ -142,7 +142,7 @@ const updateEmployemnt = async (req, res) => {
 };
 
 const deleteEmployemnt = async (req, res) => {
-  let id = req.params.id;
+  let id = Number(req.params.id);
   let employmentData = await employmentDetails.destroy({
     where: { id: id },
   });
