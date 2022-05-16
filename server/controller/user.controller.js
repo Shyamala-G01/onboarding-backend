@@ -128,6 +128,7 @@ const getEmployemnt = async (req, res) => {
   let id = req.params.id;
   let employmentData = await employmentDetails.findOne({ where: { fk_employment_users_id : id } });
   res.send(employmentData);
+  console.log(employmentData)
 };
 
 
