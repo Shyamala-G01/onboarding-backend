@@ -1,5 +1,6 @@
 const userController = require("../controller/user.controller");
 const authController = require("../controller/auth.controller");
+
 const Router = require("express").Router();
 
 Router.post(
@@ -21,6 +22,12 @@ Router.post(
   "/addEmployment",
   authController.verifyToken,
   userController.addEmployment
+);
+
+Router.get(
+  "/getEmployment/:id",
+  authController.verifyToken,
+  userController.getEmployemnt
 );
 
 module.exports = Router;

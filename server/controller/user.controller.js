@@ -96,7 +96,7 @@ const changePassword = async (req, res) => {
   }
 };
 
-// Address
+// employment
 const addEmployment = async (req, res) => {
   console.log(req.body);
   const info = {
@@ -123,9 +123,18 @@ const addEmployment = async (req, res) => {
   }
 };
 
+
+const getEmployemnt = async (req, res) => {
+  let id = req.params.id;
+  let employmentData = await employmentDetails.findOne({ where: { fk_employment_users_id : id } });
+  res.send(employmentData);
+};
+
+
 module.exports = {
   addPersonalInfo,
   addAddress,
   changePassword,
   addEmployment,
+  getEmployemnt
 };
