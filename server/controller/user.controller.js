@@ -101,7 +101,7 @@ const addEmployment = async (req, res) => {
   console.log(req.body);
   const info = {
     org_name: req.body.organizationName,
-    joining_data: req.body.joiningDate,
+    joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
     relieving_letter: req.body.relievingLetter,
     offer_letter: req.body.offerLetter,
