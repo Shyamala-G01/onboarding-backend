@@ -72,9 +72,6 @@ const addAddress = async (req, res) => {
   }
 };
 
-
-
-
 const changePassword = async (req, res) => {
   const salt = genSaltSync(10);
   const emailData = req.body.email;
@@ -99,28 +96,26 @@ const changePassword = async (req, res) => {
   }
 };
 
-
 // Address
 const addEmployment = async (req, res) => {
   console.log(req.body);
   const info = {
-   org_name : req.body.organizationName,
-   joining_data : req.body.joiningDate,
-   relieving_date : req.body.relievingDate,
-   relieving_letter : req.body.relievingLetter,
-   offer_letter : req.body.offerLetter,
-   pay_slip1 : req.body.payslip1,
-   pay_slip2 : req.body.payslip2,
-   pay_slip3 : req.body.payslip3,
-   hr_name : req.body.hr_name,
-   notice_date : req.body.noticePeriodEndDate,
-   created_at: req.body.created_at,
-   updated_at: req.body.updated_at,
-   updated_by: req.body.updated_by,
-   fk_employment_users_id: req.body.fk_employment_users_id,
-
+    org_name: req.body.organizationName,
+    joining_data: req.body.joiningDate,
+    relieving_date: req.body.relievingDate,
+    relieving_letter: req.body.relievingLetter,
+    offer_letter: req.body.offerLetter,
+    pay_slip1: req.body.payslip1,
+    pay_slip2: req.body.payslip2,
+    pay_slip3: req.body.payslip3,
+    hr_name: req.body.hr_name,
+    notice_date: req.body.noticePeriodEndDate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  const userData = await address.create(info);
+  const userData = await employmentDetails.create(info);
   if (userData) {
     res.status(200).send({ message: "Successful" });
   } else {
@@ -128,10 +123,9 @@ const addEmployment = async (req, res) => {
   }
 };
 
-
 module.exports = {
   addPersonalInfo,
   addAddress,
   changePassword,
-  addEmployment
+  addEmployment,
 };
