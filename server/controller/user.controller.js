@@ -153,8 +153,8 @@ const updateEmployemnt = async (req, res) => {
   let employmentData = await employmentDetails.update(info, {
     where: { fk_employment_users_id: id },
   });
-  // console.log(employmentData);
-  res.send(employmentData);
+  console.log("updated");
+  res.send({ message: "updated" });
 };
 
 const deleteEmployemnt = async (req, res) => {

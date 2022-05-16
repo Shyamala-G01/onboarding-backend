@@ -30,14 +30,13 @@ Router.get(
   userController.getEmployemnt
 );
 
-
 Router.delete(
   "/deleteEmployment/:id",
   authController.verifyToken,
   userController.deleteEmployemnt
 );
 
-Router.put(
+Router.patch(
   "/updateEmployment/:id",
   authController.verifyToken,
   userController.updateEmployemnt
