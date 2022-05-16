@@ -151,7 +151,7 @@ const updateEmployemnt = async (req, res) => {
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
   let employmentData = await employmentDetails.update(info, {
-    where: { fk_employment_users_id: id },
+    where: { id: id },
   });
   console.log("updated");
   res.send({ message: "updated" });
