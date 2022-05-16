@@ -147,7 +147,7 @@ const deleteEmployemnt = async (req, res) => {
     where: { id: id },
   });
   // console.log(employmentData);
-  res.status(200).send("deleted");
+  res.send({ message : "deleted"});
 };
 
 module.exports = {
