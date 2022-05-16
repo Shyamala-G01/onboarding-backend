@@ -25,7 +25,12 @@ const addAdmin = async (req, res) => {
   let pass = req.body.name + "@123";
   info.password = hashSync(pass, salt);
   const adminData = await admin.create(info);
-  res.status(200).send(adminData);
+  if(adminData){
+    res.status(200).send({ message: "Registered Successfully" });
+  }else{
+    res.status(404).send({ message: "Cannot Register" });
+  }
+  
 };
 
 const getAdmin = async (req, res) => {
@@ -69,7 +74,7 @@ const addEmployee = async (req, res) => {
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
-          console.log("err  " + err);
+          console.log("err " + err);
         } else {
           console.log("mail sent" + info.response);
         }
