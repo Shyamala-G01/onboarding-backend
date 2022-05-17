@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       specialization: {
         type: DataTypes.STRING,
       },
-
       start_date: {
         type: DataTypes.DATE,
       },
