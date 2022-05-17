@@ -190,7 +190,7 @@ const addEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   const educationData = await educationalInfo.create(info);
-  if (employmentData) {
+  if (educationData) {
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
