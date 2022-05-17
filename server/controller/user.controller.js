@@ -5,6 +5,7 @@ const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
+const educationInfo = db.educationalInfo
 
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
