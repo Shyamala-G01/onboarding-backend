@@ -181,7 +181,7 @@ const getPersonalInfoData = async (req, res) => {
         as: "address",
       },
     ],
-    where: { id: req.params.id },
+    where: { id:id },
   });
   console.log(data);
   res.send(data);
