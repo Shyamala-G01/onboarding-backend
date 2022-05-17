@@ -166,6 +166,82 @@ const deleteEmployemnt = async (req, res) => {
   res.send({ message: "deleted" });
 };
 
+const educationalInfo = db.educationalInfo;
+
+//adding educational details
+const addEducation = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    type: req.body.type,
+    name: req.body.name,
+    board: req.body.board,
+    course: req.body.course,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    marks: req.body.marks,
+    marks_card: req.body.marks_card,
+    transfer_certificate: req.body.transfer_certificate,
+    provisional_marks_card: req.body.provisional_marks_card,
+    convocation_certificate: req.body.convocation_certificate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_education_users_id: req.body.fk_education_users_id,
+  };
+  const educationData = await educationalInfo.create(info);
+  if (employmentData) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
+};
+
+//get education based on id
+const getEducation = async (req, res) => {
+  let id = req.params.id;
+  let educationData = await educationalInfo.findAll({
+    where: { fk_education_users_id: id },
+  });
+  console.log(employmentData);
+  res.send(employmentData);
+};
+
+//update perticular/specific education i.e by id
+const updateEducation = async (req, res) => {
+  let id = req.params.id;
+  const info = {
+    type: req.body.type,
+    name: req.body.name,
+    board: req.body.board,
+    course: req.body.course,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    marks: req.body.marks,
+    marks_card: req.body.marks_card,
+    transfer_certificate: req.body.transfer_certificate,
+    provisional_marks_card: req.body.provisional_marks_card,
+    convocation_certificate: req.body.convocation_certificate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_education_users_id: req.body.fk_education_users_id,
+  };
+  let educationData = await educationalInfo.update(info, {
+    where: { id: id },
+  });
+  res.send({ message: "updated" });
+};
+
+//delete specific education details
+const deleteEducation = async (req, res) => {
+  let id = Number(req.params.id);
+  let employmentData = await educationalInfo.destroy({
+    where: { id: id },
+  });
+
+  res.send({ message: "deleted" });
+};
+
 module.exports = {
   addPersonalInfo,
   addAddress,
@@ -174,4 +250,8 @@ module.exports = {
   getEmployemnt,
   updateEmployemnt,
   deleteEmployemnt,
+  addEducation,
+  getEducation,
+  updateEducation,
+  deleteEducation,
 };

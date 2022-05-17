@@ -42,4 +42,29 @@ Router.put(
   userController.updateEmployemnt
 );
 
+// Education routes
+Router.post(
+  "/addEducation",
+  authController.verifyToken,
+  userController.addEducation
+);
+
+Router.get(
+  "/getEducation/:id",
+  authController.verifyToken,
+  userController.getEducation
+);
+
+Router.delete(
+  "/deleteEducation/:id",
+  authController.verifyToken,
+  userController.deleteEducation
+);
+
+Router.put(
+  "/updateEducation/:id",
+  authController.verifyToken,
+  userController.updateEducation
+);
+
 module.exports = Router;

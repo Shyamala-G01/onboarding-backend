@@ -37,8 +37,11 @@ db.user = require("./user.model")(sequelize, DataTypes);
 db.roles = require("./roles.model")(sequelize, DataTypes);
 db.personalInfo = require("./personalInfo.model")(sequelize, DataTypes);
 db.address = require("./address.model")(sequelize, DataTypes);
-db.employmentDetails= require("./employmentDetails.model")(sequelize, DataTypes);
-
+db.employmentDetails = require("./employmentDetails.model")(
+  sequelize,
+  DataTypes
+);
+db.educationalInfo = require("./education.model")(sequelize, DataTypes);
 
 // Syncing table with schema
 db.sequelize
@@ -99,4 +102,13 @@ db.user.hasMany(db.employmentDetails, {
 db.employmentDetails.belongsTo(db.user, {
   foreignKey: "fk_employment_users_id",
 });
+
+db.user.hasMany(db.educationalInfo, {
+  foreignKey: "fk_education_users_id",
+  as: "educational_info",
+});
+db.educationalInfo.belongsTo(db.user, {
+  foreignKey: "fk_education_users_id",
+});
+
 module.exports = db;
