@@ -65,8 +65,8 @@ const addAddress = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_address_users_id: req.body.fk_address_users_id,
   };
-  const addressData = await address.create(info);
-  if (addressData) {
+  const data = await address.create(info);
+  if (data) {
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
