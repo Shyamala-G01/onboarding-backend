@@ -71,5 +71,17 @@ Router.put(
   authController.verifyToken,
   userController.updateEducation
 );
+//  OTHER DETAILS
+Router.post(
+  "/addDetails",
+  authController.verifyToken,
+  userController.addOtherDetails
+);
 
+//declaration
+Router.post(
+  "/addDeclaration",
+  authController.verifyToken,
+  userController.addDeclaration
+);
 module.exports = Router;

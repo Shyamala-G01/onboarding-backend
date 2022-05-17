@@ -6,7 +6,8 @@ const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
 const educationalInfo = db.educationalInfo;
-
+const otherDetails=db.proofCertificates
+const declaration =db.declaration
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
   const userData = await personalInfo.create(
@@ -263,7 +264,49 @@ const deleteEducation = async (req, res) => {
 
   res.send({ message: "deleted" });
 };
-
+// adding other details
+const addOtherDetails = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    aadhar_card_number: req.body.aadhar_card_number,
+    aadhar: req.body.aadharCard,
+    pan_card_number: req.body.pan_card_number,
+    pan_card: req.body.passport_number,
+    passport_number: req.body.passport_expire,
+    passport_expire_date: req.body.panCard,
+    passport: req.body.passportDetails,
+    covid_certificate: req.body.covidCertificate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_proof_users_id: req.body.fk_proof_users_id,
+  };
+  const proofData = await otherDetails.create(info);
+  if (proofData) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
+}
+//adding declaration
+const addDeclaration = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    joining_date: req.body.joiningDate,
+    place: req.body.place,
+    date: req.body.date,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_proof_users_id: req.body.fk_proof_users_id,
+  };
+  const declarationData = await declaration.create(info);
+  if (declarationData) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
+}
 module.exports = {
   addPersonalInfo,
   addAddress,
@@ -277,4 +320,6 @@ module.exports = {
   updateEducation,
   deleteEducation,
   getPersonalInfoData,
+  addOtherDetails,
+  addDeclaration
 };
