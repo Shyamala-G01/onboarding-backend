@@ -5,7 +5,7 @@ const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
-const educationInfo = db.educationalInfo;
+const educationalInfo = db.educationalInfo;
 
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
@@ -65,8 +65,8 @@ const addAddress = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_address_users_id: req.body.fk_address_users_id,
   };
-  const employmentData = await employmentDetails.create(info);
-  if (employmentData) {
+  const addressData = await address.create(info);
+  if (addressData) {
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -167,7 +167,25 @@ const deleteEmployemnt = async (req, res) => {
   res.send({ message: "deleted" });
 };
 
-const educationalInfo = db.educationalInfo;
+// Get personal information
+const getPersonalInfoData = async (req, res) => {
+  let id = req.params.id;
+  const data = await user.findAll({
+    include: [
+      {
+        model: personalInfo,
+        as: "personal_info",
+      },
+      {
+        model: address,
+        as: "address",
+      },
+    ],
+    where: { id: req.params.id },
+  });
+  console.log(data);
+  res.send(data);
+};
 
 //adding educational details
 const addEducation = async (req, res) => {
@@ -239,7 +257,7 @@ const updateEducation = async (req, res) => {
 //delete specific education details
 const deleteEducation = async (req, res) => {
   let id = Number(req.params.id);
-  let employmentData = await educationalInfo.destroy({
+  let educationData = await educationalInfo.destroy({
     where: { id: id },
   });
 
@@ -258,4 +276,5 @@ module.exports = {
   getEducation,
   updateEducation,
   deleteEducation,
+  getPersonalInfoData,
 };

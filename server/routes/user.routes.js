@@ -8,6 +8,11 @@ Router.post(
   authController.verifyToken,
   userController.addPersonalInfo
 );
+Router.get(
+  "/getPersonalInfoData/:id",
+  authController.verifyToken,
+  userController.getPersonalInfoData
+);
 Router.post(
   "/addAddress",
   authController.verifyToken,
