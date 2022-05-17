@@ -211,7 +211,7 @@ const updateEducation = async (req, res) => {
   let id = req.params.id;
   const info = {
     type: req.body.education,
-    name: req.body.schoolMedium,
+    name: req.body.School,
     board: req.body.board,
     course: req.body.course,
     start_date: req.body.startDate,
