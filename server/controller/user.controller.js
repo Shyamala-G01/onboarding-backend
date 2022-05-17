@@ -210,18 +210,20 @@ const getEducation = async (req, res) => {
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
   let id = req.params.id;
+  console.log(req.body);
   const info = {
     type: req.body.education,
     name: req.body.School,
     board: req.body.board,
     course: req.body.course,
+    specialization: req.body.specialization,
     start_date: req.body.startDate,
     end_date: req.body.endDate,
     marks: req.body.percentage,
     marks_card: req.body.marksheet,
     transfer_certificate: req.body.transferCertificate,
-    provisional_marks_card: req.body.provisional_marks_card,
-    convocation_certificate: req.body.convocation_certificate,
+    provisional_marks_card: req.body.provisionalCertificate,
+    convocation_certificate: req.body.convocationCertificate,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -230,6 +232,7 @@ const updateEducation = async (req, res) => {
   let educationData = await educationalInfo.update(info, {
     where: { id: id },
   });
+  console.log(educationData);
   res.send({ message: "updated" });
 };
 
