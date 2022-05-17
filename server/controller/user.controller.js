@@ -5,7 +5,7 @@ const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
-const educationInfo = db.educationalInfo
+const educationInfo = db.educationalInfo;
 
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
@@ -173,15 +173,15 @@ const educationalInfo = db.educationalInfo;
 const addEducation = async (req, res) => {
   console.log(req.body);
   const info = {
-    type: req.body.type,
-    name: req.body.name,
+    type: req.body.education,
+    name: req.body.School,
     board: req.body.board,
     course: req.body.course,
-    start_date: req.body.start_date,
-    end_date: req.body.end_date,
-    marks: req.body.marks,
-    marks_card: req.body.marks_card,
-    transfer_certificate: req.body.transfer_certificate,
+    start_date: req.body.startDate,
+    end_date: req.body.endDate,
+    marks: req.body.percentage,
+    marks_card: req.body.marksheet,
+    transfer_certificate: req.body.transferCertificate,
     provisional_marks_card: req.body.provisional_marks_card,
     convocation_certificate: req.body.convocation_certificate,
     created_at: req.body.created_at,
