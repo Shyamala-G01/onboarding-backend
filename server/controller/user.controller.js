@@ -202,8 +202,8 @@ const getEducation = async (req, res) => {
   let educationData = await educationalInfo.findAll({
     where: { fk_education_users_id: id },
   });
-  console.log(employmentData);
-  res.send(employmentData);
+  console.log(educationData);
+  res.send(educationData);
 };
 
 //update perticular/specific education i.e by id
