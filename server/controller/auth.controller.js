@@ -21,7 +21,7 @@ const getData = async (req, res) => {
           role: data.fk_admins_roles_role,
           name: data.name,
           email: data.email,
-          designation : data.designation,
+          designation: data.designation,
           accessToken: token,
         });
       } else {
@@ -51,6 +51,7 @@ const getData = async (req, res) => {
           role: data.fk_users_roles_role,
           name: data.name,
           email: data.email,
+          designation: data.designation,
           pass: data.password_status,
           accessToken: token,
         });
