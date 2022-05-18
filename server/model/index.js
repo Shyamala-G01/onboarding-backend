@@ -42,7 +42,10 @@ db.employmentDetails = require("./employmentDetails.model")(
   DataTypes
 );
 db.educationalInfo = require("./education.model")(sequelize, DataTypes);
-db.proofCertificates = require("./proofCertificate.model")(sequelize, DataTypes);
+db.proofCertificates = require("./proofCertificate.model")(
+  sequelize,
+  DataTypes
+);
 db.declaration = require("./declaration.model")(sequelize, DataTypes);
 
 // Syncing table with schema
@@ -112,18 +115,18 @@ db.user.hasMany(db.educationalInfo, {
 db.educationalInfo.belongsTo(db.user, {
   foreignKey: "fk_education_users_id",
 });
-db.user.hasOne(db.proofCertificates,{
-  foreignKey:'fk_proof_users_id',
-  as:'other_details'
-})
-db.proofCertificates.belongsTo(db.user,{
-  foreignKey:'fk_proof_users_id',  
-})
-db.user.hasOne(db.declaration,{
-  foreignKey:'fk_declaration_users_id',
-  as:'other_details'
-})
-db.declaration.belongsTo(db.user,{
-  foreignKey:'fk_declaration_users_id',  
-})
+db.user.hasOne(db.proofCertificates, {
+  foreignKey: "fk_proof_users_id",
+  as: "other_details",
+});
+db.proofCertificates.belongsTo(db.user, {
+  foreignKey: "fk_proof_users_id",
+});
+db.user.hasOne(db.declaration, {
+  foreignKey: "fk_declaration_users_id",
+  as: "other_declaration",
+});
+db.declaration.belongsTo(db.user, {
+  foreignKey: "fk_declaration_users_id",
+});
 module.exports = db;
