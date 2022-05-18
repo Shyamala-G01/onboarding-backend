@@ -87,7 +87,6 @@ Router.get(
   authController.verifyToken,
   userController.getOtherDetail
 );
-
 Router.put(
   "/updateDetails/:id",
   authController.verifyToken,
