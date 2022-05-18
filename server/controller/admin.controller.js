@@ -26,7 +26,7 @@ const addAdmin = async (req, res) => {
       phone_number: req.body.phone_number,
       designation: req.body.designation,
       created_at: req.body.created_at,
-      created_by_admin: req.body.created_by,
+      created_by_admin: req.body.created_by_admin,
     };
     let pass = req.body.name + "@123";
     info.password = hashSync(pass, salt);
