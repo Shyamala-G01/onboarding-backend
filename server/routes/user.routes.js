@@ -13,6 +13,11 @@ Router.get(
   authController.verifyToken,
   userController.getPersonalInfoData
 );
+Router.put(
+  "/updatePersonalInfo/:id",
+  authController.verifyToken,
+  userController.updatePersonalInfo
+);
 Router.post(
   "/addAddress",
   authController.verifyToken,
