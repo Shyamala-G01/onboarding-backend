@@ -76,5 +76,38 @@ Router.put(
   authController.verifyToken,
   userController.updateEducation
 );
+//  OTHER DETAILS
+Router.post(
+  "/addDetails",
+  authController.verifyToken,
+  userController.addOtherDetails
+);
+Router.get(
+  "/getDetails/:id",
+  authController.verifyToken,
+  userController.getOtherDetail
+);
 
+Router.put(
+  "/updateDetails/:id",
+  authController.verifyToken,
+  userController.updateOtherDetail
+);
+//declaration
+Router.post(
+  "/addDeclaration",
+  authController.verifyToken,
+  userController.addDeclaration
+);
+Router.get(
+  "/getDeclaration/:id",
+  authController.verifyToken,
+  userController.getDeclaration
+);
+
+Router.put(
+  "/updateDeclaration/:id",
+  authController.verifyToken,
+  userController.updateDeclaration
+);
 module.exports = Router;

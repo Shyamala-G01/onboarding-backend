@@ -6,7 +6,8 @@ const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
 const educationalInfo = db.educationalInfo;
-
+const otherDetails = db.proofCertificates;
+const declaration = db.declaration;
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
   const userData = await personalInfo.create(
@@ -304,7 +305,110 @@ const deleteEducation = async (req, res) => {
 
   res.send({ message: "deleted" });
 };
-
+// adding other details
+const addOtherDetails = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    aadhar_card_number: req.body.aadhar_card_number,
+    aadhar: req.body.aadharCard,
+    pan_card_number: req.body.pan_card_number,
+    pan_card: req.body.panCard,
+    passport_number: req.body.passport_number,
+    passport_expire_date: req.body.passport_expire,
+    passport: req.body.passportDetails,
+    covid_certificate: req.body.covidCertificate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_proof_users_id: req.body.fk_proof_users_id,
+  };
+  const proofData = await otherDetails.create(info);
+  if (proofData) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
+};
+//get OtherDetail based on id
+const getOtherDetail = async (req, res) => {
+  let id = req.params.id;
+  let proofData = await otherDetails.findOne({
+    where: { fk_proof_users_id: id },
+  });
+  console.log(proofData);
+  res.send(proofData);
+};
+//update perticular/specific OtherDetail i.e by id
+const updateOtherDetail = async (req, res) => {
+  let id = req.params.id;
+  console.log(req.body);
+  const info = {
+    aadhar_card_number: req.body.aadhar_card_number,
+    aadhar: req.body.aadharCard,
+    pan_card_number: req.body.pan_card_number,
+    pan_card: req.body.panCard,
+    passport_number: req.body.passport_number,
+    passport_expire_date: req.body.passport_expire,
+    passport: req.body.passportDetails,
+    covid_certificate: req.body.covidCertificate,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_proof_users_id: req.body.fk_proof_users_id,
+  };
+  let proofData = await otherDetails.update(info, {
+    where: { fk_proof_users_id: id },
+  });
+  console.log(proofData);
+  res.send({ message: "updated" });
+};
+//adding declaration
+const addDeclaration = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    joining_date: req.body.joiningDate,
+    place: req.body.place,
+    date: req.body.date,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_declaration_users_id: req.body.fk_declaration_users_id,
+  };
+  const declarationData = await declaration.create(info);
+  if (declarationData) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
+};
+//get OtherDetail based on id
+const getDeclaration = async (req, res) => {
+  let id = req.params.id;
+  let declarationData = await declaration.findOne({
+    where: { fk_declaration_users_id: id },
+  });
+  console.log(declarationData);
+  res.send(declarationData);
+};
+//update perticular/specific OtherDetail i.e by id
+const updateDeclaration = async (req, res) => {
+  let id = req.params.id;
+  console.log(req.body);
+  const info = {
+    joining_date: req.body.joiningDate,
+    place: req.body.place,
+    date: req.body.date,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_declaration_users_id: req.body.fk_declaration_users_id,
+  };
+  let declarationData = await declaration.update(info, {
+    where: { fk_declaration_users_id: id },
+  });
+  console.log(declarationData);
+  res.send({ message: "updated" });
+};
 module.exports = {
   addPersonalInfo,
   addAddress,
@@ -319,4 +423,10 @@ module.exports = {
   deleteEducation,
   getPersonalInfoData,
   updatePersonalInfo,
+  addOtherDetails,
+  getOtherDetail,
+  updateOtherDetail,
+  addDeclaration,
+  getDeclaration,
+  updateDeclaration,
 };
