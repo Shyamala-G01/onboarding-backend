@@ -114,6 +114,7 @@ db.user.hasMany(db.educationalInfo, {
 });
 db.educationalInfo.belongsTo(db.user, {
   foreignKey: "fk_education_users_id",
+  as: "eduaction_details",
 });
 db.user.hasOne(db.proofCertificates, {
   foreignKey: "fk_proof_users_id",
@@ -121,6 +122,7 @@ db.user.hasOne(db.proofCertificates, {
 });
 db.proofCertificates.belongsTo(db.user, {
   foreignKey: "fk_proof_users_id",
+  as: "proof_details",
 });
 db.user.hasOne(db.declaration, {
   foreignKey: "fk_declaration_users_id",
@@ -128,5 +130,6 @@ db.user.hasOne(db.declaration, {
 });
 db.declaration.belongsTo(db.user, {
   foreignKey: "fk_declaration_users_id",
+  as: "declaration_details",
 });
 module.exports = db;
