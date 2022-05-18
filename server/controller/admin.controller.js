@@ -13,24 +13,46 @@ const transporter = mail.transporter;
 // contoller for adding admin
 const addAdmin = async (req, res) => {
   const salt = genSaltSync(10);
-  let info = {
-    id: req.body.id,
-    name: req.body.name,
-    email: req.body.email,
-    phone_number: req.body.phone_number,
-    designation: req.body.designation,
-    created_at: "2022-05-09",
-    created_by_admin: "Admin",
-  };
-  let pass = req.body.name + "@123";
-  info.password = hashSync(pass, salt);
-  const adminData = await admin.create(info);
-  if(adminData){
-    res.status(200).send({ message: "Registered Successfully" });
-  }else{
-    res.status(404).send({ message: "Cannot Register" });
-  }
+
+  // already exit or not
+  const adminMail = await admin.findOne({ where: { email: req.body.email } });
+  if (adminMail) {
+    res.send({ message: "Admin Exist" });
+  } else {
+    let info = {
+      id: req.body.id,
+      name: req.body.name,
+      email: req.body.email,
+      phone_number: req.body.phone_number,
+      designation: req.body.designation,
+      created_at: req.body.created_at,
+      created_by_admin: req.body.created_by,
+    };
+    let pass = req.body.name + "@123";
+    info.password = hashSync(pass, salt);
+    const adminData = await admin.create(info);
+    if (adminData) {
+      // sending mail after registration
+
+      //to send mail on adding user
+      mailOptions.to = `${info.email}`;
+      mailOptions.text = `username: ${info.email}
   
+    password:${pass}`;
+      transporter.sendMail(mailOptions, function (err, info) {
+        console.log("transporter");
+        if (err) {
+          console.log("err " + err);
+        } else {
+          console.log("mail sent" + info.response);
+        }
+      });
+
+      res.status(200).send({ message: "Registered Successfully" });
+    } else {
+      res.status(404).send({ message: "Cannot Register" });
+    }
+  }
 };
 
 const getAdmin = async (req, res) => {
@@ -45,6 +67,7 @@ const addEmployee = async (req, res) => {
 
   // already exit or not
   const userMail = await user.findOne({ where: { email: req.body.email } });
+
   if (userMail) {
     res.send(userMail);
   } else {
