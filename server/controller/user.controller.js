@@ -398,12 +398,15 @@ const updateDeclaration = async (req, res) => {
     joining_date: req.body.joiningDate,
     place: req.body.place,
     date: req.body.date,
-    created_at: req.body.created_at,
+    // created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_declaration_users_id: req.body.fk_declaration_users_id,
   };
-  let declarationData = await declaration.update(info, {
+
+  
+  let declarationData = await declaration.update(info,{attributes: { exclude: ['created_at'] }} ,{
+
     where: { fk_declaration_users_id: id },
   });
   console.log(declarationData);
