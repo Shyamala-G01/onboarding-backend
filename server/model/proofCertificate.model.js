@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       passport: {
         type: DataTypes.STRING,
       },
-      // covid_certificate: {
-      //   type: DataTypes.STRING,
-      // },
+      covid_certificate: {
+        type: DataTypes.STRING,
+      },
       created_at: {
         type: DataTypes.DATE,
       },
