@@ -324,6 +324,7 @@ const addOtherDetails = async (req, res) => {
   };
   const proofData = await otherDetails.create(info);
   if (proofData) {
+    console.log("other detail inside");
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -404,9 +405,7 @@ const updateDeclaration = async (req, res) => {
     fk_declaration_users_id: req.body.fk_declaration_users_id,
   };
 
-  
-  let declarationData = await declaration.update(info ,{
-
+  let declarationData = await declaration.update(info, {
     where: { fk_declaration_users_id: id },
   });
   console.log(declarationData);
