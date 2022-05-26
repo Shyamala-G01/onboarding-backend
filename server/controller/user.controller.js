@@ -36,6 +36,7 @@ const addPersonalInfo = async (req, res) => {
         "alternate_number",
         "personal_email",
         "photo",
+        "father_name",
         "created_at",
         "updated_at",
         "updated_by",
