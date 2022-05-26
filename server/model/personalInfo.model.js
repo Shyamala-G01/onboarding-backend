@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       photo: {
         type: DataTypes.STRING,
       },
+      father_name :{
+        type:DataTypes.STRING
+      },
       created_at: {
         type: DataTypes.DATE,
       },
