@@ -87,7 +87,7 @@ const updatePersonalInfo = async (req, res) => {
     }
   );
   if (userData) {
-    res.status(200).send({ message: "Successful" });
+    res.status(200).send(userData);
   } else {
     res.status(400).send({ message: "Unsuccessful" });
   }
