@@ -85,27 +85,34 @@ const updatePersonalInfo = async (req, res) => {
 
 // Address
 const addAddress = async (req, res) => {
-  console.log(req.body);
-  const info = {
-    type: req.body.type,
-    house_no: req.body.house_no,
-    street: req.body.street,
-    locality: req.body.locality,
-    city: req.body.city,
-    state: req.body.state,
-    pincode: req.body.pincode,
-    country: req.body.country,
-    created_at: req.body.created_at,
-    updated_at: req.body.updated_at,
-    updated_by: req.body.updated_by,
-    fk_address_users_id: req.body.fk_address_users_id,
-  };
-  const data = await address.create(info);
-  if (data) {
-    res.status(200).send({ message: "Successful" });
-  } else {
+  let value = await address.findOne({
+    where: { fk_address_users_id: req.body.fk_address_users_id },
+  });
+  if(!value){
+    const info = {
+      type: req.body.type,
+      house_no: req.body.house_no,
+      street: req.body.street,
+      locality: req.body.locality,
+      city: req.body.city,
+      state: req.body.state,
+      pincode: req.body.pincode,
+      country: req.body.country,
+      created_at: req.body.created_at,
+      updated_at: req.body.updated_at,
+      updated_by: req.body.updated_by,
+      fk_address_users_id: req.body.fk_address_users_id,
+    };
+    const data = await address.create(info);
+    if (data) {
+      res.status(200).send({ message: "Successful" });
+    } else {
+      res.status(400).send({ message: "Unsuccessful" });
+    }
+  }else{
     res.status(400).send({ message: "Unsuccessful" });
   }
+ 
 };
 const updateAddAddress = async (req, res) => {
   console.log(req.body);
