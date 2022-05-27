@@ -1,7 +1,6 @@
 const { sequelize } = require("../model");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
-const { where } = require("sequelize/types");
 const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
