@@ -37,6 +37,7 @@ const addAdmin = async (req, res) => {
 
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
+      mailOptions.subject="ADMIN PORTAL REGISTRATION SUCCESSFULL",
       mailOptions.text = `username: ${info.email}
   
     password:${pass}`;
@@ -93,9 +94,11 @@ const addEmployee = async (req, res) => {
 
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
+      mailOptions.subject="WELCOME TO DIGGIBYTE FAMILY",
       mailOptions.text = `username: ${info.email}
 
   password:${pass}`;
+
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {

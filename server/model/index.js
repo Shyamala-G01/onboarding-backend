@@ -47,7 +47,7 @@ db.proofCertificates = require("./proofCertificate.model")(
   DataTypes
 );
 db.declaration = require("./declaration.model")(sequelize, DataTypes);
-
+db.bankDetails=require('./bankDetails.model')(sequelize, DataTypes)
 // Syncing table with schema
 db.sequelize
   .sync({ force: false })
@@ -131,5 +131,13 @@ db.user.hasOne(db.declaration, {
 db.declaration.belongsTo(db.user, {
   foreignKey: "fk_declaration_users_id",
   as: "declaration_details",
+});
+db.user.hasOne(db.bankDetails, {
+  foreignKey: "fk_bank_users_id",
+  as: "bank_detail",
+});
+db.bankDetails.belongsTo(db.user, {
+  foreignKey: "fk_bank_users_id",
+  as: "bank_details",
 });
 module.exports = db;

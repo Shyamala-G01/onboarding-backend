@@ -8,6 +8,7 @@ const user = db.user;
 const educationalInfo = db.educationalInfo;
 const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
+const bankdetails = db.bankDetails;
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
   const userData = await personalInfo.create(
@@ -308,7 +309,7 @@ const deleteEducation = async (req, res) => {
   res.send({ message: "deleted" });
 };
 // adding other details
-const addOtherDetails = async (req, res) => {
+const addOtherDetailsAndBankDetails = async (req, res) => {
   console.log(req.body);
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
@@ -324,8 +325,22 @@ const addOtherDetails = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
+  let bank = {
+    account_holder_name: req.body.acc_holder_name,
+    account_number: req.body.acc_number,
+    account_type: req.body.acc_number,
+    bank_name: req.body.acc_number,
+    ifsc_code: req.body.acc_number,
+    pf_account_number: req.body.acc_number,
+    uan_account_number: req.body.acc_number,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_bank_users_id: req.body.fk_bank_users_id,
+  };
   const proofData = await otherDetails.create(info);
-  if (proofData) {
+  const bankData = await bankdetails.create(bank);
+  if (proofData && bankData) {
     console.log("other detail inside");
     res.status(200).send({ message: "Successful" });
   } else {
@@ -333,16 +348,20 @@ const addOtherDetails = async (req, res) => {
   }
 };
 //get OtherDetail based on id
-const getOtherDetail = async (req, res) => {
+const getOtherDetailAndBankDetails = async (req, res) => {
   let id = req.params.id;
   let proofData = await otherDetails.findOne({
     where: { fk_proof_users_id: id },
   });
+  let bankData = await bankdetails.findOne({
+    where: { fk_bank_users_id: id },
+  });
+  let datas = [proofData, bankData];
   console.log(proofData);
-  res.send(proofData);
+  res.send(datas);
 };
 //update perticular/specific OtherDetail i.e by id
-const updateOtherDetail = async (req, res) => {
+const updateOtherDetailAndBankDetails = async (req, res) => {
   let id = req.params.id;
   console.log(req.body);
   const info = {
@@ -359,12 +378,33 @@ const updateOtherDetail = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
+  let bank = {
+    account_holder_name: req.body.acc_holder_name,
+    account_number: req.body.acc_number,
+    account_type: req.body.acc_number,
+    bank_name: req.body.acc_number,
+    ifsc_code: req.body.acc_number,
+    pf_account_number: req.body.acc_number,
+    uan_account_number: req.body.acc_number,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_bank_users_id: req.body.fk_bank_users_id,
+  };
   let proofData = await otherDetails.update(info, {
     where: { fk_proof_users_id: id },
   });
-  console.log(proofData);
-  res.send({ message: "updated" });
+  let bankData = await bankdetails.update(bank, {
+    where: { fk_bank_users_id: id },
+  });
+
+  if (proofData && bankData) {
+    res.send({ message: "updated" });
+  } else {
+    res.send({ message: "cannot update" });
+  }
 };
+
 //adding declaration
 const addDeclaration = async (req, res) => {
   console.log(req.body);
@@ -427,9 +467,9 @@ module.exports = {
   deleteEducation,
   getPersonalInfoData,
   updatePersonalInfo,
-  addOtherDetails,
-  getOtherDetail,
-  updateOtherDetail,
+  addOtherDetailsAndBankDetails,
+  getOtherDetailAndBankDetails,
+  updateOtherDetailAndBankDetails,
   addDeclaration,
   getDeclaration,
   updateDeclaration,

@@ -80,17 +80,17 @@ Router.put(
 Router.post(
   "/addDetails",
   authController.verifyToken,
-  userController.addOtherDetails
+  userController.addOtherDetailsAndBankDetails
 );
 Router.get(
   "/getDetails/:id",
   authController.verifyToken,
-  userController.getOtherDetail
+  userController.getOtherDetailAndBankDetails
 );
 Router.put(
   "/updateDetails/:id",
   authController.verifyToken,
-  userController.updateOtherDetail
+  userController.updateOtherDetailAndBankDetails
 );
 //declaration
 Router.post(
