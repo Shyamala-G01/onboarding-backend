@@ -60,36 +60,20 @@ const addPersonalInfo = async (req, res) => {
 
 const updatePersonalInfo = async (req, res) => {
   console.log(req.body);
-  const userData = await personalInfo.update(
-    {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      dob: req.body.dob,
-      gender: req.body.gender,
-      mobile_number: req.body.mobile_number,
-      alternate_number: req.body.alternate_number,
-      personal_email: req.body.personal_email,
-      photo: req.body.photo,
-      created_at: req.body.created_at,
-      updated_at: req.body.updated_at,
-      updated_by: req.body.updated_by,
-    },
-    {
-      fields: [
-        "first_name",
-        "last_name",
-        "dob",
-        "gender",
-        "mobile_number",
-        "alternate_number",
-        "personal_email",
-        "photo",
-        "created_at",
-        "updated_at",
-        "updated_by",
-        "fk_person_users_id",
-      ],
-    },
+  let info={
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    dob: req.body.dob,
+    gender: req.body.gender,
+    mobile_number: req.body.mobile_number,
+    alternate_number: req.body.alternate_number,
+    personal_email: req.body.personal_email,
+    photo: req.body.photo,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+  }
+  const userData = await personalInfo.update(info,
     { where: { fk_person_users_id: req.body.fk_person_users_id } }
   );
   if (userData) {
