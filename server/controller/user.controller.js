@@ -468,6 +468,7 @@ const updateDeclaration = async (req, res) => {
 };
 module.exports = {
   addPersonalInfo,
+  updatePersonalInfo,
   updateAddAddress,
   addAddress,
   changePassword,
@@ -480,7 +481,6 @@ module.exports = {
   updateEducation,
   deleteEducation,
   getPersonalInfoData,
-  updatePersonalInfo,
   addOtherDetailsAndBankDetails,
   getOtherDetailAndBankDetails,
   updateOtherDetailAndBankDetails,

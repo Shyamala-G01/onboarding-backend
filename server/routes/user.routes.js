@@ -23,6 +23,11 @@ Router.post(
   authController.verifyToken,
   userController.addAddress
 );
+Router.put(
+  "/updateAddress",
+  authController.verifyToken,
+  userController.updateAddAddress
+);
 Router.post(
   "/changePassword",
   authController.verifyToken,
