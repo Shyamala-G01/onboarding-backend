@@ -328,15 +328,15 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   let bank = {
     account_holder_name: req.body.acc_holder_name,
     account_number: req.body.acc_number,
-    account_type: req.body.acc_number,
-    bank_name: req.body.acc_number,
-    ifsc_code: req.body.acc_number,
-    pf_account_number: req.body.acc_number,
-    uan_account_number: req.body.acc_number,
+    account_type: req.body.type_of_acc,
+    bank_name: req.body.bank_name,
+    ifsc_code: req.body.ifsc_code,
+    pf_account_number: req.body.pf_acc,
+    uan_account_number: req.body.uan_acc,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    fk_bank_users_id: req.body.fk_bank_users_id,
+    fk_bank_users_id: req.body.fk_proof_users_id,
   };
   const proofData = await otherDetails.create(info);
   const bankData = await bankdetails.create(bank);
@@ -381,15 +381,15 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   let bank = {
     account_holder_name: req.body.acc_holder_name,
     account_number: req.body.acc_number,
-    account_type: req.body.acc_number,
-    bank_name: req.body.acc_number,
-    ifsc_code: req.body.acc_number,
-    pf_account_number: req.body.acc_number,
-    uan_account_number: req.body.acc_number,
+    account_type: req.body.type_of_acc,
+    bank_name: req.body.bank_name,
+    ifsc_code: req.body.ifsc_code,
+    pf_account_number: req.body.pf_acc,
+    uan_account_number: req.body.uan_acc,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    fk_bank_users_id: req.body.fk_bank_users_id,
+    fk_bank_users_id: req.body.fk_proof_users_id,
   };
   let proofData = await otherDetails.update(info, {
     where: { fk_proof_users_id: id },
