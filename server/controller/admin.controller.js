@@ -28,7 +28,8 @@ const addAdmin = async (req, res) => {
       created_at: req.body.created_at,
       created_by_admin: req.body.created_by_admin,
     };
-    let pass = req.body.name + "@123";
+    let password = req.body.name.replaceAll(" ","");
+    let pass="Welcome1"+password+"@!"
     info.password = hashSync(pass, salt);
     const adminData = await admin.create(info);
     if (adminData) {
@@ -83,7 +84,8 @@ const addEmployee = async (req, res) => {
       updated_by: req.body.updated_by,
       status: req.body.status,
     };
-    let pass = req.body.name + "@123";
+    let password = req.body.name.replaceAll(" ","");
+    let pass="Welcome1"+password+"@!"
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
