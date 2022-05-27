@@ -1,6 +1,7 @@
 const { sequelize } = require("../model");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
+const { where } = require("sequelize/types");
 const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
@@ -11,40 +12,46 @@ const declaration = db.declaration;
 const bankdetails = db.bankDetails;
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
-  const userData = await personalInfo.create(
-    {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      dob: req.body.dob,
-      gender: req.body.gender,
-      mobile_number: req.body.mobile_number,
-      alternate_number: req.body.alternate_number,
-      personal_email: req.body.personal_email,
-      photo: req.body.photo,
-      father_name: req.body.father_name,
-      created_at: req.body.created_at,
-      updated_at: req.body.updated_at,
-      updated_by: req.body.updated_by,
-      fk_person_users_id: req.body.fk_person_users_id,
-    },
-    {
-      fields: [
-        "first_name",
-        "last_name",
-        "dob",
-        "gender",
-        "mobile_number",
-        "alternate_number",
-        "personal_email",
-        "photo",
-        "father_name",
-        "created_at",
-        "updated_at",
-        "updated_by",
-        "fk_person_users_id",
-      ],
-    }
-  );
+  let data = await personalInfo.findOne({
+    where: { fk_person_users_id: req.body.fk_person_users_id },
+  });
+  if (!data) {
+    const userData = await personalInfo.create(
+      {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        dob: req.body.dob,
+        gender: req.body.gender,
+        mobile_number: req.body.mobile_number,
+        alternate_number: req.body.alternate_number,
+        personal_email: req.body.personal_email,
+        photo: req.body.photo,
+        father_name: req.body.father_name,
+        created_at: req.body.created_at,
+        updated_at: req.body.updated_at,
+        updated_by: req.body.updated_by,
+        fk_person_users_id: req.body.fk_person_users_id,
+      },
+      {
+        fields: [
+          "first_name",
+          "last_name",
+          "dob",
+          "gender",
+          "mobile_number",
+          "alternate_number",
+          "personal_email",
+          "photo",
+          "father_name",
+          "created_at",
+          "updated_at",
+          "updated_by",
+          "fk_person_users_id",
+        ],
+      }
+    );
+  }
+
   if (userData) {
     res.status(200).send({ message: "Successful" });
   } else {
@@ -67,7 +74,6 @@ const updatePersonalInfo = async (req, res) => {
       created_at: req.body.created_at,
       updated_at: req.body.updated_at,
       updated_by: req.body.updated_by,
-      fk_person_users_id: req.body.fk_person_users_id,
     },
     {
       fields: [
@@ -84,7 +90,8 @@ const updatePersonalInfo = async (req, res) => {
         "updated_by",
         "fk_person_users_id",
       ],
-    }
+    },
+    { where: { fk_person_users_id: req.body.fk_person_users_id } }
   );
   if (userData) {
     res.status(200).send(userData);
@@ -111,6 +118,29 @@ const addAddress = async (req, res) => {
     fk_address_users_id: req.body.fk_address_users_id,
   };
   const data = await address.create(info);
+  if (data) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
+};
+const updateAddAddress = async (req, res) => {
+  console.log(req.body);
+  const info = {
+    type: req.body.type,
+    house_no: req.body.house_no,
+    street: req.body.street,
+    locality: req.body.locality,
+    city: req.body.city,
+    state: req.body.state,
+    pincode: req.body.pincode,
+    country: req.body.country,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+   
+  };
+  const data = await address.update(info,{where:{fk_address_users_id: req.body.fk_address_users_id,type:req.body.type}});
   if (data) {
     res.status(200).send({ message: "Successful" });
   } else {
@@ -455,6 +485,7 @@ const updateDeclaration = async (req, res) => {
 };
 module.exports = {
   addPersonalInfo,
+  updateAddAddress,
   addAddress,
   changePassword,
   addEmployment,

@@ -14,7 +14,7 @@ Router.get(
   userController.getPersonalInfoData
 );
 Router.put(
-  "/updatePersonalInfo/:id",
+  "/updatePersonalInfo",
   authController.verifyToken,
   userController.updatePersonalInfo
 );
