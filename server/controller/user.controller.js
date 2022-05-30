@@ -520,7 +520,7 @@ const forgotpassword=async (req,res)=>{
   }
   else{
      //to send mail on adding user
-     let dat = req.body.email.substring(0,5)
+     let dat = req.body.email.slice(0,5);
     let pass="Welcome1"+dat+"@!"
     let password=hashSync(pass, salt);
      const usercredential = await user.update(
