@@ -479,27 +479,29 @@ const updateDeclaration = async (req, res) => {
   res.send({ message: "updated" });
 };
 const forgotpassword=async (req,res)=>{
-  let email=req.body.email
+  const userEmail=req.body.email
   const salt = genSaltSync(10);
-  const userdata=user.findOne({where:{email:email}})
+  const userdata=user.findOne({where:{email:userEmail}})
   if(!userdata){
-   const admindata=admin.findOne({where:{email:email}})
+   const admindata=admin.findOne({where:{email:userEmail}})
    if(admindata){
       //to send mail on adding user
-      let password = email.substring(0,5)
-    let pass="Welcome1"+password+"@!"
+      let dat = req.body.email.substring(0,5)
+    let pass="Welcome1"+dat+"@!"
+    let password=hashSync(pass, salt);
+
     const usercredential = await admin.update(
 
       { password: pass},
 
 
 
-      { where: { email: email} }
+      { where: { email: userEmail} }
 
     );
-      mailOptions.to = `${email}`;
+      mailOptions.to = `${userEmail}`;
       mailOptions.subject="AUTO_GENERATED PASSWORD",
-      mailOptions.text = `username: ${email}
+      mailOptions.text = `username: ${userEmail}
   
     password:${pass}`;
       transporter.sendMail(mailOptions, function (err, info) {
@@ -518,20 +520,21 @@ const forgotpassword=async (req,res)=>{
   }
   else{
      //to send mail on adding user
-     let password = email.substring(0,5)
-     let pass="Welcome1"+password+"@!"
+     let dat = req.body.email.substring(0,5)
+    let pass="Welcome1"+dat+"@!"
+    let password=hashSync(pass, salt);
      const usercredential = await user.update(
 
-      { password: pass},
+      { password: password},
 
 
 
-      { where: { email: email} }
+      { where: { email: userEmail} }
 
     );
-       mailOptions.to = `${email}`;
+       mailOptions.to = `${userEmail}`;
        mailOptions.subject="AUTO_GENERATED PASSWORD",
-       mailOptions.text = `username: ${email}
+       mailOptions.text = `username: ${userEmail}
    
      password:${pass}`;
        transporter.sendMail(mailOptions, function (err, info) {
