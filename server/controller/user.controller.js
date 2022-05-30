@@ -1,7 +1,7 @@
 const { sequelize } = require("../model");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
-const { password } = require("../config/db.config");
+const mail = require("../config/mail.config");
 const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
