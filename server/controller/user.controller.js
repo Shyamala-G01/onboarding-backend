@@ -483,11 +483,20 @@ const forgotpassword=async (req,res)=>{
   const salt = genSaltSync(10);
   const userdata=user.findOne({where:{email:email}})
   if(!userdata){
-   const admindata=user.findOne({where:{email:email}})
+   const admindata=admin.findOne({where:{email:email}})
    if(admindata){
       //to send mail on adding user
       let password = email.substring(0,5)
     let pass="Welcome1"+password+"@!"
+    const usercredential = await admin.update(
+
+      { password: pass},
+
+
+
+      { where: { email: email} }
+
+    );
       mailOptions.to = `${email}`;
       mailOptions.subject="AUTO_GENERATED PASSWORD",
       mailOptions.text = `username: ${email}
@@ -511,6 +520,15 @@ const forgotpassword=async (req,res)=>{
      //to send mail on adding user
      let password = email.substring(0,5)
      let pass="Welcome1"+password+"@!"
+     const usercredential = await user.update(
+
+      { password: pass},
+
+
+
+      { where: { email: email} }
+
+    );
        mailOptions.to = `${email}`;
        mailOptions.subject="AUTO_GENERATED PASSWORD",
        mailOptions.text = `username: ${email}
