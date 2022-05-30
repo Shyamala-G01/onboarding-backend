@@ -1,14 +1,18 @@
 const { sequelize } = require("../model");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
+const { password } = require("../config/db.config");
 const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
+const admin=db.admin;
 const educationalInfo = db.educationalInfo;
 const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
 const bankdetails = db.bankDetails;
+const mailOptions = mail.mailOptions;
+const transporter = mail.transporter;
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
   let data = await personalInfo.findOne({
@@ -31,6 +35,7 @@ const addPersonalInfo = async (req, res) => {
         updated_by: req.body.updated_by,
         fk_person_users_id: req.body.fk_person_users_id,
       },
+
       {
         fields: [
           "first_name",
@@ -473,6 +478,57 @@ const updateDeclaration = async (req, res) => {
   console.log(declarationData);
   res.send({ message: "updated" });
 };
+const forgotpassword=async (req,res)=>{
+  let email=req.body.email
+  const salt = genSaltSync(10);
+  const userdata=user.findOne({where:{email:email}})
+  if(!userdata){
+   const admindata=user.findOne({where:{email:email}})
+   if(admindata){
+      //to send mail on adding user
+      let password = email.substring(0,5)
+    let pass="Welcome1"+password+"@!"
+      mailOptions.to = `${email}`;
+      mailOptions.subject="AUTO_GENERATED PASSWORD",
+      mailOptions.text = `username: ${email}
+  
+    password:${pass}`;
+      transporter.sendMail(mailOptions, function (err, info) {
+        console.log("transporter");
+        if (err) {
+          console.log("err " + err);
+        } else {
+          console.log("mail sent" + info.response);
+        }
+      });
+
+      res.status(200).send({ message: "Email sent" });
+    } else {
+      res.status(404).send({ message: "User Undefined" });
+   }
+  }
+  else{
+     //to send mail on adding user
+     let password = email.substring(0,5)
+     let pass="Welcome1"+password+"@!"
+       mailOptions.to = `${email}`;
+       mailOptions.subject="AUTO_GENERATED PASSWORD",
+       mailOptions.text = `username: ${email}
+   
+     password:${pass}`;
+       transporter.sendMail(mailOptions, function (err, info) {
+         console.log("transporter");
+         if (err) {
+           console.log("err " + err);
+         } else {
+           console.log("mail sent" + info.response);
+         }
+       });
+ 
+       res.status(200).send({ message: "Email sent" });
+    
+  }
+}
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -494,4 +550,5 @@ module.exports = {
   addDeclaration,
   getDeclaration,
   updateDeclaration,
+  forgotpassword,
 };

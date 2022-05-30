@@ -114,4 +114,10 @@ Router.put(
   authController.verifyToken,
   userController.updateDeclaration
 );
+//forgotpasswordmail
+Router.post(
+  "/forgotPasswordMailed",
+  authController.verifyToken,
+  userController.forgotpassword
+);
 module.exports = Router;
