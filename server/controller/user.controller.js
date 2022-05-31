@@ -506,7 +506,7 @@ const forgotpassword = async (req, res) => {
       }
     }
     
-  } else if (admindata!=null) {
+  }else if (admindata!=null) {
     
     
     console.log("admin mail res"+forgotPassEmail(pass,userMail));
@@ -527,6 +527,7 @@ const forgotpassword = async (req, res) => {
   }
 };
 function forgotPassEmail(pass,email){
+  let mailStatus;
   mailOptions.to = `${email}`;
   mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
     mailOptions.text = `username: ${email}
@@ -535,12 +536,13 @@ function forgotPassEmail(pass,email){
 
   transporter.sendMail(mailOptions, function (err, info) {
     if (err) {
-     return false
+     mailStatus= false
         } else {
       console.log("sent in mail sent")
-      return true
+      mailStatus= true
     }
   });
+  return mailStatus
 }
 module.exports = {
   addPersonalInfo,
