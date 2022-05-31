@@ -1,4 +1,4 @@
-const { sequelize } = require("../model");
+const { sequelize, admin } = require("../model");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
 const mail = require("../config/mail.config");
@@ -6,7 +6,7 @@ const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
 const user = db.user;
-const admin=db.admin;
+const admin = db.admin;
 const educationalInfo = db.educationalInfo;
 const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
@@ -65,7 +65,7 @@ const addPersonalInfo = async (req, res) => {
 
 const updatePersonalInfo = async (req, res) => {
   console.log(req.body);
-  let info={
+  let info = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     dob: req.body.dob,
@@ -77,10 +77,10 @@ const updatePersonalInfo = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-  }
-  const userData = await personalInfo.update(info,
-    { where: { fk_person_users_id: req.body.fk_person_users_id } }
-  );
+  };
+  const userData = await personalInfo.update(info, {
+    where: { fk_person_users_id: req.body.fk_person_users_id },
+  });
   if (userData) {
     res.status(200).send(userData);
   } else {
@@ -93,7 +93,7 @@ const addAddress = async (req, res) => {
   let value = await address.findOne({
     where: { fk_address_users_id: req.body.fk_address_users_id },
   });
-  if(!value){
+  if (!value) {
     const info = {
       type: req.body.type,
       house_no: req.body.house_no,
@@ -114,10 +114,9 @@ const addAddress = async (req, res) => {
     } else {
       res.status(400).send({ message: "Unsuccessful" });
     }
-  }else{
+  } else {
     res.status(400).send({ message: "Unsuccessful" });
   }
- 
 };
 const updateAddAddress = async (req, res) => {
   console.log(req.body);
@@ -133,9 +132,13 @@ const updateAddAddress = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-   
   };
-  const data = await address.update(info,{where:{fk_address_users_id: req.body.fk_address_users_id,type:req.body.type}});
+  const data = await address.update(info, {
+    where: {
+      fk_address_users_id: req.body.fk_address_users_id,
+      type: req.body.type,
+    },
+  });
   if (data) {
     res.status(200).send({ message: "Successful" });
   } else {
@@ -478,77 +481,64 @@ const updateDeclaration = async (req, res) => {
   console.log(declarationData);
   res.send({ message: "updated" });
 };
-const forgotpassword=async (req,res)=>{
-  const userEmail=req.body.email
-  const salt = genSaltSync(10);
-  const userdata=user.findOne({where:{email:userEmail}})
-  if(!userdata){
-   const admindata=admin.findOne({where:{email:userEmail}})
-   if(admindata){
-      //to send mail on adding user
-      let dat = req.body.email.substring(0,5)
-    let pass="Welcome1"+dat+"@!"
-    let password=hashSync(pass, salt);
+const forgotpassword = async (req, res) => {
+  let userMail = req.body.email;
+  let userdata = await user.findOne({ where: { email: userMail } });
+  let admindata = await admin.findOne({ where: { email: userMail } });
+  let password = req.body.email.substring(0, 5);
+  let pass = "N" + password + "@!" + Math.floor(Math.random() * 10);
+  let chnagedPass = hashSync(pass, salt);
 
-    const usercredential = await admin.update(
-
-      { password: pass},
-
-
-
-      { where: { email: userEmail} }
-
-    );
-      mailOptions.to = `${userEmail}`;
-      mailOptions.subject="AUTO_GENERATED PASSWORD",
-      mailOptions.text = `username: ${userEmail}
-  
-    password:${pass}`;
-      transporter.sendMail(mailOptions, function (err, info) {
-        console.log("transporter");
-        if (err) {
-          console.log("err " + err);
-        } else {
-          console.log("mail sent" + info.response);
-        }
-      });
-
-      res.status(200).send({ message: "Email sent" });
-    } else {
-      res.status(404).send({ message: "User Undefined" });
-   }
-  }
-  else if(userdata){
-     //to send mail on adding user
-     let dat = req.body.email.slice(0,5);
-    let pass="Welcome1"+dat+"@!"
-    let password=hashSync(pass, salt);
-     const usercredential = await user.update(
-
-      { password: password},
-
-
-
-      { where: { email: userEmail} }
-
-    );
-       mailOptions.to = `${userEmail}`;
-       mailOptions.subject="AUTO_GENERATED PASSWORD",
-       mailOptions.text = `username: ${userEmail}
+  if (userdata) {
    
-     password:${pass}`;
-       transporter.sendMail(mailOptions, function (err, info) {
-         console.log("transporter");
-         if (err) {
-           console.log("err " + err);
-         } else {
-           console.log("mail sent" + info.response);
-         }
-       });
- 
-       res.status(200).send({ message: "Email sent" });
+    let responce=forgotPassEmail(pass,userMail)
+    if(response=="sent"){
+      const usercredential = await user.update(
+        { password: chnagedPass },
+  
+        { where: { email: userMail } }
+      );
+      if (usercredential) {
+        res.status(200).send({ message: "Password Updated successfully" });
+      } else {
+        res.status(400).send({ message: "Password cannot be updated" });
+      }
+    }
     
+  } else if (admindata) {
+    
+    let responce=forgotPassEmail(pass,userMail)
+    if(response=="sent"){
+      const usercredential = await admin.update(
+        { password: chnagedPass },
+  
+        { where: { email: userMail } }
+      );
+      if (usercredential) {
+        res.status(200).send({ message: "Password Updated successfully" });
+      } else {
+        res.status(400).send({ message: "Password cannot be updated" });
+      }
+    }
+  }else{
+    res.status(200).send({ message: "Email doesnt exists" });
   }
+};
+function forgotPassEmail(pass,email){
+  mailOptions.to = `${email}`;
+  (mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY"),
+    (mailOptions.text = `username: ${email}
+
+                        password:${pass}`);
+
+  transporter.sendMail(mailOptions, function (err, info) {
+    console.log("transporter");
+    if (err) {
+     return "error"
+    } else {
+      return "sent"
+    }
+  });
 }
 module.exports = {
   addPersonalInfo,

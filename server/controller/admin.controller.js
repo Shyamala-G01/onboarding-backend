@@ -97,7 +97,7 @@ const addEmployee = async (req, res) => {
       mailOptions.subject="WELCOME TO DIGGIBYTE FAMILY",
       mailOptions.text = `username: ${info.email}
 
-  password:${pass}`;
+                          password:${pass}`;
 
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
