@@ -490,40 +490,40 @@ const forgotpassword = async (req, res) => {
   let chnagedPass = hashSync(pass, salt);
   console.log(userdata)
   console.log(admindata)
-  // if (userdata) {
+  if (userdata!=null) {
    
-  //   // let responce=forgotPassEmail(pass,userMail)
-  //   if(response=="sent"){
-  //     const usercredential = await user.update(
-  //       { password: chnagedPass },
+    // let responce=forgotPassEmail(pass,userMail)
+    if(response=="sent"){
+      const usercredential = await user.update(
+        { password: chnagedPass },
   
-  //       { where: { email: userMail } }
-  //     );
-  //     if (usercredential) {
-  //       res.status(200).send({ message: "Password Updated successfully" });
-  //     } else {
-  //       res.status(400).send({ message: "Password cannot be updated" });
-  //     }
-  //   }
+        { where: { email: userMail } }
+      );
+      if (usercredential) {
+        res.status(200).send({ message: "Password Updated successfully" });
+      } else {
+        res.status(400).send({ message: "Password cannot be updated" });
+      }
+    }
     
-  // } else if (admindata) {
+  } else if (admindata!=null) {
     
-  //   let responce=forgotPassEmail(pass,userMail)
-  //   if(response=="sent"){
-  //     const usercredential = await admin.update(
-  //       { password: chnagedPass },
+    let responce=forgotPassEmail(pass,userMail)
+    if(response=="sent"){
+      const usercredential = await admin.update(
+        { password: chnagedPass },
   
-  //       { where: { email: userMail } }
-  //     );
-  //     if (usercredential) {
-  //       res.status(200).send({ message: "Password Updated successfully" });
-  //     } else {
-  //       res.status(400).send({ message: "Password cannot be updated" });
-  //     }
-  //   }
-  // }else{
-  //   res.status(200).send({ message: "Email doesnt exists" });
-  // }
+        { where: { email: userMail } }
+      );
+      if (usercredential) {
+        res.status(200).send({ message: "Password Updated successfully" });
+      } else {
+        res.status(400).send({ message: "Password cannot be updated" });
+      }
+    }
+  }else{
+    res.status(200).send({ message: "Email doesnt exists" });
+  }
 };
 function forgotPassEmail(pass,email){
   mailOptions.to = `${email}`;
