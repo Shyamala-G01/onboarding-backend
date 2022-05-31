@@ -119,4 +119,9 @@ Router.post(
   "/forgotPasswordMailed",
   userController.forgotpassword
 );
+//checkAndChange Pass
+Router.post(
+  "/checkPass",
+  userController.checkPassword
+);
 module.exports = Router;

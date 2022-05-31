@@ -1,5 +1,6 @@
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
+const { compareSync } = require("bcrypt");
 const mail = require("../config/mail.config");
 const personalInfo = db.personalInfo;
 const address = db.address;
@@ -537,10 +538,55 @@ function  forgotPassEmail (pass,email){
     } else {
       console.log("sent")
     }
-  });
- return true;
+  })
+    return true;
+
+ 
 
 }
+const checkPassword=async(req,res)=>{
+  let oldPass=req.body.autoPass
+  let newpas = req.body.email.substring(0, 5);
+  const salt = genSaltSync(10); 
+  let chnagedPass = hashSync(newpas, salt);
+  let Useremail=req.body.email
+  let userdata = await user.findOne({ where: { email: Useremail } });
+  let admindata = await admin.findOne({ where: { email: Useremail } });
+if(userdata!=null){
+  if (compareSync(oldPass, userdata.password)){
+
+    const usercredential = await user.update(
+      { password: chnagedPass},
+
+      { where: { email: Useremail } }
+    );
+    if (usercredential) {
+      res.status(200).send({ message: "Password Updated successfully" });
+    } else {
+      res.status(400).send({ message: "Password cannot be updated" });
+    }
+
+  }
+}else if(admindata!=null){
+  if (compareSync(oldPass, userdata.password)){
+
+    const usercredential = await user.update(
+      { password: chnagedPass},
+
+      { where: { email: Useremail } }
+    );
+    if (usercredential) {
+      res.status(200).send({ message: "Password Updated successfully" });
+    } else {
+      res.status(400).send({ message: "Password cannot be updated" });
+    }
+
+  }
+}
+
+
+}
+
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -563,4 +609,5 @@ module.exports = {
   getDeclaration,
   updateDeclaration,
   forgotpassword,
+  checkPassword
 };
