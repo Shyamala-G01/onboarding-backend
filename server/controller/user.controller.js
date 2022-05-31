@@ -491,61 +491,62 @@ const forgotpassword = async (req, res) => {
   console.log(userdata)
   console.log(admindata)
   if (userdata!=null) {
-    let responce=forgotPassEmail(pass,userMail)
-    console.log("user mail res"+responce);
-    if(responce=="sent"){
-      const usercredential = await user.update(
-        { password: chnagedPass },
-  
-        { where: { email: userMail } }
-      );
-      if (usercredential) {
-        res.status(200).send({ message: "Password Updated successfully" });
-      } else {
-        res.status(400).send({ message: "Password cannot be updated" });
-      }
-    }
-    
-  }else if (admindata!=null) {
-    
-    
-    console.log("admin mail res"+forgotPassEmail(pass,userMail));
-    if(forgotPassEmail(pass,userMail)){
-      const usercredential = await admin.update(
-        { password: chnagedPass },
-  
-        { where: { email: userMail } }
-      );
-      if (usercredential) {
-        res.status(200).send({ message: "Password Updated successfully" });
-      } else {
-        res.status(400).send({ message: "Password cannot be updated" });
-      }
-    }
-  }else{
-    res.status(200).send({ message: "Email doesnt exists" });
-  }
-};
-function forgotPassEmail(pass,email){
-  let mailStatus;
-  mailOptions.to = `${email}`;
+    mailOptions.to = `${userMail}`;
   mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
-    mailOptions.text = `username: ${email}
+    mailOptions.text = `username: ${userMail}
 
                         password:${pass}`;
 
   transporter.sendMail(mailOptions, function (err, info) {
     if (err) {
-     mailStatus= false
+     console.log(err)
         } else {
       console.log("sent in mail sent")
-      mailStatus= true
-      console.log("inside mail trans"+mailStatus)
+     console.log(info.response)
+     const usercredential = await user.update(
+      { password: chnagedPass },
+
+      { where: { email: userMail } }
+    );
+    if (usercredential) {
+      res.status(200).send({ message: "Password Updated successfully" });
+    } else {
+      res.status(400).send({ message: "Password cannot be updated" });
     }
-  });
-  console.log("outside mail trans"+mailStatus)
-  return mailStatus
-}
+    }
+  });    
+}else if (admindata!=null) {
+    
+    
+    mailOptions.to = `${userMail}`;
+  mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
+    mailOptions.text = `username: ${userMail}
+
+                        password:${pass}`;
+
+  transporter.sendMail(mailOptions, function (err, info) {
+    if (err) {
+     console.log(err)
+    } else {
+      console.log("sent in mail sent")
+     console.log(info.response)
+     const usercredential = await user.update(
+      { password: chnagedPass },
+
+      { where: { email: userMail } }
+    );
+    if (usercredential) {
+      res.status(200).send({ message: "Password Updated successfully" });
+    } else {
+      res.status(400).send({ message: "Password cannot be updated" });
+    }
+    }
+  });  
+  }else{
+    res.status(200).send({ message: "Email doesnt exists" });
+  }
+};
+
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
