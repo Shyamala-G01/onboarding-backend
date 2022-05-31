@@ -568,7 +568,7 @@ if(userdata!=null){
 
   }
 }else if(admindata!=null){
-  if (compareSync(oldPass, admin.password)){
+  if (compareSync(oldPass,admin.password)){
 
     const usercredential = await user.update(
       { password: chnagedPass},
