@@ -508,9 +508,9 @@ const forgotpassword = async (req, res) => {
     
   } else if (admindata!=null) {
     
-    let response=forgotPassEmail(pass,userMail)
-    console.log(response);
-    if(response=="sent"){
+    
+    console.log(forgotPassEmail(pass,userMail));
+    if(forgotPassEmail(pass,userMail)){
       const usercredential = await admin.update(
         { password: chnagedPass },
   
@@ -535,10 +535,10 @@ function forgotPassEmail(pass,email){
 
   transporter.sendMail(mailOptions, function (err, info) {
     if (err) {
-     return "error"
-    } else {
+     return false
+        } else {
       console.log("sent")
-      return "sent"
+      return true
     }
   });
 }
