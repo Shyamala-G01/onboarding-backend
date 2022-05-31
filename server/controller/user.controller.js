@@ -545,15 +545,15 @@ function  forgotPassEmail (pass,email){
 
 }
 const checkPassword=async(req,res)=>{
-  let oldPass=req.body.autoPass
+  const oldPass=req.body.autoPass
   let newpas = req.body.password;
   const salt = genSaltSync(10); 
   let chnagedPass = hashSync(newpas, salt);
   let Useremail=req.body.email
-  let userdata = await user.findOne({ where: { email: Useremail } });
-  let admindata = await admin.findOne({ where: { email: Useremail } });
+  const userdata = await user.findOne({ where: { email: Useremail } });
+  const admindata = await admin.findOne({ where: { email: Useremail } });
 if(userdata!=null){
-  if (compareSync(oldPass, userdata.password)){
+  if (compareSync(oldPass,userdata.password)){
 
     const usercredential = await user.update(
       { password: chnagedPass},
@@ -568,7 +568,7 @@ if(userdata!=null){
 
   }
 }else if(admindata!=null){
-  if (compareSync(oldPass,admin.password)){
+  if (compareSync(oldPass,admindata.password)){
 
     const usercredential = await user.update(
       { password: chnagedPass},
