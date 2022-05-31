@@ -508,7 +508,7 @@ const forgotpassword = async (req, res) => {
     
   } else if (admindata!=null) {
     
-    let responce=forgotPassEmail(pass,userMail)
+    let response=forgotPassEmail(pass,userMail)
     if(response=="sent"){
       const usercredential = await admin.update(
         { password: chnagedPass },
@@ -527,16 +527,16 @@ const forgotpassword = async (req, res) => {
 };
 function forgotPassEmail(pass,email){
   mailOptions.to = `${email}`;
-  (mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY"),
-    (mailOptions.text = `username: ${email}
+  mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
+    mailOptions.text = `username: ${email}
 
-                        password:${pass}`);
+                        password:${pass}`;
 
   transporter.sendMail(mailOptions, function (err, info) {
-    console.log("transporter");
     if (err) {
      return "error"
     } else {
+      console.log("sent")
       return "sent"
     }
   });
