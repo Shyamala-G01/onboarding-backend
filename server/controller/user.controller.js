@@ -546,7 +546,7 @@ function  forgotPassEmail (pass,email){
 }
 const checkPassword=async(req,res)=>{
   let oldPass=req.body.autoPass
-  let newpas = req.body.email.substring(0, 5);
+  let newpas = req.body.password;
   const salt = genSaltSync(10); 
   let chnagedPass = hashSync(newpas, salt);
   let Useremail=req.body.email
