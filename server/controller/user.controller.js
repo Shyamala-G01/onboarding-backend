@@ -540,8 +540,10 @@ function forgotPassEmail(pass,email){
         } else {
       console.log("sent in mail sent")
       mailStatus= true
+      console.log("inside mail trans"+mailStatus)
     }
   });
+  console.log("outside mail trans"+mailStatus)
   return mailStatus
 }
 module.exports = {
