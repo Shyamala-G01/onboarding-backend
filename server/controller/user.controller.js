@@ -542,7 +542,8 @@ function forgotPassEmail(pass,email){
     status="sent"
     }
 console.log("inside transporter"+status)
-  });
+});
+console.log("outside transporter   "+status)
 }
 module.exports = {
   addPersonalInfo,
