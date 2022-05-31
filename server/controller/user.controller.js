@@ -491,9 +491,8 @@ const forgotpassword = async (req, res) => {
   console.log(userdata)
   console.log(admindata)
   if (userdata!=null) {
-      let responce=forgotPassEmail(pass,userMail)
-    console.log("in user"+responce);
-    if(responce=="sent"){
+      
+    if(forgotPassEmail(pass,userMail)){
       const usercredential = await user.update(
         { password: chnagedPass },
   
@@ -508,9 +507,7 @@ const forgotpassword = async (req, res) => {
     
   } else if (admindata!=null) {
     
-    let response=forgotPassEmail(pass,userMail)
-    console.log("in admin"+response)
-    if(response=="sent"){
+      if(forgotPassEmail(pass,userMail)){
       const usercredential = await admin.update(
         { password: chnagedPass },
   
@@ -527,7 +524,7 @@ const forgotpassword = async (req, res) => {
   }
 };
 function  forgotPassEmail (pass,email){ 
-  let status;
+ 
   mailOptions.to = `${email}`;
   mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
     mailOptions.text = `username: ${email}
@@ -539,10 +536,9 @@ function  forgotPassEmail (pass,email){
      console.log(err)
     } else {
       console.log("sent")
-    return "sent"
     }
   });
-  console.log("data"+data)
+ return true;
 
 }
 module.exports = {
