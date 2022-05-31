@@ -548,7 +548,7 @@ const checkPassword=async(req,res)=>{
   const oldPass=req.body.autoPass
   let newpas = req.body.password;
   const salt = genSaltSync(10); 
-  let chnagedPass = hashSync(newpas, salt);
+  let chnagedPass = hashSync(newpas,salt);
   let Useremail=req.body.email
   const userdata = await user.findOne({ where: { email: Useremail } });
   const admindata = await admin.findOne({ where: { email: Useremail } });
@@ -570,7 +570,7 @@ if(userdata!=null){
 }else if(admindata!=null){
   if (compareSync(oldPass,admindata.password)){
 
-    const usercredential = await user.update(
+    const usercredential = await admin.update(
       { password: chnagedPass},
 
       { where: { email: Useremail } }
