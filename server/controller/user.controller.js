@@ -516,7 +516,7 @@ const forgotpassword=async (req,res)=>{
       res.status(404).send({ message: "User Undefined" });
    }
   }
-  else{
+  else if(userdata){
      //to send mail on adding user
      let password = email.substring(0,5)
      let pass="Welcome1"+password+"@!"
