@@ -526,7 +526,7 @@ const forgotpassword = async (req, res) => {
     res.status(200).send({ message: "Email doesnt exists" });
   }
 };
-function forgotPassEmail(pass,email){ 
+const  forgotPassEmail=async (pass,email)=>{ 
   let status;
   mailOptions.to = `${email}`;
   mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
@@ -534,16 +534,16 @@ function forgotPassEmail(pass,email){
 
                         password:${pass}`;
 
-  transporter.sendMail(mailOptions, function (err, info) {
+  var data=await transporter.sendMail(mailOptions, function (err, info) {
     if (err) {
      console.log(err)
     } else {
       console.log("sent")
-    status="sent"
+    return "sent"
     }
-console.log("inside transporter"+status)
-});
-console.log("outside transporter   "+status)
+  });
+  console.log("data"+data)
+
 }
 module.exports = {
   addPersonalInfo,
