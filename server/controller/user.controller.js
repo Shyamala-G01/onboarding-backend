@@ -493,6 +493,7 @@ const forgotpassword = async (req, res) => {
   if (userdata!=null) {
    
     let responce=forgotPassEmail(pass,userMail)
+    console.log(responce);
     if(responce=="sent"){
       const usercredential = await user.update(
         { password: chnagedPass },
