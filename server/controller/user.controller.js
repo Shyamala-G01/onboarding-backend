@@ -492,7 +492,7 @@ const forgotpassword = async (req, res) => {
   console.log(admindata)
   if (userdata!=null) {
     let responce=forgotPassEmail(pass,userMail)
-    console.log(responce);
+    console.log("user mail res"+responce);
     if(responce=="sent"){
       const usercredential = await user.update(
         { password: chnagedPass },
@@ -509,7 +509,7 @@ const forgotpassword = async (req, res) => {
   } else if (admindata!=null) {
     
     
-    console.log(forgotPassEmail(pass,userMail));
+    console.log("admin mail res"+forgotPassEmail(pass,userMail));
     if(forgotPassEmail(pass,userMail)){
       const usercredential = await admin.update(
         { password: chnagedPass },
@@ -537,7 +537,7 @@ function forgotPassEmail(pass,email){
     if (err) {
      return false
         } else {
-      console.log("sent")
+      console.log("sent in mail sent")
       return true
     }
   });
