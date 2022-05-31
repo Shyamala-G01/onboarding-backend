@@ -1,4 +1,3 @@
-const { sequelize, admin } = require("../model");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
 const mail = require("../config/mail.config");
