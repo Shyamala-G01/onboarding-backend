@@ -30,7 +30,7 @@ const addPersonalInfo = async (req, res) => {
   //   { where: { id: req.body.fk_person_users_id } }
   // );
   console.log("s")
-  console.log(req.body);
+  console.log(req.files);
   // let data = await personalInfo.findOne({
   //   where: { fk_person_users_id: req.body.fk_person_users_id },
   // });
