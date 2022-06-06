@@ -20,6 +20,17 @@ const folderFunctions=require("../controller/fileHandler")
 
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
+  const userData= await user.findOne({where:{id:req.body.fk_person_users_id}})
+
+const usercredential = await user.update(
+
+      { status: userData.status+20},
+
+
+
+      { where: { id: req.body.fk_person_users_id } }
+
+    );
   console.log(req.body);
   // let data = await personalInfo.findOne({
   //   where: { fk_person_users_id: req.body.fk_person_users_id },
@@ -183,6 +194,17 @@ const changePassword = async (req, res) => {
 
 // employment
 const addEmployment = async (req, res) => {
+  const userEmployment= await user.findOne({where:{id:req.body.fk_employment_users_id}})
+
+const usercredential = await user.update(
+
+      { status: userEmployment.status+20},
+
+
+
+      { where: { id: req.body.fk_employment_users_id } }
+
+    );
   console.log(req.body);
   const info = {
     org_name: req.body.organizationName,
@@ -273,6 +295,17 @@ const getPersonalInfoData = async (req, res) => {
 
 //adding educational details
 const addEducation = async (req, res) => {
+  const userData= await user.findOne({where:{id:req.body.fk_education_users_id}})
+
+const usercredential = await user.update(
+
+      { status: userData.status+20},
+
+
+
+      { where: { id: req.body.fk_education_users_id } }
+
+    );
   console.log(req.body);
   const info = {
     type: req.body.education,
@@ -349,6 +382,17 @@ const deleteEducation = async (req, res) => {
 };
 // adding other details
 const addOtherDetailsAndBankDetails = async (req, res) => {
+  const userData= await user.findOne({where:{id:req.body.fk_proof_users_id}})
+
+const usercredential = await user.update(
+
+      { status: userData.status+20},
+
+
+
+      { where: { id: req.body.fk_proof_users_id } }
+
+    );
   console.log(req.body);
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
@@ -446,6 +490,17 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
 
 //adding declaration
 const addDeclaration = async (req, res) => {
+  const userData= await user.findOne({where:{id:req.body.fk_declaration_users_id}})
+
+const usercredential = await user.update(
+
+      { status: userData.status+20},
+
+
+
+      { where: { id: req.body.fk_declaration_users_id } }
+
+    );
   console.log(req.body);
   const info = {
     joining_date: req.body.joiningDate,
