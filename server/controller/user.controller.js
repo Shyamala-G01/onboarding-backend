@@ -16,21 +16,19 @@ const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
 //import file handler to create folder
-const folderFunctions=require("../controller/fileHandler")
+const folderFunctions = require("../controller/fileHandler");
 
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
-  const userData= await user.findOne({where:{id:req.body.fk_person_users_id}})
+  const userData = await user.findOne({
+    where: { id: req.body.fk_person_users_id },
+  });
 
-const usercredential = await user.update(
+  const usercredential = await user.update(
+    { status: userData.status + 20 },
 
-      { status: userData.status+20},
-
-
-
-      { where: { id: req.body.fk_person_users_id } }
-
-    );
+    { where: { id: req.body.fk_person_users_id } }
+  );
   console.log(req.body);
   // let data = await personalInfo.findOne({
   //   where: { fk_person_users_id: req.body.fk_person_users_id },
@@ -79,7 +77,7 @@ const usercredential = await user.update(
   // } else {
   //   res.status(400).send({ message: "Unsuccessful" });
   // }
-  res.send("s")
+  res.send("s");
 };
 //update personal info table
 const updatePersonalInfo = async (req, res) => {
@@ -96,14 +94,14 @@ const updatePersonalInfo = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    fk_person_users_id:req.body.fk_person_users_id
+    fk_person_users_id: req.body.fk_person_users_id,
   };
   const userData = await personalInfo.update(info, {
     where: { fk_person_users_id: req.body.fk_person_users_id },
   });
-  
+
   if (userData) {
-    folderFunctions.uploadfile(req.files,req.body.id)
+    folderFunctions.uploadfile(req.files, req.body.id);
     res.status(200).send(userData);
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -194,17 +192,15 @@ const changePassword = async (req, res) => {
 
 // employment
 const addEmployment = async (req, res) => {
-  const userEmployment= await user.findOne({where:{id:req.body.fk_employment_users_id}})
+  const userEmployment = await user.findOne({
+    where: { id: req.body.fk_employment_users_id },
+  });
 
-const usercredential = await user.update(
+  const usercredential = await user.update(
+    { status: userEmployment.status + 20 },
 
-      { status: userEmployment.status+20},
-
-
-
-      { where: { id: req.body.fk_employment_users_id } }
-
-    );
+    { where: { id: req.body.fk_employment_users_id } }
+  );
   console.log(req.body);
   const info = {
     org_name: req.body.organizationName,
@@ -295,17 +291,15 @@ const getPersonalInfoData = async (req, res) => {
 
 //adding educational details
 const addEducation = async (req, res) => {
-  const userData= await user.findOne({where:{id:req.body.fk_education_users_id}})
+  const userData = await user.findOne({
+    where: { id: req.body.fk_education_users_id },
+  });
 
-const usercredential = await user.update(
+  const usercredential = await user.update(
+    { status: userData.status + 20 },
 
-      { status: userData.status+20},
-
-
-
-      { where: { id: req.body.fk_education_users_id } }
-
-    );
+    { where: { id: req.body.fk_education_users_id } }
+  );
   console.log(req.body);
   const info = {
     type: req.body.education,
@@ -382,17 +376,15 @@ const deleteEducation = async (req, res) => {
 };
 // adding other details
 const addOtherDetailsAndBankDetails = async (req, res) => {
-  const userData= await user.findOne({where:{id:req.body.fk_proof_users_id}})
+  const userData = await user.findOne({
+    where: { id: req.body.fk_proof_users_id },
+  });
 
-const usercredential = await user.update(
+  const usercredential = await user.update(
+    { status: userData.status + 20 },
 
-      { status: userData.status+20},
-
-
-
-      { where: { id: req.body.fk_proof_users_id } }
-
-    );
+    { where: { id: req.body.fk_proof_users_id } }
+  );
   console.log(req.body);
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
@@ -490,17 +482,15 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
 
 //adding declaration
 const addDeclaration = async (req, res) => {
-  const userData= await user.findOne({where:{id:req.body.fk_declaration_users_id}})
+  const userData = await user.findOne({
+    where: { id: req.body.fk_declaration_users_id },
+  });
 
-const usercredential = await user.update(
+  const usercredential = await user.update(
+    { status: userData.status + 20 },
 
-      { status: userData.status+20},
-
-
-
-      { where: { id: req.body.fk_declaration_users_id } }
-
-    );
+    { where: { id: req.body.fk_declaration_users_id } }
+  );
   console.log(req.body);
   const info = {
     joining_date: req.body.joiningDate,
@@ -553,16 +543,15 @@ const forgotpassword = async (req, res) => {
   let admindata = await admin.findOne({ where: { email: userMail } });
   let password = req.body.email.substring(0, 5);
   let pass = "N" + password + "@!" + Math.floor(Math.random() * 10);
-  const salt = genSaltSync(10); 
+  const salt = genSaltSync(10);
   let chnagedPass = hashSync(pass, salt);
-  console.log(userdata)
-  console.log(admindata)
-  if (userdata!=null) {
-      
-    if(forgotPassEmail(pass,userMail)){
+  console.log(userdata);
+  console.log(admindata);
+  if (userdata != null) {
+    if (forgotPassEmail(pass, userMail)) {
       const usercredential = await user.update(
         { password: chnagedPass },
-  
+
         { where: { email: userMail } }
       );
       if (usercredential) {
@@ -571,13 +560,11 @@ const forgotpassword = async (req, res) => {
         res.status(400).send({ message: "Password cannot be updated" });
       }
     }
-    
-  } else if (admindata!=null) {
-    
-      if(forgotPassEmail(pass,userMail)){
+  } else if (admindata != null) {
+    if (forgotPassEmail(pass, userMail)) {
       const usercredential = await admin.update(
         { password: chnagedPass },
-  
+
         { where: { email: userMail } }
       );
       if (usercredential) {
@@ -586,72 +573,62 @@ const forgotpassword = async (req, res) => {
         res.status(400).send({ message: "Password cannot be updated" });
       }
     }
-  }else{
+  } else {
     res.status(200).send({ message: "Email doesnt exists" });
   }
 };
-function  forgotPassEmail (pass,email){ 
- 
+function forgotPassEmail(pass, email) {
   mailOptions.to = `${email}`;
-  mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY",
-    mailOptions.text = `username: ${email}
+  (mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY"),
+    (mailOptions.text = `username: ${email}
 
-                        password:${pass}`;
+                        password:${pass}`);
 
-  const data=transporter.sendMail(mailOptions, function (err) {
+  const data = transporter.sendMail(mailOptions, function (err) {
     if (err) {
-     console.log(err)
+      console.log(err);
     } else {
-      console.log("sent")
+      console.log("sent");
     }
-  })
-    return true;
-
- 
-
+  });
+  return true;
 }
-const checkPassword=async(req,res)=>{
-  const oldPass=req.body.autoPass
+const checkPassword = async (req, res) => {
+  const oldPass = req.body.autoPass;
   let newpas = req.body.password;
-  const salt = genSaltSync(10); 
-  let chnagedPass = hashSync(newpas,salt);
-  let Useremail=req.body.email
+  const salt = genSaltSync(10);
+  let chnagedPass = hashSync(newpas, salt);
+  let Useremail = req.body.email;
   const userdata = await user.findOne({ where: { email: Useremail } });
   const admindata = await admin.findOne({ where: { email: Useremail } });
-if(userdata!=null){
-  if (compareSync(oldPass,userdata.password)){
+  if (userdata != null) {
+    if (compareSync(oldPass, userdata.password)) {
+      const usercredential = await user.update(
+        { password: chnagedPass },
 
-    const usercredential = await user.update(
-      { password: chnagedPass},
-
-      { where: { email: Useremail } }
-    );
-    if (usercredential) {
-      res.status(200).send({ message: "Password Updated successfully" });
-    } else {
-      res.status(400).send({ message: "Password cannot be updated" });
+        { where: { email: Useremail } }
+      );
+      if (usercredential) {
+        res.status(200).send({ message: "Password Updated successfully" });
+      } else {
+        res.status(400).send({ message: "Password cannot be updated" });
+      }
     }
+  } else if (admindata != null) {
+    if (compareSync(oldPass, admindata.password)) {
+      const usercredential = await admin.update(
+        { password: chnagedPass },
 
-  }
-}else if(admindata!=null){
-  if (compareSync(oldPass,admindata.password)){
-
-    const usercredential = await admin.update(
-      { password: chnagedPass},
-
-      { where: { email: Useremail } }
-    );
-    if (usercredential) {
-      res.status(200).send({ message: "Password Updated successfully" });
-    } else {
-      res.status(400).send({ message: "Password cannot be updated" });
+        { where: { email: Useremail } }
+      );
+      if (usercredential) {
+        res.status(200).send({ message: "Password Updated successfully" });
+      } else {
+        res.status(400).send({ message: "Password cannot be updated" });
+      }
     }
-
   }
-}
-
-
-}
+};
 
 module.exports = {
   addPersonalInfo,
@@ -675,5 +652,5 @@ module.exports = {
   getDeclaration,
   updateDeclaration,
   forgotpassword,
-  checkPassword
+  checkPassword,
 };

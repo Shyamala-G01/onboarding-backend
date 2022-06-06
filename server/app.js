@@ -1,23 +1,24 @@
 require("dotenv").config();
 const express = require("express");
+const fileuplod=require('express-fileupload')
 const bodyParser = require("body-parser");
 const Router = require("./routes/admin.routes");
 const AuthRouter = require("./routes/auth.routes");
 const userRouter = require("./routes/user.routes");
 const PORT = process.env.PORT || 1337;
-
 const app = express();
 
 const cors = require("cors");
 var corsOption = {
   origin: "http://localhost:4200",
 };
+app.use(fileuplod())
 
 app.use(cors(corsOption));
 // parse the incoming form data
 app.use(bodyParser.json());
 // for url encoded
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send({ message: "Hello" });
