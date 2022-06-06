@@ -1,19 +1,21 @@
+require("sequelize");
 const db = require("../model");
 const user = db.user;
-const { genSaltSync, hashSync } = require("bcrypt");
-require("sequelize");
-const mail = require("../config/mail.config");
-
 const admin = db.admin;
+//encrypting and comparing
+const { genSaltSync, hashSync } = require("bcrypt");
 
 //mailing
+const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
+
+//import file handler to create folder
+const folderFunctions=require("../controller/fileHandler")
 // contoller for adding admin
 const addAdmin = async (req, res) => {
   const salt = genSaltSync(10);
-
   // already exit or not
   const adminMail = await admin.findOne({ where: { email: req.body.email } });
   if (adminMail) {
@@ -28,19 +30,17 @@ const addAdmin = async (req, res) => {
       created_at: req.body.created_at,
       created_by_admin: req.body.created_by_admin,
     };
-    let password = req.body.name.replaceAll(" ","");
-    let pass="Welcome1"+password+"@!"
+    let password = req.body.name.replaceAll(" ", "");
+    let pass = "Welcome1" + password + "@!";
     info.password = hashSync(pass, salt);
     const adminData = await admin.create(info);
     if (adminData) {
       // sending mail after registration
-
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      mailOptions.subject="ADMIN PORTAL REGISTRATION SUCCESSFULL",
-      mailOptions.text = `username: ${info.email}
-  
-    password:${pass}`;
+      (mailOptions.subject = "ADMIN PORTAL REGISTRATION SUCCESSFULL"),
+        (mailOptions.text = `username: ${info.email}
+                          password:${pass}`);
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
@@ -57,12 +57,6 @@ const addAdmin = async (req, res) => {
   }
 };
 
-const getAdmin = async (req, res) => {
-  let email = req.body.email;
-  let users = await admin.findOne({ where: { email: email } });
-  res.send(users);
-};
-
 // contoller for adding employee
 const addEmployee = async (req, res) => {
   const salt = genSaltSync(10);
@@ -71,7 +65,7 @@ const addEmployee = async (req, res) => {
   const userMail = await user.findOne({ where: { email: req.body.email } });
 
   if (userMail) {
-    res.send(userMail);
+    res.send({ message: "user already exists" });
   } else {
     let info = {
       id: req.body.id,
@@ -85,8 +79,8 @@ const addEmployee = async (req, res) => {
       updated_by: req.body.updated_by,
       status: req.body.status,
     };
-    let password = req.body.name.replaceAll(" ","");
-    let pass="Welcome1"+password+"@!"
+    let password = req.body.name.replaceAll(" ", "");
+    let pass = "Welcome1" + password + "@!";
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
@@ -94,10 +88,10 @@ const addEmployee = async (req, res) => {
 
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      mailOptions.subject="WELCOME TO DIGGIBYTE FAMILY",
-      mailOptions.text = `username: ${info.email}
-
-                          password:${pass}`;
+      (mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY"),
+        (mailOptions.text = `username: ${info.email}
+      
+      password:${pass}`);
 
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
@@ -107,7 +101,7 @@ const addEmployee = async (req, res) => {
           console.log("mail sent" + info.response);
         }
       });
-
+      folderFunctions.createFolder(req.body.id)
       res.status(200).send({ message: "Registered Successfully" });
     } else {
       res.status(404).send({ message: "Cannot Register" });
@@ -115,4 +109,14 @@ const addEmployee = async (req, res) => {
   }
 };
 
-module.exports = { addAdmin, getAdmin, addEmployee };
+// const getAdmin = async (req, res) => {
+//   let email = req.body.email;
+//   let users = await admin.findOne({ where: { email: email } });
+//   res.send(users);
+// };
+
+module.exports = {
+  addAdmin,
+  addEmployee,
+  // getAdmin
+};

@@ -1,7 +1,6 @@
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
 const { compareSync } = require("bcrypt");
-const mail = require("../config/mail.config");
 const personalInfo = db.personalInfo;
 const address = db.address;
 const employmentDetails = db.employmentDetails;
@@ -11,8 +10,15 @@ const educationalInfo = db.educationalInfo;
 const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
 const bankdetails = db.bankDetails;
+// mailing
+const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
+
+//import file handler to create folder
+const folderFunctions=require("../controller/fileHandler")
+
+//add data to personal info table
 const addPersonalInfo = async (req, res) => {
   console.log(req.body);
   let data = await personalInfo.findOne({
@@ -28,7 +34,7 @@ const addPersonalInfo = async (req, res) => {
         mobile_number: req.body.mobile_number,
         alternate_number: req.body.alternate_number,
         personal_email: req.body.personal_email,
-        photo: req.body.photo,
+        photo: req.files.photo.name,
         father_name: req.body.father_name,
         created_at: req.body.created_at,
         updated_at: req.body.updated_at,
@@ -57,12 +63,13 @@ const addPersonalInfo = async (req, res) => {
   }
 
   if (userData) {
+    folderFunctions.uploadfile(req.files,req.body.id)
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
   }
 };
-
+//update personal info table
 const updatePersonalInfo = async (req, res) => {
   console.log(req.body);
   let info = {
@@ -81,7 +88,9 @@ const updatePersonalInfo = async (req, res) => {
   const userData = await personalInfo.update(info, {
     where: { fk_person_users_id: req.body.fk_person_users_id },
   });
+  
   if (userData) {
+    folderFunctions.uploadfile(req.files,req.body.id)
     res.status(200).send(userData);
   } else {
     res.status(400).send({ message: "Unsuccessful" });
