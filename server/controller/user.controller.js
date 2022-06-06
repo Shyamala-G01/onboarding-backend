@@ -20,7 +20,6 @@ const folderFunctions=require("../controller/fileHandler")
 
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
-  console.log("s")
   console.log(req.body);
   // let data = await personalInfo.findOne({
   //   where: { fk_person_users_id: req.body.fk_person_users_id },

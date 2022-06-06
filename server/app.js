@@ -16,9 +16,8 @@ var corsOption = {
 app.use(cors(corsOption));
 // parse the incoming form data
 app.use(bodyParser.json());
-
 // for url encoded
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send({ message: "Hello" });
