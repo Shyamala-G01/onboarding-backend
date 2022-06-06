@@ -84,6 +84,7 @@ const updatePersonalInfo = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
+    fk_person_users_id:req.body.fk_person_users_id
   };
   const userData = await personalInfo.update(info, {
     where: { fk_person_users_id: req.body.fk_person_users_id },
