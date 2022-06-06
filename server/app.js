@@ -30,7 +30,7 @@ app.use("/api", Router);
 // auth
 app.use("/api", AuthRouter);
 
-// auth
+// user
 app.use("/api", userRouter);
 
 // Start the server
