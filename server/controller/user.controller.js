@@ -631,7 +631,8 @@ const addImg=async(req,res)=>{
   res.send({message:"added sucessfully"})
 }
 const getImg=async(req,res)=>{
-    const data=await user.findOne({where:{id:req.body.id}})
+  let reqId = req.params.id;
+    const data=await user.findOne({where:{id:reqId}})
     res.send(data.photo)
 }
 module.exports = {

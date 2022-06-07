@@ -130,7 +130,7 @@ Router.put(
   userController.addImg
 );
 Router.get(
-  "/getImg",
+  "/getImg/:id",
   authController.verifyToken,
   userController.getImg
 );
