@@ -625,6 +625,8 @@ const checkPassword = async (req, res) => {
   }
 };
 const addImg=async(req,res)=>{
+  console.log(req.body)
+  console.log(req.files)
   let img=req.files.photo.name
   const data=await user.update({ photo: img },{where :{id:req.body.id}})
   folderFunctions.uploadfile(req.files,req.body.id)
