@@ -29,7 +29,7 @@ const addPersonalInfo = async (req, res) => {
 
   //   { where: { id: req.body.fk_person_users_id } }
   // );
-  console.log("s")
+  console.log("s");
   console.log(req.body);
   let data = await personalInfo.findOne({
     where: { fk_person_users_id: req.body.fk_person_users_id },
@@ -71,7 +71,7 @@ const addPersonalInfo = async (req, res) => {
       }
     );
     if (userData) {
-      folderFunctions.uploadfile(req.files,req.body.fk_person_users_id)
+      folderFunctions.uploadfile(req.files, req.body.fk_person_users_id);
       res.status(200).send({ message: "Successful" });
     } else {
       res.status(400).send({ message: "Unsuccessful" });
@@ -109,29 +109,26 @@ const updatePersonalInfo = async (req, res) => {
 
 // Address
 const addAddress = async (req, res) => {
- 
- 
-    const info = {
-      type: req.body.type,
-      house_no: req.body.house_no,
-      street: req.body.street,
-      locality: req.body.locality,
-      city: req.body.city,
-      state: req.body.state,
-      pincode: req.body.pincode,
-      country: req.body.country,
-      created_at: req.body.created_at,
-      updated_at: req.body.updated_at,
-      updated_by: req.body.updated_by,
-      fk_address_users_id: req.body.fk_address_users_id,
-    };
-    const data = await address.create(info);
-    if (data) {
-      res.status(200).send({ message: "Successful" });
-    } else {
-      res.status(400).send({ message: "Unsuccessful" });
-    }
-  
+  const info = {
+    type: req.body.type,
+    house_no: req.body.house_no,
+    street: req.body.street,
+    locality: req.body.locality,
+    city: req.body.city,
+    state: req.body.state,
+    pincode: req.body.pincode,
+    country: req.body.country,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_address_users_id: req.body.fk_address_users_id,
+  };
+  const data = await address.create(info);
+  if (data) {
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
 };
 const updateAddAddress = async (req, res) => {
   console.log(req.body);
@@ -624,20 +621,24 @@ const checkPassword = async (req, res) => {
     }
   }
 };
-const addImg=async(req,res)=>{
-  console.log(req.body)
-  console.log(req.files)
-  let img=req.files.photo.name
-  const data=await user.update({ photo: img },{where :{id:req.body.id}})
-  folderFunctions.uploadfile(req.files,req.body.id)
-  res.send({message:"added sucessfully"})
-}
-const getImg=async(req,res)=>{
+const addImg = async (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
+  let img = req.files.photo.name;
+  const usercredential = await user.update(
+    { photo: img},
+
+    { where: { id: req.body.id } }
+  );
+  folderFunctions.uploadfile(req.files, req.body.id);
+  res.send({ message: "added sucessfully" });
+};
+const getImg = async (req, res) => {
   let reqId = req.params.id;
-    const data=await user.findOne({where:{id:reqId}})
-    console.log(data.photo)
-    res.send(data)
-}
+  const data = await user.findOne({ where: { id: reqId } });
+  console.log(data.photo);
+  res.send(data);
+};
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -662,5 +663,5 @@ module.exports = {
   forgotpassword,
   checkPassword,
   addImg,
-  getImg
+  getImg,
 };
