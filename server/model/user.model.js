@@ -39,7 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       password_status: {
         type: DataTypes.STRING,
-      },
+      },photo:{
+        type:DataTypes.STRING
+      }
     },
     {
       freezeTableName: true,
