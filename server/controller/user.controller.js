@@ -70,14 +70,15 @@ const addPersonalInfo = async (req, res) => {
         ],
       }
     );
+    if (userData) {
+      folderFunctions.uploadfile(req.files,req.body.id)
+      res.status(200).send({ message: "Successful" });
+    } else {
+      res.status(400).send({ message: "Unsuccessful" });
+    }
   }
 
-  if (userData) {
-    folderFunctions.uploadfile(req.files,req.body.id)
-    res.status(200).send({ message: "Successful" });
-  } else {
-    res.status(400).send({ message: "Unsuccessful" });
-  }
+  
   res.send("s");
 };
 //update personal info table
