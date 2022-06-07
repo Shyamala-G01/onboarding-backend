@@ -32,6 +32,7 @@ const uploadfile = async (files, id) => {
     const dat = files[item];
     const savePath = path.join(mainPath, dat.name);
     await dat.mv(savePath);
+    console.log("s completed")
   }
 };
 module.exports = { createFolder, uploadfile };
