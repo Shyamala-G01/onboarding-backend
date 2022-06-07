@@ -624,7 +624,16 @@ const checkPassword = async (req, res) => {
     }
   }
 };
-
+const addImg=async(req,res)=>{
+  let img=req.files.photo.name
+  const data=await user.update({ photo: img },{where :{id:req.body.id}})
+  folderFunctions.uploadfile(req.files,req.body.id)
+  res.send({message:"added sucessfully"})
+}
+const getImg=async(req,res)=>{
+    const data=await user.findOne({where:{id:req.body.id}})
+    res.send(data.photo)
+}
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -648,4 +657,6 @@ module.exports = {
   updateDeclaration,
   forgotpassword,
   checkPassword,
+  addImg,
+  getImg
 };

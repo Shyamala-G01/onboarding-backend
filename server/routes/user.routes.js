@@ -124,4 +124,14 @@ Router.post(
   "/checkPass",
   userController.checkPassword
 );
+Router.put(
+  "/addImg",
+  authController.verifyToken,
+  userController.addImg
+);
+Router.get(
+  "/getImg",
+  authController.verifyToken,
+  userController.getImg
+);
 module.exports = Router;
