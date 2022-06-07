@@ -71,7 +71,7 @@ const addPersonalInfo = async (req, res) => {
       }
     );
     if (userData) {
-      folderFunctions.uploadfile(req.files,req.body.id)
+      folderFunctions.uploadfile(req.files,req.body.fk_person_users_id)
       res.status(200).send({ message: "Successful" });
     } else {
       res.status(400).send({ message: "Unsuccessful" });
