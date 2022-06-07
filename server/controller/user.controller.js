@@ -301,10 +301,10 @@ const addEducation = async (req, res) => {
     start_date: req.body.startDate,
     end_date: req.body.endDate,
     marks: req.body.percentage,
-    marks_card: req.body.marksheet,
-    transfer_certificate: req.body.transferCertificate,
-    provisional_marks_card: req.body.provisional_marks_card,
-    convocation_certificate: req.body.convocation_certificate,
+    marks_card: req.files.marksheet.name,
+    transfer_certificate: req.files.transferCertificate.name,
+    provisional_marks_card: req.files.provisional_marks_card.name,
+    convocation_certificate: req.files.convocation_certificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -312,6 +312,7 @@ const addEducation = async (req, res) => {
   };
   const educationData = await educationalInfo.create(info);
   if (educationData) {
+    folderFunctions.uploadfile(req.files,fk_education_users_id)
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
