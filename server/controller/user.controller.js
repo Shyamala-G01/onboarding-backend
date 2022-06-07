@@ -77,9 +77,6 @@ const addPersonalInfo = async (req, res) => {
       res.status(400).send({ message: "Unsuccessful" });
     }
   }
-
-  
-  res.send("s");
 };
 //update personal info table
 const updatePersonalInfo = async (req, res) => {

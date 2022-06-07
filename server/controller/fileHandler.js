@@ -30,7 +30,6 @@ const uploadfile = async (files, id) => {
   const mainPath = mainDirectoryPath + "/" + id;
   for (const item in files) {
     const dat = files[item];
-    console.log(dat);
     const savePath = path.join(mainPath, dat.name);
     await dat.mv(savePath);
   }
