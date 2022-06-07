@@ -29,9 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       marks_card: {
         type: DataTypes.STRING,
       },
-      transfer_certificate: {
-        type: DataTypes.STRING,
-      },
       provisional_marks_card: {
         type: DataTypes.STRING,
       },

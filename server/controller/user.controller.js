@@ -302,14 +302,18 @@ const addEducation = async (req, res) => {
     end_date: req.body.endDate,
     marks: req.body.percentage,
     marks_card: req.files.marksheet.name,
-    transfer_certificate: req.files.transferCertificate.name,
-    provisional_marks_card: req.files.provisional_marks_card.name,
-    convocation_certificate: req.files.convocation_certificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
+  if(req.body.type=="Graduation" || req.body.type=="Masters/Post-Graduation"){
+    if(req.files.provisional_marks_card){
+      info.provisional_marks_card=req.files.provisional_marks_card.name
+    }else if(req.files.convocation_certificate){
+      info.convocation_certificate=req.files.convocation_certificate.name
+    }
+  }
   const educationData = await educationalInfo.create(info);
   if (educationData) {
     folderFunctions.uploadfile(req.files,fk_education_users_id)
