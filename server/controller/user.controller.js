@@ -308,7 +308,7 @@ const addEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if(req.body.type=="Graduation" || req.body.type=="Masters/Post-Graduation"){
-    if(req.files.provisional_marks_card){
+    if(req.files.provisional_marks_card!=undefined || req.files.provisional_marks_card!=null){
       info.provisional_marks_card=req.files.provisional_marks_card.name
     }else if(req.files.convocation_certificate){
       info.convocation_certificate=req.files.convocation_certificate.name
