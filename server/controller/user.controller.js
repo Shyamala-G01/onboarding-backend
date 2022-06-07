@@ -293,6 +293,7 @@ const addEducation = async (req, res) => {
     { where: { id: req.body.fk_education_users_id } }
   );
   console.log(req.body);
+  console.log(req.files);
   const info = {
     type: req.body.education,
     name: req.body.School,
