@@ -626,7 +626,7 @@ const addImg = async (req, res) => {
   console.log(req.files);
   let img = req.files.photo.name;
   const usercredential = await user.update(
-    { photo: img},
+    { photo: img,phone_number:"9741728715"},
 
     { where: { id: req.body.id } }
   );
