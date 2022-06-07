@@ -310,7 +310,7 @@ const addEducation = async (req, res) => {
   };
   if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
     console.log("inside if")
-    if(req.files.provisionalCertificate!='' || req.files.convocationCertificate!=''){
+    if(req.body.provisionalCertificate!='' || req.body.convocationCertificate!=''){
       console.log("s")
       info.provisional_marks_card=req.files.provisionalCertificate.name
     }else if(req.files.convocation_certificate){
@@ -353,8 +353,8 @@ const updateEducation = async (req, res) => {
     end_date: req.body.endDate,
     marks: req.body.percentage,
     marks_card: req.files.marksheet.name,
-    provisional_marks_card: req.body.provisionalCertificate,
-    convocation_certificate: req.body.convocationCertificate,
+    provisional_marks_card: req.files.provisionalCertificate,
+    convocation_certificate: req.files.convocationCertificate,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -362,6 +362,9 @@ const updateEducation = async (req, res) => {
   };
   if(req.files.marksheet.name==''){
     info.marks_card=dat.marks_card
+  }else if(req.files.provisionalCertificate=='')
+  {
+    info.provisional_marks_card=dat.provisional_marks_card
   }else if(dat.marks_card!=req.files.marksheet.name) {
     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
   }
