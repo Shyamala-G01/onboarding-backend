@@ -352,7 +352,7 @@ const updateEducation = async (req, res) => {
     start_date: req.body.startDate,
     end_date: req.body.endDate,
     marks: req.body.percentage,
-    marks_card: req.body.marksheet,
+    marks_card: req.files.marksheet.name,
     provisional_marks_card: req.body.provisionalCertificate,
     convocation_certificate: req.body.convocationCertificate,
     created_at: req.body.created_at,
