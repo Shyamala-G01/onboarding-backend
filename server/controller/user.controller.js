@@ -363,7 +363,7 @@ const updateEducation = async (req, res) => {
   if(req.files.marksheet.name==''){
     info.marks_card=dat.marks_card
   }else if(dat.marks_card!=req.files.marksheet.name) {
-    folderFunctions.removeFile(req.files.marksheet.name,req.body.fk_education_users_id)
+    folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
   }
   let educationData = await educationalInfo.update(info, {
     where: { id: id },
