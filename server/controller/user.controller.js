@@ -310,7 +310,7 @@ const addEducation = async (req, res) => {
   };
   if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
     console.log("inside if")
-    if(req.files.provisional_marks_card!=undefined || req.files.provisional_marks_card!=null){
+    if(req.files.provisionalCertificate!='' || req.files.convocationCertificate!=''){
       console.log("s")
       info.provisional_marks_card=req.files.provisionalCertificate.name
     }else if(req.files.convocation_certificate){
