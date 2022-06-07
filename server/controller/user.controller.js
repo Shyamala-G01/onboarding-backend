@@ -109,10 +109,8 @@ const updatePersonalInfo = async (req, res) => {
 
 // Address
 const addAddress = async (req, res) => {
-  let value = await address.findOne({
-    where: { fk_address_users_id: req.body.fk_address_users_id },
-  });
-  if (!value) {
+ 
+ 
     const info = {
       type: req.body.type,
       house_no: req.body.house_no,
@@ -133,9 +131,7 @@ const addAddress = async (req, res) => {
     } else {
       res.status(400).send({ message: "Unsuccessful" });
     }
-  } else {
-    res.status(400).send({ message: "Unsuccessful" });
-  }
+  
 };
 const updateAddAddress = async (req, res) => {
   console.log(req.body);
