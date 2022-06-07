@@ -20,15 +20,15 @@ const folderFunctions = require("../controller/fileHandler");
 
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
-  const userData = await user.findOne({
-    where: { id: req.body.fk_person_users_id },
-  });
+  // const userData = await user.findOne({
+  //   where: { id: req.body.fk_person_users_id },
+  // });
 
-  const usercredential = await user.update(
-    { status: userData.status + 20 },
+  // const usercredential = await user.update(
+  //   { status: userData.status + 20 },
 
-    { where: { id: req.body.fk_person_users_id } }
-  );
+  //   { where: { id: req.body.fk_person_users_id } }
+  // );
   console.log("s")
   console.log(req.files);
   let data = await personalInfo.findOne({
