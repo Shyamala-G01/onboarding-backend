@@ -633,7 +633,8 @@ const addImg=async(req,res)=>{
 const getImg=async(req,res)=>{
   let reqId = req.params.id;
     const data=await user.findOne({where:{id:reqId}})
-    res.send(data.photo)
+    console.log(data.photo)
+    res.send(data)
 }
 module.exports = {
   addPersonalInfo,
