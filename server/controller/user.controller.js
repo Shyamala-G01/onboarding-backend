@@ -308,8 +308,10 @@ const addEducation = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
-  if(req.body.type=="Graduation" || req.body.type=="Masters/Post-Graduation"){
+  if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
+    console.log("inside if")
     if(req.files.provisional_marks_card!=undefined || req.files.provisional_marks_card!=null){
+      console.log("s")
       info.provisional_marks_card=req.files.provisionalCertificate.name
     }else if(req.files.convocation_certificate){
       info.convocation_certificate=req.files.convocationCertificate.name
