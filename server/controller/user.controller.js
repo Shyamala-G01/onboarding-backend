@@ -339,6 +339,9 @@ const getEducation = async (req, res) => {
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
   let id = req.params.id;
+  let dat = await educationalInfo.findOne( {
+    where: { id: id },
+  });
   console.log(req.body);
   const info = {
     type: req.body.education,
@@ -350,7 +353,6 @@ const updateEducation = async (req, res) => {
     end_date: req.body.endDate,
     marks: req.body.percentage,
     marks_card: req.body.marksheet,
-    transfer_certificate: req.body.transferCertificate,
     provisional_marks_card: req.body.provisionalCertificate,
     convocation_certificate: req.body.convocationCertificate,
     created_at: req.body.created_at,
@@ -358,9 +360,15 @@ const updateEducation = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
+  if(req.files.marksheet.name==''){
+    info.marks_card=dat.marks_card
+  }else if(dat.marks_card!=req.files.marksheet.name) {
+    folderFunctions.removeFile(req.files.marksheet.name,req.body.fk_education_users_id)
+  }
   let educationData = await educationalInfo.update(info, {
     where: { id: id },
   });
+  folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
   console.log(educationData);
   res.send({ message: "updated" });
 };

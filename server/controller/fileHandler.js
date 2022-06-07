@@ -35,4 +35,13 @@ const uploadfile = async (files, id) => {
     console.log("s completed")
   }
 };
-module.exports = { createFolder, uploadfile };
+const removeFile=async (files,id)=>{
+  const mainPath=mainDirectoryPath+"/"+id+"/"+files
+  try {
+    await fsPromises.unlink(mainPath);
+    console.log('Successfully removed file!');
+  } catch (err) {
+    console.log(err);
+  }
+}
+module.exports = { createFolder, uploadfile ,removeFile};
