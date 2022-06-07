@@ -316,7 +316,7 @@ const addEducation = async (req, res) => {
   }
   const educationData = await educationalInfo.create(info);
   if (educationData) {
-    folderFunctions.uploadfile(req.files,fk_education_users_id)
+    folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
