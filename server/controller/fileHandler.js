@@ -1,5 +1,6 @@
 //for creating folder
 const fs = require("fs");
+const fsPromises = require("fs/promises");
 const path = require("path"); //gives image path(myImg.jpeg)
 
 //folder path to store the datas
