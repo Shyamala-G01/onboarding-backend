@@ -313,7 +313,7 @@ const addEducation = async (req, res) => {
       console.log("s")
       info.provisional_marks_card=req.files.provisionalCertificate.name
       folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
-    }else if(req.body.convocationCertificate!=''){
+    }if(req.body.convocationCertificate!=''){
       info.convocation_certificate=req.files.convocationCertificate.name
       folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
     }
@@ -364,29 +364,32 @@ const updateEducation = async (req, res) => {
     if(req.body.provisionalCertificate!=''){
       console.log("s")
       info.provisional_marks_card=req.files.provisionalCertificate.name
-      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
     }else if(req.body.convocationCertificate!=''){
       info.convocation_certificate=req.files.convocationCertificate.name
-      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
     }
   }
   if(req.body.marksheet==''){
     info.marks_card=dat.marks_card
-  }else if(req.body.provisionalCertificate=='')
-  {
-    info.provisional_marks_card=dat.provisional_marks_card
-  }else if(req.body.convocationCertificate=='')
-  {
-    info.convocation_certificate=dat.convocation_certificate
-  }
-  else if(dat.marks_card!=req.files.marksheet.name) {
+  }if(dat.marks_card!=req.files.marksheet.name) {
     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
   }
-  else if(dat.provisional_marks_card!=req.files.provisional_marks_card.name) {
-    folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
-  }
-  else if(dat.convocation_certificate!=req.files.convocation_certificate.name) {
-    folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+  if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
+    if(req.body.provisionalCertificate=='')
+   {
+     info.provisional_marks_card=dat.provisional_marks_card
+   } if(req.body.convocationCertificate=='')
+   {
+     info.convocation_certificate=dat.convocation_certificate
+   }
+    if(dat.marks_card!=req.files.marksheet.name) {
+     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+   }
+    if(dat.provisional_marks_card!=req.files.provisional_marks_card.name) {
+     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+   }
+    if(dat.convocation_certificate!=req.files.convocation_certificate.name) {
+     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+   }
   }
   let educationData = await educationalInfo.update(info, {
     where: { id: id },
