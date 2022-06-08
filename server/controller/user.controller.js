@@ -384,10 +384,10 @@ const updateEducation = async (req, res) => {
     if(dat.marks_card!=req.files.marksheet.name) {
      folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
    }
-    if(dat.provisional_marks_card!=req.files.provisional_marks_card.name) {
+    if(dat.provisional_marks_card!=req.files.provisionalCertificate.name) {
      folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
    }
-    if(dat.convocation_certificate!=req.files.convocation_certificate.name) {
+    if(dat.convocation_certificate!=req.files.convocationCertificate.name) {
      folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
    }
   }
