@@ -20,21 +20,18 @@ const folderFunctions = require("../controller/fileHandler");
 
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
-  // const userData = await user.findOne({
-  //   where: { id: req.body.fk_person_users_id },
-  // });
+  const data = await user.findOne({
+    where: { id: req.body.fk_person_users_id },
+  });
 
-  // const usercredential = await user.update(
-  //   { status: userData.status + 20 },
+  const usercredential = await user.update(
+    { status: data.status + 20 },
 
-  //   { where: { id: req.body.fk_person_users_id } }
-  // );
+    { where: { id: req.body.fk_person_users_id } }
+  );
   console.log("s");
   console.log(req.body);
-  let data = await personalInfo.findOne({
-    where: { fk_person_users_id: req.body.fk_person_users_id },
-  });
-  if (!data) {
+
     const userData = await personalInfo.create(
       {
         first_name: req.body.first_name,
@@ -76,7 +73,6 @@ const addPersonalInfo = async (req, res) => {
     } else {
       res.status(400).send({ message: "Unsuccessful" });
     }
-  }
 };
 //update personal info table
 const updatePersonalInfo = async (req, res) => {
@@ -198,11 +194,11 @@ const addEmployment = async (req, res) => {
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
-    relieving_letter: req.body.relievingLetter,
-    offer_letter: req.body.offerLetter,
-    pay_slip1: req.body.payslip1,
-    pay_slip2: req.body.payslip2,
-    pay_slip3: req.body.payslip3,
+    relieving_letter: req.files.relievingLetter.name,
+    offer_letter: req.files.offerLetter.name,
+    pay_slip1: req.files.payslip1.name,
+    pay_slip2: req.files.payslip2.name,
+    pay_slip3: req.files.payslip3.name,
     hr_name: req.body.hr_name,
     notice_date: req.body.noticePeriodEndDate,
     created_at: req.body.created_at,
@@ -212,6 +208,7 @@ const addEmployment = async (req, res) => {
   };
   const userData = await employmentDetails.create(info);
   if (userData) {
+    folderFunctions.uploadfile(req.files,req.body.fk_employment_users_id)
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -233,11 +230,11 @@ const updateEmployemnt = async (req, res) => {
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
-    relieving_letter: req.body.relievingLetter,
-    offer_letter: req.body.offerLetter,
-    pay_slip1: req.body.payslip1,
-    pay_slip2: req.body.payslip2,
-    pay_slip3: req.body.payslip3,
+    relieving_letter: req.files.relievingLetter.name,
+    offer_letter: req.files.offerLetter.name,
+    pay_slip1: req.files.payslip1.name,
+    pay_slip2: req.files.payslip2.name,
+    pay_slip3: req.files.payslip3.name,
     hr_name: req.body.hr_name,
     notice_date: req.body.noticePeriodEndDate,
     created_at: req.body.created_at,
@@ -248,6 +245,7 @@ const updateEmployemnt = async (req, res) => {
   let employmentData = await employmentDetails.update(info, {
     where: { id: id },
   });
+  folderFunctions.uploadfile(req.files,req.body.fk_employment_users_id)
   console.log("updated");
   res.send({ message: "updated" });
 };
@@ -310,11 +308,13 @@ const addEducation = async (req, res) => {
   };
   if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
     console.log("inside if")
-    if(req.body.provisionalCertificate!='' || req.body.convocationCertificate!=''){
+    if(req.body.provisionalCertificate!=''){
       console.log("s")
       info.provisional_marks_card=req.files.provisionalCertificate.name
-    }else if(req.files.convocation_certificate){
+      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
+    }else if(req.body.convocationCertificate!=''){
       info.convocation_certificate=req.files.convocationCertificate.name
+      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
     }
   }
   const educationData = await educationalInfo.create(info);
@@ -360,12 +360,19 @@ const updateEducation = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
-  if(req.files.marksheet.name==''){
+  if(req.body.marksheet==''){
     info.marks_card=dat.marks_card
-  }else if(req.files.provisionalCertificate=='')
+  }else if(req.body.provisionalCertificate=='')
   {
     info.provisional_marks_card=dat.provisional_marks_card
-  }else if(dat.marks_card!=req.files.marksheet.name) {
+  }else if(req.body.provisionalCertificate=='')
+  {
+    info.convocation_certificate=dat.convocation_certificate
+  }
+  else if(dat.marks_card!=req.files.marksheet.name) {
+    folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+  }
+  else if(dat.marks_card!=req.files.marksheet.name) {
     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
   }
   let educationData = await educationalInfo.update(info, {
