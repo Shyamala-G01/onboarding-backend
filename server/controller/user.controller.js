@@ -354,26 +354,38 @@ const updateEducation = async (req, res) => {
     end_date: req.body.endDate,
     marks: req.body.percentage,
     marks_card: req.files.marksheet.name,
-    provisional_marks_card: req.files.provisionalCertificate,
-    convocation_certificate: req.files.convocationCertificate,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
+  if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
+    console.log("inside if")
+    if(req.body.provisionalCertificate!=''){
+      console.log("s")
+      info.provisional_marks_card=req.files.provisionalCertificate.name
+      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
+    }else if(req.body.convocationCertificate!=''){
+      info.convocation_certificate=req.files.convocationCertificate.name
+      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
+    }
+  }
   if(req.body.marksheet==''){
     info.marks_card=dat.marks_card
   }else if(req.body.provisionalCertificate=='')
   {
     info.provisional_marks_card=dat.provisional_marks_card
-  }else if(req.body.provisionalCertificate=='')
+  }else if(req.body.convocationCertificate=='')
   {
     info.convocation_certificate=dat.convocation_certificate
   }
   else if(dat.marks_card!=req.files.marksheet.name) {
     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
   }
-  else if(dat.marks_card!=req.files.marksheet.name) {
+  else if(dat.provisional_marks_card!=req.files.provisional_marks_card.name) {
+    folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+  }
+  else if(dat.convocation_certificate!=req.files.convocation_certificate.name) {
     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
   }
   let educationData = await educationalInfo.update(info, {
