@@ -297,6 +297,7 @@ const addEducation = async (req, res) => {
     name: req.body.School,
     board: req.body.board,
     course: req.body.course,
+    specialization: req.body.specialization,
     start_date: req.body.startDate,
     end_date: req.body.endDate,
     marks: req.body.percentage,
