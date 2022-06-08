@@ -32,47 +32,47 @@ const addPersonalInfo = async (req, res) => {
   console.log("s");
   console.log(req.body);
 
-    const userData = await personalInfo.create(
-      {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        dob: req.body.dob,
-        gender: req.body.gender,
-        mobile_number: req.body.mobile_number,
-        alternate_number: req.body.alternate_number,
-        personal_email: req.body.personal_email,
-        photo: req.files.photo.name,
-        father_name: req.body.father_name,
-        created_at: req.body.created_at,
-        updated_at: req.body.updated_at,
-        updated_by: req.body.updated_by,
-        fk_person_users_id: req.body.fk_person_users_id,
-      },
+  const userData = await personalInfo.create(
+    {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      dob: req.body.dob,
+      gender: req.body.gender,
+      mobile_number: req.body.mobile_number,
+      alternate_number: req.body.alternate_number,
+      personal_email: req.body.personal_email,
+      photo: req.files.photo.name,
+      father_name: req.body.father_name,
+      created_at: req.body.created_at,
+      updated_at: req.body.updated_at,
+      updated_by: req.body.updated_by,
+      fk_person_users_id: req.body.fk_person_users_id,
+    },
 
-      {
-        fields: [
-          "first_name",
-          "last_name",
-          "dob",
-          "gender",
-          "mobile_number",
-          "alternate_number",
-          "personal_email",
-          "photo",
-          "father_name",
-          "created_at",
-          "updated_at",
-          "updated_by",
-          "fk_person_users_id",
-        ],
-      }
-    );
-    if (userData) {
-      folderFunctions.uploadfile(req.files, req.body.fk_person_users_id);
-      res.status(200).send({ message: "Successful" });
-    } else {
-      res.status(400).send({ message: "Unsuccessful" });
+    {
+      fields: [
+        "first_name",
+        "last_name",
+        "dob",
+        "gender",
+        "mobile_number",
+        "alternate_number",
+        "personal_email",
+        "photo",
+        "father_name",
+        "created_at",
+        "updated_at",
+        "updated_by",
+        "fk_person_users_id",
+      ],
     }
+  );
+  if (userData) {
+    folderFunctions.uploadfile(req.files, req.body.fk_person_users_id);
+    res.status(200).send({ message: "Successful" });
+  } else {
+    res.status(400).send({ message: "Unsuccessful" });
+  }
 };
 //update personal info table
 const updatePersonalInfo = async (req, res) => {
@@ -208,7 +208,7 @@ const addEmployment = async (req, res) => {
   };
   const userData = await employmentDetails.create(info);
   if (userData) {
-    folderFunctions.uploadfile(req.files,req.body.fk_employment_users_id)
+    folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -245,7 +245,7 @@ const updateEmployemnt = async (req, res) => {
   let employmentData = await employmentDetails.update(info, {
     where: { id: id },
   });
-  folderFunctions.uploadfile(req.files,req.body.fk_employment_users_id)
+  folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
   console.log("updated");
   res.send({ message: "updated" });
 };
@@ -307,20 +307,24 @@ const addEducation = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
-  if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
-    console.log("inside if")
-    if(req.body.provisionalCertificate!=''){
-      console.log("s")
-      info.provisional_marks_card=req.files.provisionalCertificate.name
-      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
-    }if(req.body.convocationCertificate!=''){
-      info.convocation_certificate=req.files.convocationCertificate.name
-      folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
+  if (
+    req.body.education == "Graduation" ||
+    req.body.education == "Masters/Post-Graduation"
+  ) {
+    console.log("inside if");
+    if (req.body.provisionalCertificate != "") {
+      console.log("s");
+      info.provisional_marks_card = req.files.provisionalCertificate.name;
+      folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
+    }
+    if (req.body.convocationCertificate != "") {
+      info.convocation_certificate = req.files.convocationCertificate.name;
+      folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
     }
   }
   const educationData = await educationalInfo.create(info);
   if (educationData) {
-    folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
+    folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -340,7 +344,7 @@ const getEducation = async (req, res) => {
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
   let id = req.params.id;
-  let dat = await educationalInfo.findOne( {
+  let dat = await educationalInfo.findOne({
     where: { id: id },
   });
   console.log(req.body);
@@ -359,42 +363,48 @@ const updateEducation = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
-  if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
-    console.log("inside if")
-    if(req.body.provisionalCertificate!=''){
-      console.log("s")
-      info.provisional_marks_card=req.files.provisionalCertificate.name
-    }else if(req.body.convocationCertificate!=''){
-      info.convocation_certificate=req.files.convocationCertificate.name
+  if (
+    req.body.education == "Graduation" ||
+    req.body.education == "Masters/Post-Graduation"
+  ) {
+    if (req.body.provisionalCertificate != "") {
+      if (dat.provisional_marks_card != req.files.provisionalCertificate.name) {
+        folderFunctions.removeFile(
+          dat.marks_card,
+          req.body.fk_education_users_id
+        );
+      }
+      info.provisional_marks_card = req.files.provisionalCertificate.name;
+    }
+    if (req.body.convocationCertificate != "") {
+      if (
+        dat.convocation_certificate != req.files.convocationCertificate.name
+      ) {
+        folderFunctions.removeFile(
+          dat.marks_card,
+          req.body.fk_education_users_id
+        );
+      }
+      info.convocation_certificate = req.files.convocationCertificate.name;
+    }
+    if (req.body.provisionalCertificate == "") {
+      info.provisional_marks_card = dat.provisional_marks_card;
+    }
+    if (req.body.convocationCertificate == "") {
+      info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if(req.body.marksheet==''){
-    info.marks_card=dat.marks_card
-  }if(dat.marks_card!=req.files.marksheet.name) {
-    folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
+  if (req.body.marksheet == "") {
+    info.marks_card = dat.marks_card;
   }
-  if(req.body.education=="Graduation" || req.body.education=="Masters/Post-Graduation"){
-    if(req.body.provisionalCertificate=='')
-   {
-     info.provisional_marks_card=dat.provisional_marks_card
-   } if(req.body.convocationCertificate=='')
-   {
-     info.convocation_certificate=dat.convocation_certificate
-   }
-    if(dat.marks_card!=req.files.marksheet.name) {
-     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
-   }
-    if(dat.provisional_marks_card!=req.files.provisionalCertificate.name) {
-     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
-   }
-    if(dat.convocation_certificate!=req.files.convocationCertificate.name) {
-     folderFunctions.removeFile(dat.marks_card,req.body.fk_education_users_id)
-   }
+  if (dat.marks_card != req.files.marksheet.name) {
+    folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
+
   let educationData = await educationalInfo.update(info, {
     where: { id: id },
   });
-  folderFunctions.uploadfile(req.files,req.body.fk_education_users_id)
+  folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
   console.log(educationData);
   res.send({ message: "updated" });
 };
@@ -668,7 +678,7 @@ const addImg = async (req, res) => {
   console.log(req.files);
   let img = req.files.photo.name;
   const usercredential = await user.update(
-    { photo: img},
+    { photo: img },
 
     { where: { id: req.body.id } }
   );
