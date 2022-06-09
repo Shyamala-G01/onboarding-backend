@@ -265,7 +265,7 @@ const updateEmployemnt = async (req, res) => {
   }
  
   let employmentData = await employmentDetails.update(info, {
-    where: { id: id },
+    where: { id: ids },
   });
   if(employmentData){
     folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
