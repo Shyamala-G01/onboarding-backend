@@ -509,7 +509,7 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 const updateOtherDetailAndBankDetails = async (req, res) => {
   let ids = req.params.id;
   console.log(req.files.passportDetails.name);
-  let dat=await otherDetails.findOne({where:{id:ids}})
+  let dat=await otherDetails.findOne({where:{fk_proof_users_id :ids}})
   console.log(dat)
   console.log(dat.account_number)
   console.log(dat.passport)
