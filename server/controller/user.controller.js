@@ -191,6 +191,7 @@ const addEmployment = async (req, res) => {
   );
   console.log(req.body);
   const info = {
+    type:req.body.type,
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
@@ -232,6 +233,7 @@ const updateEmployemnt = async (req, res) => {
   let ids = req.params.id;
   const dat=await employmentDetails.findOne({where:{id:ids}})
   const info = {
+    type:req.body.type,
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
