@@ -195,17 +195,21 @@ const addEmployment = async (req, res) => {
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
     relieving_letter: req.files.relievingLetter.name,
-    offer_letter: req.files.offerLetter.name,
-    pay_slip1: req.files.payslip1.name,
-    pay_slip2: req.files.payslip2.name,
-    pay_slip3: req.files.payslip3.name,
     hr_name: req.body.hr_name,
-    notice_date: req.body.noticePeriodEndDate,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
+  if(req.body.type=="Recent"){
+    info.offer_letter = req.files.offerLetter.name;
+    info.pay_slip1 = req.files.payslip1.name;
+    info.pay_slip2 = req.files.payslip2.name;
+    info.pay_slip3 = req.files.payslip3.name;
+    info.notice_date= req.body.noticePeriodEndDate;
+  }
+
+ 
   const userData = await employmentDetails.create(info);
   if (userData) {
     folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
@@ -225,29 +229,47 @@ const getEmployemnt = async (req, res) => {
 };
 
 const updateEmployemnt = async (req, res) => {
-  let id = req.params.id;
+  let ids = req.params.id;
+  const dat=await employmentDetails.findOne({where:{id:ids}})
   const info = {
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
     relieving_letter: req.files.relievingLetter.name,
-    offer_letter: req.files.offerLetter.name,
-    pay_slip1: req.files.payslip1.name,
-    pay_slip2: req.files.payslip2.name,
-    pay_slip3: req.files.payslip3.name,
     hr_name: req.body.hr_name,
-    notice_date: req.body.noticePeriodEndDate,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
+  if(req.body.type=="Recent"){
+    if(dat.offer_letter!=req.files.offerLetter.name){
+      folderFunctions.removeFile(dat.offer_letter,req.body.fk_employment_users_id)
+    }
+    if(dat.pay_slip1!=req.files.payslip1.name){
+      folderFunctions.removeFile(dat.pay_slip1,req.body.fk_employment_users_id)
+    }
+    if(dat.pay_slip2!=req.files.payslip2.name){
+      folderFunctions.removeFile(dat.pay_slip2,req.body.fk_employment_users_id)
+    }
+    if(dat.pay_slip3!=req.files.payslip3.name){
+      folderFunctions.removeFile(dat.pay_slip3,req.body.fk_employment_users_id)
+    }
+    info.offer_letter = req.files.offerLetter.name;
+    info.pay_slip1 = req.files.payslip1.name;
+    info.pay_slip2 = req.files.payslip2.name;
+    info.pay_slip3 = req.files.payslip3.name;
+    info.notice_date= req.body.noticePeriodEndDate;
+  }
+ 
   let employmentData = await employmentDetails.update(info, {
     where: { id: id },
   });
-  folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
-  console.log("updated");
-  res.send({ message: "updated" });
+  if(employmentData){
+    folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
+    console.log("updated");
+    res.send({ message: "updated" });
+  }
 };
 
 const deleteEmployemnt = async (req, res) => {
@@ -315,11 +337,9 @@ const addEducation = async (req, res) => {
     if (req.body.provisionalCertificate != "") {
       console.log("s");
       info.provisional_marks_card = req.files.provisionalCertificate.name;
-      folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
     }
     if (req.body.convocationCertificate != "") {
       info.convocation_certificate = req.files.convocationCertificate.name;
-      folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
     }
   }
   const educationData = await educationalInfo.create(info);
@@ -394,9 +414,6 @@ const updateEducation = async (req, res) => {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if (req.body.marksheet == "") {
-    info.marks_card = dat.marks_card;
-  }
   if (dat.marks_card != req.files.marksheet.name) {
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
@@ -432,18 +449,20 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   console.log(req.body);
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
-    aadhar: req.body.aadharCard,
+    aadhar: req.files.aadharCard.name,
     pan_card_number: req.body.pan_card_number,
-    pan_card: req.body.panCard,
+    pan_card: req.files.panCard.name,
     passport_number: req.body.passport_number,
     passport_expire_date: req.body.passport_expire,
-    passport: req.body.passportDetails,
-    covid_certificate: req.body.covidCertificate,
+    covid_certificate: req.files.covidCertificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
+  if(req.body.passportDetails!=''){
+    info.passport= req.body.passportDetails
+  }
   let bank = {
     account_holder_name: req.body.acc_holder_name,
     account_number: req.body.acc_number,
@@ -461,6 +480,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   const bankData = await bankdetails.create(bank);
   if (proofData && bankData) {
     console.log("other detail inside");
+    folderFunctions.uploadfile(req.files,req.body.fk_proof_users_id)
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -481,22 +501,29 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
-  let id = req.params.id;
+  let ids = req.params.id;
   console.log(req.body);
+  let dat=await otherDetails.findOne({where:{id:ids}})
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
-    aadhar: req.body.aadharCard,
+    aadhar: req.files.aadharCard.name,
     pan_card_number: req.body.pan_card_number,
-    pan_card: req.body.panCard,
+    pan_card: req.files.panCard.name,
     passport_number: req.body.passport_number,
     passport_expire_date: req.body.passport_expire,
-    passport: req.body.passportDetails,
-    covid_certificate: req.body.covidCertificate,
+    covid_certificate: req.files.covidCertificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
-  };
+  };if(req.body.passportDetails==''){
+    info.passport=dat.passport
+  }else if(dat.passport!=req.files.passportDetails.name){
+    folderFunctions.removeFile(dat.passport,req.body.fk_proof_users_id)
+    info.passport= req.body.passportDetails
+  }else{
+    info.passport= req.body.passportDetails
+  }
   let bank = {
     account_holder_name: req.body.acc_holder_name,
     account_number: req.body.acc_number,
@@ -518,6 +545,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   });
 
   if (proofData && bankData) {
+    folderFunctions.uploadfile(req.files,req.body.fk_proof_users_id)
     res.send({ message: "updated" });
   } else {
     res.send({ message: "cannot update" });
