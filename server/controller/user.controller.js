@@ -510,8 +510,9 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   let ids = req.params.id;
   console.log(req.files.passportDetails.name);
   let dat=await otherDetails.findOne({where:{id:ids}})
-  console.log(dat.passport)
+  console.log(dat)
   console.log(dat.account_number)
+  console.log(dat.passport)
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     aadhar: req.files.aadharCard.name,
