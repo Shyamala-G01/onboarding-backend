@@ -508,7 +508,7 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
   let ids = req.params.id;
-  console.log(req.body);
+  console.log(req.files.passportDetails.name);
   let dat=await otherDetails.findOne({where:{id:ids}})
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
@@ -522,9 +522,10 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
-  };if(req.body.passportDetails==''){
+  };
+  if(req.body.passportDetails==''){
     info.passport=dat.passport
-  }else if(dat.passport!=req.files.passportDetails.name){
+  }else if( !=req.files.passportDetails.name){
     folderFunctions.removeFile(dat.passport,req.body.fk_proof_users_id)
     info.passport= req.body.passportDetails
   }else{
