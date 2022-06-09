@@ -525,7 +525,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   };
   if(req.body.passportDetails==''){
     info.passport=dat.passport
-  }else if( !=req.files.passportDetails.name){
+  }else if(dat.passport!=req.files.passportDetails.name){
     folderFunctions.removeFile(dat.passport,req.body.fk_proof_users_id)
     info.passport= req.body.passportDetails
   }else{
