@@ -499,7 +499,11 @@ const getOtherDetailAndBankDetails = async (req, res) => {
   });
   let datas = [proofData, bankData];
   console.log(proofData);
-  res.send(datas);
+  if(proofData && bankData){
+    res.send(datas);
+  }else {
+    res.send([])
+  }
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
