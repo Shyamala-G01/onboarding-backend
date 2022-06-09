@@ -548,10 +548,10 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     fk_bank_users_id: req.body.fk_proof_users_id,
   };
   let proofData = await otherDetails.update(info, {
-    where: { fk_proof_users_id: id },
+    where: { fk_proof_users_id: ids },
   });
   let bankData = await bankdetails.update(bank, {
-    where: { fk_bank_users_id: id },
+    where: { fk_bank_users_id: ids},
   });
 
   if (proofData && bankData) {
