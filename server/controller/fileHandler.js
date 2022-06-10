@@ -25,12 +25,12 @@ const createFolder = (id) => {
   });
 };
 //uploading the file
-const uploadfile = async (files, id) => {
+const uploadfile =  (files, id) => {
   const mainPath = mainDirectoryPath + "/" + id;
   for (const item in files) {
     const dat = files[item];
     const savePath = path.join(mainPath, dat.name);
-    await dat.mv(savePath);
+    dat.mv(savePath);
     console.log("s completed");
   }
 };
