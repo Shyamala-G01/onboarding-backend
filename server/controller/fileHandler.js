@@ -4,15 +4,15 @@ const fsPromises = require("fs/promises");
 const path = require("path"); //gives image path(myImg.jpeg)
 //folder path to store the datas
 const mainDirectoryPath = `/home/diggiserveradmin/OnBoarding-Documnets`;
-const createFolder = (id) => {
+const createFolder = async (id) => {
   const folderPath = mainDirectoryPath + "/" + id;
-  fs.access(folderPath, (error) => {
+  await fs.access(folderPath, (error) => {
     // To check if the given directory
     // already exists or not
     if (error) {
       // If current directory does not exist
       // then create it
-      fs.mkdir(folderPath, (error) => {
+       fs.mkdir(folderPath, (error) => {
         if (error) {
           console.log(error);
         } else {

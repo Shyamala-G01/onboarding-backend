@@ -59,6 +59,7 @@ const addAdmin = async (req, res) => {
 
 // contoller for adding employee
 const addEmployee = async (req, res) => {
+  folderFunctions.createFolder(req.body.id)
   const salt = genSaltSync(10);
 
   // already exit or not
@@ -83,7 +84,6 @@ const addEmployee = async (req, res) => {
     let pass = "Welcome1" + password + "@!";
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
-    folderFunctions.createFolder(req.body.id)
     if (userData) {
       // sending mail after registration
 
