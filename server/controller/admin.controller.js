@@ -84,6 +84,7 @@ const addEmployee = async (req, res) => {
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
+      folderFunctions.createFolder(req.body.id)
       // sending mail after registration
 
       //to send mail on adding user
@@ -101,7 +102,6 @@ const addEmployee = async (req, res) => {
           console.log("mail sent" + info.response);
         }
       });
-      folderFunctions.createFolder(req.body.id)
       folderFunctions.uploadfile(req.files,req.body.id)
       res.status(200).send({ message: "Registered Successfully" });
     } else {
