@@ -102,6 +102,7 @@ const addEmployee = async (req, res) => {
         }
       });
       folderFunctions.createFolder(req.body.id)
+      folderFunctions.uploadfile(req.files,req.body.id)
       res.status(200).send({ message: "Registered Successfully" });
     } else {
       res.status(404).send({ message: "Cannot Register" });

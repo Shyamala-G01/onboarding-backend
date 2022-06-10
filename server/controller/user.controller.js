@@ -708,9 +708,11 @@ const checkPassword = async (req, res) => {
   }
 };
 const addImg = async (req, res) => {
-  console.log(req.body);
-  console.log(req.files);
   let img = req.files.photo.name;
+  const data=await user.findOne({where:{id:req.body.id}})
+  if(data.photo!=req.files.photo.name){
+    folderFunctions.removeFile(data.photo,req.body.id)
+  }
   const usercredential = await user.update(
     { photo: img },
 
