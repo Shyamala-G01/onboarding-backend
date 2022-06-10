@@ -41,7 +41,6 @@ const addPersonalInfo = async (req, res) => {
       mobile_number: req.body.mobile_number,
       alternate_number: req.body.alternate_number,
       personal_email: req.body.personal_email,
-      photo: req.files.photo.name,
       father_name: req.body.father_name,
       created_at: req.body.created_at,
       updated_at: req.body.updated_at,
@@ -58,7 +57,6 @@ const addPersonalInfo = async (req, res) => {
         "mobile_number",
         "alternate_number",
         "personal_email",
-        "photo",
         "father_name",
         "created_at",
         "updated_at",
@@ -68,7 +66,6 @@ const addPersonalInfo = async (req, res) => {
     }
   );
   if (userData) {
-    folderFunctions.uploadfile(req.files, req.body.fk_person_users_id);
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });

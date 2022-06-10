@@ -81,7 +81,7 @@ const addEmployee = async (req, res) => {
       status: req.body.status,
     };
     let password = req.body.name.replaceAll(" ", "");
-    let pass = "Welcome1" + password + "@!";
+    let pass = password+ "@!"+Math.floor(Math.random() * 10);
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
