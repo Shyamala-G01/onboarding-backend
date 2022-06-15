@@ -87,9 +87,6 @@ const verifyToken = (req, res, next) => {
         error: err,
       });
     }
-
-    //   req.userId = decoded.id;
-
     next();
   });
 };

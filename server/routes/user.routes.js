@@ -134,4 +134,9 @@ Router.get(
   authController.verifyToken,
   userController.getImg
 );
+Router.get(
+  "/getOfferLetter/:id",
+  authController.verifyToken,
+  userController.getOfferLetter
+);
 module.exports = Router;
