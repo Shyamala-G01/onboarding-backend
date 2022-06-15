@@ -727,7 +727,7 @@ const getImg = async (req, res) => {
 const getOfferLetter=async(req,res)=>{
   let reqId = req.params.id;
   const data = await user.findOne({ where: { id: reqId } });
-  res.send(data.offer_letter)
+  res.send(data)
 }
 module.exports = {
   addPersonalInfo,
