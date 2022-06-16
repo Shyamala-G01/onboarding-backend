@@ -143,15 +143,15 @@ const getEmployeeById =async (req,res)=>{
       },
       {
         model: ProofCertificates,
-        as: "proof_certificate",
+        as: "other_details",
       },
       {
         model: BankDetails,
-        as: "bank_details",
+        as: "bank_detail",
       },
       {
         model: Declaration,
-        as: "declaration",
+        as: "other_declaration",
       }
     ],
     where: { id: req.params.id },
