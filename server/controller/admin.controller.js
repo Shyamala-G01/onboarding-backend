@@ -2,6 +2,14 @@ require("sequelize");
 const db = require("../model");
 const user = db.user;
 const admin = db.admin;
+//get all models of a user
+const PersnonalInfo=db.personalInfo
+const Address=db.address
+const EducationalInfo=db.educationalInfo
+const EmploymentDetails=db.employmentDetails
+const ProofCertificates=db.proofCertificates
+const BankDetails=db.bankDetails
+const Declaration=db.declaration
 //encrypting and comparing
 const { genSaltSync, hashSync } = require("bcrypt");
 
@@ -110,14 +118,50 @@ const addEmployee = async (req, res) => {
   }
 };
 
-// const getAdmin = async (req, res) => {
-//   let email = req.body.email;
-//   let users = await admin.findOne({ where: { email: email } });
-//   res.send(users);
-// };
+const getEmploees=async(req,res)=>{
+  let users = await user.findAll({});
+  res.send(users);
+}
+const getEmployeeById =async (req,res)=>{
+  let users = await user.findAll({
+    include:[
+      {
+        model: PersnonalInfo,
+        as: "personal_info",
+      },
+      {
+        model: Address,
+        as: "address",
+      },
+      {
+        model: EducationalInfo,
+        as: "educational_info",
+      },
+      {
+        model: EmploymentDetails,
+        as: "employment_details",
+      },
+      {
+        model: ProofCertificates,
+        as: "proof_certificate",
+      },
+      {
+        model: BankDetails,
+        as: "bank_details",
+      },
+      {
+        model: Declaration,
+        as: "declaration",
+      }
+    ],
+    where: { id: req.params.id },
+  });
+  res.send(users)
+}
 
 module.exports = {
   addAdmin,
   addEmployee,
-  // getAdmin
+  getEmploees,
+  getEmployeeById
 };
