@@ -376,7 +376,6 @@ const updateEducation = async (req, res) => {
     start_date: req.body.startDate,
     end_date: req.body.endDate,
     marks: req.body.percentage,
-    marks_card: req.files.marksheet.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -413,7 +412,10 @@ const updateEducation = async (req, res) => {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if (dat.marks_card != req.files.marksheet.name) {
+ if(req.body.marksheet==''){
+    info.marks_card=dat.marks_card;
+ }
+  else if (dat.marks_card != req.files.marksheet.name) {
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
 
