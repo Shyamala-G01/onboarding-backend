@@ -45,6 +45,7 @@ const addPersonalInfo = async (req, res) => {
       created_at: req.body.created_at,
       updated_at: req.body.updated_at,
       updated_by: req.body.updated_by,
+      status:'completed',
       fk_person_users_id: req.body.fk_person_users_id,
     },
 
