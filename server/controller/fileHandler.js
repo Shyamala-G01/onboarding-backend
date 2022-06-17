@@ -4,6 +4,7 @@ const fsPromises = require("fs/promises");
 const path = require("path"); //gives image path(myImg.jpeg)
 //folder path to store the datas
 const mainDirectoryPath = `/home/diggiserveradmin/OnBoarding-Documnets`;
+const adminFolder=`/home/diggiserveradmin/OnBoarding-Documnets/Admin`
 const createFolder = async (id) => {
   const folderPath = mainDirectoryPath + "/" + id;
   await fs.access(folderPath, (error) => {
@@ -45,4 +46,21 @@ const removeFile = async (files, id) => {
     }
   });
 };
-module.exports = { createFolder, uploadfile, removeFile };
+const uploadAdminImg=async(files)=>{
+    const dat = files;
+    const savePath = path.join(adminFolder, `${dat.name}-${id}`);
+    dat.mv(savePath);
+    console.log("s completed");
+}
+const removeAdminImg = async (files, id) => {
+  const mainPath = adminFolder + "/" +files;
+  console.log(mainPath);
+  fs.unlink(mainPath, function (err) {
+    if (err) {
+      console.log("err");
+    } else {
+      console.log("Successfully deleted the file.");
+    }
+  });
+};
+module.exports = { createFolder, uploadfile, removeFile,uploadAdminImg,removeAdminImg };
