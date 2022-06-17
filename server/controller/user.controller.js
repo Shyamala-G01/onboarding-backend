@@ -386,9 +386,12 @@ const updateEducation = async (req, res) => {
     req.body.education == "Masters/Post-Graduation"
   ) {
     if (req.body.provisionalCertificate != "") {
+      console.log(dat.provisional_marks_card)
+      console.log(req.files.provisionalCertificate.name)
+
       if (dat.provisional_marks_card != req.files.provisionalCertificate.name) {
         folderFunctions.removeFile(
-          dat.marks_card,
+          dat.provisional_marks_card,
           req.body.fk_education_users_id
         );
       }
@@ -399,7 +402,7 @@ const updateEducation = async (req, res) => {
         dat.convocation_certificate != req.files.convocationCertificate.name
       ) {
         folderFunctions.removeFile(
-          dat.marks_card,
+          dat.convocation_certificate,
           req.body.fk_education_users_id
         );
       }
