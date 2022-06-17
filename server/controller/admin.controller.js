@@ -81,6 +81,7 @@ const addEmployee = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       phone_number: req.body.phone_number,
+      offer_letter:req.files.offerLetter.name,
       designation: req.body.designation,
       created_at: req.body.created_at,
       created_by: req.body.created_by,
