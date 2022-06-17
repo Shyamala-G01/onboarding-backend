@@ -169,7 +169,7 @@ const addImg = async (req, res) => {
 
     { where: { id: req.body.id } }
   );
-  folderFunctions.uploadAdminImg(req.files, req.body.id);
+  folderFunctions.uploadAdminImg(req.files.photo, req.body.id);
   res.send({ message: "added sucessfully" });
 };
 const getImg = async (req, res) => {

@@ -46,13 +46,13 @@ const removeFile = async (files, id) => {
     }
   });
 };
-const uploadAdminImg=async(files)=>{
+const uploadAdminImg=async(files,id)=>{
     const dat = files;
     const savePath = path.join(adminFolder, `${dat.name}-${id}`);
     dat.mv(savePath);
     console.log("s completed");
 }
-const removeAdminImg = async (files, id) => {
+const removeAdminImg = async (files) => {
   const mainPath = adminFolder + "/" +files;
   console.log(mainPath);
   fs.unlink(mainPath, function (err) {
