@@ -182,6 +182,9 @@ const addEmployment = async (req, res) => {
 
   const info = {
     type: req.body.type,
+     created_at:req.body.created_at,
+    updated_at:req.body.updated_at,
+    updated_by:req.body.updated_by ,
     fk_employment_users_id:req.body.fk_employment_users_id
   };
   if(req.body.type!='Fresher'){
@@ -189,10 +192,7 @@ const addEmployment = async (req, res) => {
     info.joining_date=req.body.joiningDate,
     info.relieving_date= req.body.relievingDate,
     info.relieving_letter= req.files.relievingLetter.name,
-    info.hr_name= req.body.hr_name,
-    info. created_at= req.body.created_at,
-    info.updated_at= req.body.updated_at,
-    info.updated_by= req.body.updated_by    
+    info.hr_name= req.body.hr_name 
   }
   if (req.body.type == "Recent") {
     info.offer_letter = req.files.offerLetter.name;
