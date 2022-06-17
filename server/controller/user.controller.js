@@ -17,8 +17,6 @@ const transporter = mail.transporter;
 
 //import file handler to create folder
 const folderFunctions = require("../controller/fileHandler");
-const { canTreatArrayAsAnd } = require("sequelize/types/utils");
-
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
   const data = await user.findOne({
