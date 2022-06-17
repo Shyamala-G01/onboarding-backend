@@ -17,6 +17,7 @@ const transporter = mail.transporter;
 
 //import file handler to create folder
 const folderFunctions = require("../controller/fileHandler");
+const { canTreatArrayAsAnd } = require("sequelize/types/utils");
 
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
@@ -178,28 +179,23 @@ const changePassword = async (req, res) => {
 
 // employment
 const addEmployment = async (req, res) => {
-  const userEmployment = await user.findOne({
-    where: { id: req.body.fk_employment_users_id },
-  });
-
-  const usercredential = await user.update(
-    { status: userEmployment.status + 20 },
-
-    { where: { id: req.body.fk_employment_users_id } }
-  );
+  
   console.log(req.body);
+
   const info = {
     type: req.body.type,
-    org_name: req.body.organizationName,
-    joining_date: req.body.joiningDate,
-    relieving_date: req.body.relievingDate,
-    relieving_letter: req.files.relievingLetter.name,
-    hr_name: req.body.hr_name,
-    created_at: req.body.created_at,
-    updated_at: req.body.updated_at,
-    updated_by: req.body.updated_by,
-    fk_employment_users_id: req.body.fk_employment_users_id,
+    fk_employment_users_id:req.body.fk_employment_users_id
   };
+  if(req.body.type!='Fresher'){
+    info.org_name=req.body.organizationName,
+    info.joining_date=req.body.joiningDate,
+    info.relieving_date= req.body.relievingDate,
+    info.relieving_letter= req.files.relievingLetter.name,
+    info.hr_name= req.body.hr_name,
+    info. created_at= req.body.created_at,
+    info.updated_at= req.body.updated_at,
+    info.updated_by= req.body.updated_by    
+  }
   if (req.body.type == "Recent") {
     info.offer_letter = req.files.offerLetter.name;
     info.pay_slip1 = req.files.payslip1.name;
@@ -763,6 +759,10 @@ const getOfferLetter = async (req, res) => {
   const data = await user.findOne({ where: { id: reqId } });
   res.send(data);
 };
+const getStatus= async(req,res)=>{
+  let reqId = req.params.id;
+  const personalInfo= await user.findOne({where:{id:reqId}})
+}
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
