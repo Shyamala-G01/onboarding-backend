@@ -158,10 +158,31 @@ const getEmployeeById =async (req,res)=>{
   });
   res.send(users)
 }
+const addImg = async (req, res) => {
+  let img = req.files.photo.name;
+  const data = await admin.findOne({ where: { id: req.body.id } });
+  if (data.photo != req.files.photo.name) {
+    folderFunctions.removeFile(data.photo, req.body.id);
+  }
+  const usercredential = await admin.update(
+    { photo: img },
+
+    { where: { id: req.body.id } }
+  );
+  folderFunctions.uploadfile(req.files, req.body.id);
+  res.send({ message: "added sucessfully" });
+};
+const getImg = async (req, res) => {
+  let reqId = req.params.id;
+  const data = await admin.findOne({ where: { id: reqId } });
+  res.send(data);
+};
 
 module.exports = {
   addAdmin,
   addEmployee,
   getEmploees,
-  getEmployeeById
+  getEmployeeById,
+  addImg,
+  getImg
 };

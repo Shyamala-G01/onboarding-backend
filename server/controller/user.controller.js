@@ -188,7 +188,7 @@ const addEmployment = async (req, res) => {
   );
   console.log(req.body);
   const info = {
-    type:req.body.type,
+    type: req.body.type,
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
@@ -199,15 +199,14 @@ const addEmployment = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if(req.body.type=="Recent"){
+  if (req.body.type == "Recent") {
     info.offer_letter = req.files.offerLetter.name;
     info.pay_slip1 = req.files.payslip1.name;
     info.pay_slip2 = req.files.payslip2.name;
     info.pay_slip3 = req.files.payslip3.name;
-    info.notice_date= req.body.noticePeriodEndDate;
+    info.notice_date = req.body.noticePeriodEndDate;
   }
 
- 
   const userData = await employmentDetails.create(info);
   if (userData) {
     folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
@@ -228,43 +227,72 @@ const getEmployemnt = async (req, res) => {
 
 const updateEmployemnt = async (req, res) => {
   let ids = req.params.id;
-  const dat=await employmentDetails.findOne({where:{id:ids}})
+  const dat = await employmentDetails.findOne({ where: { id: ids } });
   const info = {
-    type:req.body.type,
+    type: req.body.type,
     org_name: req.body.organizationName,
     joining_date: req.body.joiningDate,
     relieving_date: req.body.relievingDate,
-    relieving_letter: req.files.relievingLetter.name,
+
     hr_name: req.body.hr_name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if(req.body.type=="Recent"){
-    if(dat.offer_letter!=req.files.offerLetter.name){
-      folderFunctions.removeFile(dat.offer_letter,req.body.fk_employment_users_id)
-    }
-    if(dat.pay_slip1!=req.files.payslip1.name){
-      folderFunctions.removeFile(dat.pay_slip1,req.body.fk_employment_users_id)
-    }
-    if(dat.pay_slip2!=req.files.payslip2.name){
-      folderFunctions.removeFile(dat.pay_slip2,req.body.fk_employment_users_id)
-    }
-    if(dat.pay_slip3!=req.files.payslip3.name){
-      folderFunctions.removeFile(dat.pay_slip3,req.body.fk_employment_users_id)
-    }
-    info.offer_letter = req.files.offerLetter.name;
-    info.pay_slip1 = req.files.payslip1.name;
-    info.pay_slip2 = req.files.payslip2.name;
-    info.pay_slip3 = req.files.payslip3.name;
-    info.notice_date= req.body.noticePeriodEndDate;
+  if (req.body.relievingLetter == "") {
+    info.relieving_letter = dat.relieving_letter;
+  } else {
+    info.relieving_letter = req.files.relievingLetter.name;
   }
- 
+  if (req.body.type == "Recent") {
+    if (req.body.offerLetter != "") {
+      folderFunctions.removeFile(
+        dat.offer_letter,
+        req.body.fk_employment_users_id
+      );
+      info.offer_letter = req.files.offerLetter.name;
+    }
+    if (req.body.payslip1 != "") {
+      folderFunctions.removeFile(
+        dat.pay_slip1,
+        req.body.fk_employment_users_id
+      );
+      info.pay_slip1 = req.files.payslip1.name;
+    }
+    if (req.body.payslip2 != "") {
+      folderFunctions.removeFile(
+        dat.pay_slip2,
+        req.body.fk_employment_users_id
+      );
+      info.pay_slip2 = req.files.payslip2.name;
+    }
+    if (req.body.payslip3 != "") {
+      info.pay_slip3 = req.files.payslip3.name;
+      folderFunctions.removeFile(
+        dat.pay_slip3,
+        req.body.fk_employment_users_id
+      );
+    }
+    if (req.body.offerLetter == "") {
+      info.offer_letter = dat.offer_letter;
+    }
+    if (req.body.payslip1 == "") {
+      info.pay_slip1 = dat.pay_slip1;
+    }
+    if (req.body.payslip2 == "") {
+      info.pay_slip2 = dat.pay_slip2;
+    }
+    if (req.body.payslip3 == "") {
+      info.pay_slip3 = dat.pay_slip3;
+    }
+    info.notice_date = req.body.noticePeriodEndDate;
+  }
+
   let employmentData = await employmentDetails.update(info, {
     where: { id: ids },
   });
-  if(employmentData){
+  if (employmentData) {
     folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
     console.log("updated");
     res.send({ message: "updated" });
@@ -386,8 +414,8 @@ const updateEducation = async (req, res) => {
     req.body.education == "Masters/Post-Graduation"
   ) {
     if (req.body.provisionalCertificate != "") {
-      console.log(dat.provisional_marks_card)
-      console.log(req.files.provisionalCertificate.name)
+      console.log(dat.provisional_marks_card);
+      console.log(req.files.provisionalCertificate.name);
 
       if (dat.provisional_marks_card != req.files.provisionalCertificate.name) {
         folderFunctions.removeFile(
@@ -415,11 +443,10 @@ const updateEducation = async (req, res) => {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
- if(req.body.marksheet==''){
-    info.marks_card=dat.marks_card;
- }
-  else if (dat.marks_card != req.files.marksheet.name) {
-    info.marks_card=req.files.marksheet.name
+  if (req.body.marksheet == "") {
+    info.marks_card = dat.marks_card;
+  } else if (dat.marks_card != req.files.marksheet.name) {
+    info.marks_card = req.files.marksheet.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
 
@@ -465,8 +492,8 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if(req.body.passportDetails!=''){
-    info.passport= req.files.passportDetails.name
+  if (req.body.passportDetails != "") {
+    info.passport = req.files.passportDetails.name;
   }
   let bank = {
     account_holder_name: req.body.acc_holder_name,
@@ -485,7 +512,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   const bankData = await bankdetails.create(bank);
   if (proofData && bankData) {
     console.log("other detail inside");
-    folderFunctions.uploadfile(req.files,req.body.fk_proof_users_id)
+    folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -502,16 +529,16 @@ const getOtherDetailAndBankDetails = async (req, res) => {
   });
   let datas = [proofData, bankData];
   console.log(proofData);
-  if(proofData && bankData){
+  if (proofData && bankData) {
     res.send(datas);
-  }else {
-    res.send([])
+  } else {
+    res.send([]);
   }
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
   let ids = req.params.id;
-  let dat=await otherDetails.findOne({where:{fk_proof_users_id :ids}})
+  let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     aadhar: req.files.aadharCard.name,
@@ -525,13 +552,13 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if(req.body.passportDetails==''){
-    info.passport=dat.passport
-  }else if(dat.passport!=req.files.passportDetails.name){
-    folderFunctions.removeFile(dat.passport,req.body.fk_proof_users_id)
-    info.passport= req.body.passportDetails
-  }else{
-    info.passport= req.body.passportDetails
+  if (req.body.passportDetails == "") {
+    info.passport = dat.passport;
+  } else if (dat.passport != req.files.passportDetails.name) {
+    folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
+    info.passport = req.body.passportDetails;
+  } else {
+    info.passport = req.body.passportDetails;
   }
   let bank = {
     account_holder_name: req.body.acc_holder_name,
@@ -550,11 +577,11 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     where: { fk_proof_users_id: ids },
   });
   let bankData = await bankdetails.update(bank, {
-    where: { fk_bank_users_id: ids},
+    where: { fk_bank_users_id: ids },
   });
 
   if (proofData && bankData) {
-    folderFunctions.uploadfile(req.files,req.body.fk_proof_users_id)
+    folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
     res.send({ message: "updated" });
   } else {
     res.send({ message: "cannot update" });
@@ -712,9 +739,9 @@ const checkPassword = async (req, res) => {
 };
 const addImg = async (req, res) => {
   let img = req.files.photo.name;
-  const data=await user.findOne({where:{id:req.body.id}})
-  if(data.photo!=req.files.photo.name){
-    folderFunctions.removeFile(data.photo,req.body.id)
+  const data = await user.findOne({ where: { id: req.body.id } });
+  if (data.photo != req.files.photo.name) {
+    folderFunctions.removeFile(data.photo, req.body.id);
   }
   const usercredential = await user.update(
     { photo: img },
@@ -730,11 +757,11 @@ const getImg = async (req, res) => {
   console.log(data.photo);
   res.send(data);
 };
-const getOfferLetter=async(req,res)=>{
+const getOfferLetter = async (req, res) => {
   let reqId = req.params.id;
   const data = await user.findOne({ where: { id: reqId } });
-  res.send(data)
-}
+  res.send(data);
+};
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -760,5 +787,5 @@ module.exports = {
   checkPassword,
   addImg,
   getImg,
-  getOfferLetter
+  getOfferLetter,
 };
