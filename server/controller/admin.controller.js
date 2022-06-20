@@ -180,7 +180,7 @@ const getImg = async (req, res) => {
 };
 const getRecentEmployees=async (req,res)=>{
   let users = await user.findAll({where: {
-    start_datetime: {
+    created_at: {
       $gte: moment().subtract(2, 'days').toDate()
     }
   }});
