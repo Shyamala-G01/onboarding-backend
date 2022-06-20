@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       updated_by: {
         type: DataTypes.STRING,
+      }, status: {
+        type: DataTypes.STRING,
       },
     },
     {
