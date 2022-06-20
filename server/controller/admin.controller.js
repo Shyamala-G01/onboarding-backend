@@ -176,7 +176,7 @@ const addImg = async (req, res) => {
 const getImg = async (req, res) => {
   let reqId = req.params.id;
   const data = await admin.findOne({ where: { id: reqId } });
-  res.send(data);
+  res.send({pic:data.photo});
 };
 
 module.exports = {
