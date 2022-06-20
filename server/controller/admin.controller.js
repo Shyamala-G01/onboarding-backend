@@ -193,7 +193,14 @@ const getRecentEmployees=async (req,res)=>{
   }});
   res.send(users);
 }
+const deleteEmployee=async (req,res)=>{
+  let ids = Number(req.params.id);
+  let data = await user.destroy({
+    where: { id: ids },
+  });
 
+  res.send({ message: "deleted" });
+}
 module.exports = {
   addAdmin,
   addEmployee,
@@ -201,5 +208,6 @@ module.exports = {
   getEmployeeById,
   addImg,
   getImg,
-  getRecentEmployees
+  getRecentEmployees,
+  deleteEmployee
 };

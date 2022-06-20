@@ -10,5 +10,5 @@ Router.get('/getRecentUsers',authController.verifyToken,adminController.getRecen
 Router.get('/getUserById/:id',authController.verifyToken,adminController.getEmployeeById)
 Router.put('/addAdminImg',authController.verifyToken,adminController.addImg)
 Router.get('/getAdminImg/:id',authController.verifyToken,adminController.getImg)
-
+Router.delete('/deleteEmployee/:id',authController.verifyToken,adminController.deleteEmployee)
 module.exports = Router
