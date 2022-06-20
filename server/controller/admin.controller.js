@@ -194,7 +194,7 @@ const getRecentEmployees=async (req,res)=>{
   res.send(users);
 }
 const deleteEmployee=async (req,res)=>{
-  let ids = Number(req.params.id);
+  let ids = req.params.id;
   let data = await user.destroy({
     where: { id: ids },
   });
