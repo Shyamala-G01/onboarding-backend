@@ -1,4 +1,4 @@
-require("sequelize");
+const sq=require('sequelize')
 const db = require("../model");
 const user = db.user;
 const admin = db.admin;
@@ -10,6 +10,8 @@ const EmploymentDetails=db.employmentDetails
 const ProofCertificates=db.proofCertificates
 const BankDetails=db.bankDetails
 const Declaration=db.declaration
+//
+const Op = sq.Op
 //encrypting and comparing
 const { genSaltSync, hashSync } = require("bcrypt");
 
@@ -186,7 +188,7 @@ const getRecentEmployees=async (req,res)=>{
   console.log("start"+startDate)
   let users = await user.findAll({ where: {
     start_datetime: {
-      $between: [startDate, endDate]
+      [Op.between]: [startDate, endDate]
     }
   }});
   res.send(users);
