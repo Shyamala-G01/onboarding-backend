@@ -764,8 +764,8 @@ const getStatus= async(req,res)=>{
   const personal= await personalInfo.findOne({where:{fk_person_users_id:reqId}, attributes: ['status']})
   const educational_info= await educationalInfo.findOne({where:{fk_education_users_id:reqId,type:'Graduation'}, attributes: ['status']})
   const employment= await employmentDetails.findOne({where:{fk_employment_users_id:reqId}, attributes: ['status']})
-  const otherDetails= await user.findOne({where:{fk_proof_users_id:reqId}, attributes: ['status']})
-  const declaration= await user.findOne({where:{fk_declaration_users_id:reqId}, attributes: ['status']})
+  const otherDetails= await otherDetails.findOne({where:{fk_proof_users_id:reqId}, attributes: ['status']})
+  const declaration= await declaration.findOne({where:{fk_declaration_users_id:reqId}, attributes: ['status']})
   res.send({personStatus:personal,edStatus:educational_info,empStatus:employment,othStatus:otherDetails,decStatus:declaration})
 }
 module.exports = {
