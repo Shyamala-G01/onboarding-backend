@@ -180,9 +180,11 @@ const getImg = async (req, res) => {
   res.send({pic:data.photo});
 };
 const getRecentEmployees=async (req,res)=>{
+  const twoDaysAgo = new Date(new Date().setDate(new Date().getDate() - 2));
   let users = await user.findAll({ where: {
     start_datetime: {
-      $gte: Sequelize.literal('NOW() - INTERVAL \'7d\''),
+      $gt: twoDaysAgo,
+      $lt: new Date(),
     }
   }});
   res.send(users);
