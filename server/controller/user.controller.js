@@ -357,6 +357,7 @@ const addEducation = async (req, res) => {
     req.body.education == "Masters/Post-Graduation"
   ) {
     console.log("inside if");
+    info.status="completed"
     if (req.body.provisionalCertificate != "") {
       console.log("s");
       info.provisional_marks_card = req.files.provisionalCertificate.name;
