@@ -61,6 +61,7 @@ const addPersonalInfo = async (req, res) => {
         "created_at",
         "updated_at",
         "updated_by",
+        "status",
         "fk_person_users_id",
       ],
     }

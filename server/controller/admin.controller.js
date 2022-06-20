@@ -201,6 +201,9 @@ const deleteEmployee=async (req,res)=>{
 
   res.send({ message: "deleted" });
 }
+const getTotals=async (req,res)=>{
+  
+}
 module.exports = {
   addAdmin,
   addEmployee,
