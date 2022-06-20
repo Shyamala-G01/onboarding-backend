@@ -178,6 +178,14 @@ const getImg = async (req, res) => {
   const data = await admin.findOne({ where: { id: reqId } });
   res.send({pic:data.photo});
 };
+const getRecentEmployees=async (req,res)=>{
+  let users = await user.findAll({where: {
+    start_datetime: {
+      $gte: moment().subtract(2, 'days').toDate()
+    }
+  }});
+  res.send(users);
+}
 
 module.exports = {
   addAdmin,
@@ -185,5 +193,6 @@ module.exports = {
   getEmploees,
   getEmployeeById,
   addImg,
-  getImg
+  getImg,
+  getRecentEmployees
 };

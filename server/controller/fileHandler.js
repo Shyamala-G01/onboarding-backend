@@ -52,7 +52,7 @@ const uploadAdminImg=async(files,id)=>{
     dat.mv(savePath);
     console.log("s completed");
 }
-const removeAdminImg = async (files) => {
+const removeAdminImg =  (files) => {
   const mainPath = adminFolder + "/" +files;
   console.log(mainPath);
   fs.unlink(mainPath, function (err) {
