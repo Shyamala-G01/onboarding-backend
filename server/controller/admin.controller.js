@@ -181,9 +181,9 @@ const getImg = async (req, res) => {
 };
 const getRecentEmployees=async (req,res)=>{
   const endDate = new Date();
-  console.log(endDate)
+  console.log("end"+endDate)
   const startDate=(endDate.getDate()-2)
-  console.log(startDate)
+  console.log("start"+startDate)
   let users = await user.findAll({ where: {
     start_datetime: {
       $between: [startDate, endDate]
