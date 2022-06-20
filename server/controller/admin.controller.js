@@ -187,7 +187,7 @@ const getRecentEmployees=async (req,res)=>{
   const startDate=new Date(Date.now() - 48 * 3600 * 1000)
   console.log("start"+startDate)
   let users = await user.findAll({ where: {
-    start_datetime: {
+    created_at: {
       [Op.between]: [startDate, endDate]
     }
   }});
