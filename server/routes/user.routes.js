@@ -139,4 +139,9 @@ Router.get(
   authController.verifyToken,
   userController.getOfferLetter
 );
+Router.get(
+  "/getStatus/:id",
+  authController.verifyToken,
+  userController.getStatus
+);
 module.exports = Router;

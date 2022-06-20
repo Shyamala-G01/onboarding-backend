@@ -761,7 +761,12 @@ const getOfferLetter = async (req, res) => {
 };
 const getStatus= async(req,res)=>{
   let reqId = req.params.id;
-  const personalInfo= await user.findOne({where:{id:reqId}})
+  const personal= await personalInfo.findOne({where:{fk_person_users_id:reqId}, attributes: ['status']})
+  const educational_info= await educationalInfo.findOne({where:{fk_person_users_id:reqId,type:'Graduation'}, attributes: ['status']})
+  const employment= await employmentDetails.findOne({where:{fk_person_users_id:reqId}, attributes: ['status']})
+  const otherDetails= await user.findOne({where:{fk_person_users_id:reqId}, attributes: ['status']})
+  const declaration= await user.findOne({where:{fk_person_users_id:reqId}, attributes: ['status']})
+  res.send({personStatus:personal,edStatus:educational_info,empStatus:employment,othStatus:otherDetails,decStatus:declaration})
 }
 module.exports = {
   addPersonalInfo,
@@ -789,4 +794,6 @@ module.exports = {
   addImg,
   getImg,
   getOfferLetter,
+  getStatus
 };
+
