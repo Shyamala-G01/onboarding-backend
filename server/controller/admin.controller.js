@@ -20,7 +20,8 @@ const transporter = mail.transporter;
 
 
 //import file handler to create folder
-const folderFunctions=require("../controller/fileHandler")
+const folderFunctions=require("../controller/fileHandler");
+const { Sequelize } = require("../model");
 // contoller for adding admin
 const addAdmin = async (req, res) => {
   const salt = genSaltSync(10);
