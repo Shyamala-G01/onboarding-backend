@@ -205,7 +205,7 @@ const deleteEmployee = async (req, res) => {
 const getTotals = async (req, res) => {
   const totalCount = await user.count();
   const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
-  res.send({total:totalCount,pcount:pendCount})
+  res.send({total:totalCount,pcount:pendCount })
 };
 module.exports = {
   addAdmin,
