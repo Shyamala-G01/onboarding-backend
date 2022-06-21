@@ -1,17 +1,17 @@
-const sq=require('sequelize')
+const sq = require("sequelize");
 const db = require("../model");
 const user = db.user;
 const admin = db.admin;
 //get all models of a user
-const PersnonalInfo=db.personalInfo
-const Address=db.address
-const EducationalInfo=db.educationalInfo
-const EmploymentDetails=db.employmentDetails
-const ProofCertificates=db.proofCertificates
-const BankDetails=db.bankDetails
-const Declaration=db.declaration
+const PersnonalInfo = db.personalInfo;
+const Address = db.address;
+const EducationalInfo = db.educationalInfo;
+const EmploymentDetails = db.employmentDetails;
+const ProofCertificates = db.proofCertificates;
+const BankDetails = db.bankDetails;
+const Declaration = db.declaration;
 //
-const Op = sq.Op
+const Op = sq.Op;
 //encrypting and comparing
 const { genSaltSync, hashSync } = require("bcrypt");
 
@@ -20,9 +20,8 @@ const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
-
 //import file handler to create folder
-const folderFunctions=require("../controller/fileHandler");
+const folderFunctions = require("../controller/fileHandler");
 const { Sequelize } = require("../model");
 // contoller for adding admin
 const addAdmin = async (req, res) => {
@@ -70,7 +69,7 @@ const addAdmin = async (req, res) => {
 
 // contoller for adding employee
 const addEmployee = async (req, res) => {
-  folderFunctions.createFolder(req.body.id)
+  folderFunctions.createFolder(req.body.id);
   const salt = genSaltSync(10);
 
   // already exit or not
@@ -84,7 +83,7 @@ const addEmployee = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       phone_number: req.body.phone_number,
-      offer_letter:req.files.offerLetter.name,
+      offer_letter: req.files.offerLetter.name,
       designation: req.body.designation,
       created_at: req.body.created_at,
       created_by: req.body.created_by,
@@ -93,7 +92,7 @@ const addEmployee = async (req, res) => {
       status: req.body.status,
     };
     let password = req.body.name.replaceAll(" ", "");
-    let pass = password+ "@!"+Math.floor(Math.random() * 10);
+    let pass = password + "@!" + Math.floor(Math.random() * 10);
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
@@ -114,7 +113,7 @@ const addEmployee = async (req, res) => {
           console.log("mail sent" + info.response);
         }
       });
-      folderFunctions.uploadfile(req.files,req.body.id)
+      folderFunctions.uploadfile(req.files, req.body.id);
       res.status(200).send({ message: "Registered Successfully" });
     } else {
       res.status(404).send({ message: "Cannot Register" });
@@ -122,13 +121,13 @@ const addEmployee = async (req, res) => {
   }
 };
 
-const getEmploees=async(req,res)=>{
+const getEmploees = async (req, res) => {
   let users = await user.findAll({});
   res.send(users);
-}
-const getEmployeeById =async (req,res)=>{
+};
+const getEmployeeById = async (req, res) => {
   let users = await user.findAll({
-    include:[
+    include: [
       {
         model: PersnonalInfo,
         as: "personal_info",
@@ -156,14 +155,14 @@ const getEmployeeById =async (req,res)=>{
       {
         model: Declaration,
         as: "other_declaration",
-      }
+      },
     ],
     where: { id: req.params.id },
   });
-  res.send(users)
-}
+  res.send(users);
+};
 const addImg = async (req, res) => {
-  let img = req.files.photo.name+"-"+req.body.id;
+  let img = req.files.photo.name + "-" + req.body.id;
   const data = await admin.findOne({ where: { id: req.body.id } });
   if (data.photo != req.files.photo.name) {
     folderFunctions.removeAdminImg(data.photo);
@@ -179,31 +178,34 @@ const addImg = async (req, res) => {
 const getImg = async (req, res) => {
   let reqId = req.params.id;
   const data = await admin.findOne({ where: { id: reqId } });
-  res.send({pic:data.photo});
+  res.send({ pic: data.photo });
 };
-const getRecentEmployees=async (req,res)=>{
+const getRecentEmployees = async (req, res) => {
   const endDate = new Date();
-  console.log("end"+endDate)
-  const startDate=new Date(Date.now() - 48 * 3600 * 1000)
-  console.log("start"+startDate)
-  let users = await user.findAll({ where: {
-    created_at: {
-      [Op.between]: [startDate, endDate]
-    }
-  }});
+  console.log("end" + endDate);
+  const startDate = new Date(Date.now() - 48 * 3600 * 1000);
+  console.log("start" + startDate);
+  let users = await user.findAll({
+    where: {
+      created_at: {
+        [Op.between]: [startDate, endDate],
+      },
+    },
+  });
   res.send(users);
-}
-const deleteEmployee=async (req,res)=>{
+};
+const deleteEmployee = async (req, res) => {
   let ids = req.params.id;
   let data = await user.destroy({
     where: { id: ids },
   });
 
   res.send({ message: "deleted" });
-}
-const getTotals=async (req,res)=>{
-  
-}
+};
+const getTotals = async (req, res) => {
+  const totalCount = await user.count();
+  const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
+};
 module.exports = {
   addAdmin,
   addEmployee,
@@ -212,5 +214,6 @@ module.exports = {
   addImg,
   getImg,
   getRecentEmployees,
-  deleteEmployee
+  deleteEmployee,
+  getTotals
 };

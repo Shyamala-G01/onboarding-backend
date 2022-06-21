@@ -44,7 +44,7 @@ const addPersonalInfo = async (req, res) => {
       created_at: req.body.created_at,
       updated_at: req.body.updated_at,
       updated_by: req.body.updated_by,
-      status:'completed',
+      status: "completed",
       fk_person_users_id: req.body.fk_person_users_id,
     },
 
@@ -178,22 +178,35 @@ const changePassword = async (req, res) => {
 
 // employment
 const addEmployment = async (req, res) => {
-  
+  const data = await user.findOne({
+    where: { id: req.body.fk_employment_users_id },
+  });
+  const empDtat = await employmentDetails.findOne({
+    where: { fk_employment_users_id: req.body.fk_employment_users_id },
+  });
+  if (!empDtat) {
+    const usercredential = await user.update(
+      { status: data.status + 20 },
+
+      { where: { id: req.body.fk_employment_users_id } }
+    );
+  }
   console.log(req.body);
 
   const info = {
     type: req.body.type,
-     created_at:req.body.created_at,
-    updated_at:req.body.updated_at,
-    updated_by:req.body.updated_by ,
-    fk_employment_users_id:req.body.fk_employment_users_id
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    status: "completed",
+    fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if(req.body.type!='Fresher'){
-    info.org_name=req.body.organizationName,
-    info.joining_date=req.body.joiningDate,
-    info.relieving_date= req.body.relievingDate,
-    info.relieving_letter= req.files.relievingLetter.name,
-    info.hr_name= req.body.hr_name 
+  if (req.body.type != "Fresher") {
+    (info.org_name = req.body.organizationName),
+      (info.joining_date = req.body.joiningDate),
+      (info.relieving_date = req.body.relievingDate),
+      (info.relieving_letter = req.files.relievingLetter.name),
+      (info.hr_name = req.body.hr_name);
   }
   if (req.body.type == "Recent") {
     info.offer_letter = req.files.offerLetter.name;
@@ -329,12 +342,17 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
+  const edData = await educationalInfo.findOne({
+    where: { id: req.body.fk_education_users_id, type: "Graduation" },
+  });
+  if (edData) {
+    const usercredential = await user.update(
+      { status: userData.status + 20 },
 
-  const usercredential = await user.update(
-    { status: userData.status + 20 },
+      { where: { id: req.body.fk_education_users_id } }
+    );
+  }
 
-    { where: { id: req.body.fk_education_users_id } }
-  );
   console.log(req.body);
   console.log(req.files);
   const info = {
@@ -357,7 +375,7 @@ const addEducation = async (req, res) => {
     req.body.education == "Masters/Post-Graduation"
   ) {
     console.log("inside if");
-    info.status="completed"
+    info.status = "completed";
     if (req.body.provisionalCertificate != "") {
       console.log("s");
       info.provisional_marks_card = req.files.provisionalCertificate.name;
@@ -487,7 +505,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status:'completed',
+    status: "completed",
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
   if (req.body.passportDetails != "") {
@@ -605,7 +623,7 @@ const addDeclaration = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status:'completed',
+    status: "completed",
     fk_declaration_users_id: req.body.fk_declaration_users_id,
   };
   const declarationData = await declaration.create(info);
@@ -761,15 +779,36 @@ const getOfferLetter = async (req, res) => {
   const data = await user.findOne({ where: { id: reqId } });
   res.send(data);
 };
-const getStatus= async(req,res)=>{
+const getStatus = async (req, res) => {
   let reqId = req.params.id;
-  const personal= await personalInfo.findOne({where:{fk_person_users_id:reqId}, attributes: ['status']})
-  const educational_info= await educationalInfo.findOne({where:{fk_education_users_id:reqId,type:'Graduation'}, attributes: ['status']})
-  const employment= await employmentDetails.findOne({where:{fk_employment_users_id:reqId}, attributes: ['status']})
-  const otherdetails= await otherDetails.findOne({where:{fk_proof_users_id:reqId}, attributes: ['status']})
-  const decla= await declaration.findOne({where:{fk_declaration_users_id:reqId}, attributes: ['status']})
-  res.send({personStatus:personal,edStatus:educational_info,empStatus:employment,othStatus:otherdetails,decStatus:decla})
-}
+  const personal = await personalInfo.findOne({
+    where: { fk_person_users_id: reqId },
+    attributes: ["status"],
+  });
+  const educational_info = await educationalInfo.findOne({
+    where: { fk_education_users_id: reqId, type: "Graduation" },
+    attributes: ["status"],
+  });
+  const employment = await employmentDetails.findOne({
+    where: { fk_employment_users_id: reqId },
+    attributes: ["status"],
+  });
+  const otherdetails = await otherDetails.findOne({
+    where: { fk_proof_users_id: reqId },
+    attributes: ["status"],
+  });
+  const decla = await declaration.findOne({
+    where: { fk_declaration_users_id: reqId },
+    attributes: ["status"],
+  });
+  res.send({
+    personStatus: personal,
+    edStatus: educational_info,
+    empStatus: employment,
+    othStatus: otherdetails,
+    decStatus: decla,
+  });
+};
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -796,6 +835,5 @@ module.exports = {
   addImg,
   getImg,
   getOfferLetter,
-  getStatus
+  getStatus,
 };
-
