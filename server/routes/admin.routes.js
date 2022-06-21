@@ -12,4 +12,5 @@ Router.put('/addAdminImg',authController.verifyToken,adminController.addImg)
 Router.get('/getAdminImg/:id',authController.verifyToken,adminController.getImg)
 Router.delete('/deleteEmployee/:id',authController.verifyToken,adminController.deleteEmployee)
 Router.get('/getCounts',authController.verifyToken,adminController.getTotals)
+Router.get('/getPendingRecord',authController.verifyToken,adminController.getPendingRecord)
 module.exports = Router

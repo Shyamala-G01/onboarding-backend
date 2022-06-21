@@ -207,6 +207,10 @@ const getTotals = async (req, res) => {
   const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
   res.send({total:totalCount,pcount:pendCount })
 };
+const getPendingRecord=async (req,res)=>{
+  const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
+  res.send(penRecords)
+}
 module.exports = {
   addAdmin,
   addEmployee,
@@ -216,5 +220,6 @@ module.exports = {
   getImg,
   getRecentEmployees,
   deleteEmployee,
-  getTotals
+  getTotals,
+  getPendingRecord
 };
