@@ -346,7 +346,7 @@ const addEducation = async (req, res) => {
     where: { id: req.body.fk_education_users_id},
   });
   console.log("lengt-------------------------------------h")
-  console.log(edData.length)
+  console.log(edData.length())
   // if (edData) {
   //   const usercredential = await user.update(
   //     { status: userData.status + 20 },
