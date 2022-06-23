@@ -342,16 +342,17 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
-  const edData = await educationalInfo.findOne({
-    where: { id: req.body.fk_education_users_id, type: "Graduation" },
+  const edData = await educationalInfo.findAll({
+    where: { id: req.body.fk_education_users_id},
   });
-  if (edData) {
-    const usercredential = await user.update(
-      { status: userData.status + 20 },
+  console.log(edData)
+  // if (edData) {
+  //   const usercredential = await user.update(
+  //     { status: userData.status + 20 },
 
-      { where: { id: req.body.fk_education_users_id } }
-    );
-  }
+  //     { where: { id: req.body.fk_education_users_id } }
+  //   );
+  // }
 
   console.log(req.body);
   console.log(req.files);
