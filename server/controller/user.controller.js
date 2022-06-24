@@ -83,7 +83,6 @@ const updatePersonalInfo = async (req, res) => {
     mobile_number: req.body.mobile_number,
     alternate_number: req.body.alternate_number,
     personal_email: req.body.personal_email,
-    photo: req.files.photo.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
