@@ -139,9 +139,7 @@ const getEmployeeById = async (req, res) => {
       {
         model: EducationalInfo,
         as: "educational_info",
-        order: [
-          ['id', 'DESC'],
-      ],
+        
       },
       {
         model: EmploymentDetails,
@@ -161,6 +159,9 @@ const getEmployeeById = async (req, res) => {
       },
     ],
     where: { id: req.params.id },
+    order: [
+      ['type', 'DESC'],
+  ]
   });
   res.send(users);
 };
