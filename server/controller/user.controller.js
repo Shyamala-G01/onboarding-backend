@@ -186,7 +186,7 @@ const addEmployment = async (req, res) => {
   });
   console.log(data.status)
   console.log(empDtat)
-  if (empDtat) {
+  if (empDtat==null) {
     const usercredential = await user.update(
       { status: data.status + 20 },
 
