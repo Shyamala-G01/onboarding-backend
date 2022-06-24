@@ -761,7 +761,7 @@ const addImg = async (req, res) => {
     folderFunctions.removeFile(data.photo, req.body.id);
   }
   const usercredential = await user.update(
-    { photo: img },
+    { photo: img,updated_at:req.body.updated_at,updated_by:req.body.updated_by },
 
     { where: { id: req.body.id } }
   );
