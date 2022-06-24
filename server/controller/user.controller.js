@@ -184,6 +184,8 @@ const addEmployment = async (req, res) => {
   const empDtat = await employmentDetails.findOne({
     where: { fk_employment_users_id: req.body.fk_employment_users_id },
   });
+  console.log(data.status)
+  console.log(empDtat)
   if (empDtat) {
     const usercredential = await user.update(
       { status: data.status + 20 },
