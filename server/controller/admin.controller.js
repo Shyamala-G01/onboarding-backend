@@ -140,7 +140,7 @@ const getEmployeeById = async (req, res) => {
         model: EducationalInfo,
         as: "educational_info",
         order: [
-          ['type', 'DESC'],
+          ['type', 'ASC'],
       ],
       },
       {
