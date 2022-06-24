@@ -159,9 +159,7 @@ const getEmployeeById = async (req, res) => {
       },
     ],
     where: { id: req.params.id },
-    order: [
-      ['type', 'DESC'],
-  ]
+    
   });
   res.send(users);
 };
