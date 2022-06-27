@@ -190,7 +190,7 @@ const getRecentEmployees = async (req, res) => {
   let users = await user.findAll({
     where: {
       created_at: {
-        [Op.between]: 'Fresher',
+        [Op.between]: [startDate, endDate],
       },
     },
   });

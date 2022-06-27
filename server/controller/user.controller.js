@@ -231,7 +231,7 @@ const addEmployment = async (req, res) => {
 const getEmployemnt = async (req, res) => {
   let id = req.params.id;
   let employmentData = await employmentDetails.findAll({
-    where: { type:{[Op.between]: [startDate, endDate],},fk_employment_users_id: id },
+    where: { type:{[Op.ne]:'Fresher'},fk_employment_users_id: id },
   });
   console.log(employmentData);
   res.send(employmentData);
