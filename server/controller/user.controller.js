@@ -408,6 +408,7 @@ const getEducation = async (req, res) => {
 
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
+  console.log(req.files.marks_card)
   let id = req.params.id;
   let dat = await educationalInfo.findOne({
     where: { id: id },
