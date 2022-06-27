@@ -430,31 +430,31 @@ const updateEducation = async (req, res) => {
     req.body.type == "Graduation" ||
     req.body.type == "Masters/Post-Graduation"
   ) {
-    if (req.body.provisionalCertificate != "") {
+    if (typeof(req.body.provisional_marks_card) != "string") {
       folderFunctions.removeFile(
         dat.provisional_marks_card,
         req.body.fk_education_users_id
       );
       info.provisional_marks_card = req.files.provisional_marks_card.name;
     }
-    if (req.body.convocationCertificate != "") {
+    if (typeof(req.body.convocation_certificate) != "string") {
      
         folderFunctions.removeFile(
           dat.convocation_certificate,
           req.body.fk_education_users_id
         );
       
-      info.convocation_certificate = req.files.convocationCertificate.name;
+      info.convocation_certificate = req.files.convocation_certificate.name;
     }
     if (
-      req.body.provisionalCertificate == "" ||
-      typeof(req.body.provisionalCertificate)=='string'
+      req.body.provisional_marks_card == "" ||
+      typeof(req.body.provisional_marks_card)=='string'
     ) {
       info.provisional_marks_card = dat.provisional_marks_card;
     }
     if (
-      req.body.convocationCertificate == "" ||
-      typeof(req.body.provisionalCertificate)=='string'
+      req.body.convocation_certificate == "" ||
+      typeof(req.body.provisional_marks_card)=='string'
     ) {
       info.convocation_certificate = dat.convocation_certificate;
     }
