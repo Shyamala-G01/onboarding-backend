@@ -582,7 +582,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   }
   if (req.body.passport == "") {
     info.passport = dat.passport;
-  }if (dat.passport != req.files.passport.name) {
+  }if (req.body.passport != "") {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
     info.passport = req.files.passport.name;
   }if(req.body.pan_card==''){
