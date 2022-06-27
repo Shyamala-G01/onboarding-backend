@@ -561,7 +561,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     pan_card_number: req.body.pan_card_number,
     passport_number: req.body.passport_number,
     passport_expire_date: req.body.passport_expire_date,
-    covid_certificate: req.files.covid_certificate.name,
+    // covid_certificate: req.files.covid_certificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -573,6 +573,12 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   }if(req.body.aadhar!=''){
     info.aadhar=req.files.aadhar.name
     folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
+  }
+  if(req.body.covid_certificate==''){
+    info.covid_certificate=dat.covid_certificate
+  }if(req.body.covid_certificate!=''){
+    info.covid_certificate=req.files.covid_certificate.name
+    folderFunctions.removeFile(dat.covid_certificate, req.body.fk_proof_users_id);
   }
   if (req.body.passport == "") {
     info.passport = dat.passport;
