@@ -463,7 +463,7 @@ const updateEducation = async (req, res) => {
   }
   if (req.body.marks_card == "") {
     info.marks_card = dat.marks_card;
-  } else if (dat.marks_card != req.files.marks_card.name) {
+  }if (req.body.marks_card != "") {
     info.marks_card = req.files.marks_card.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
