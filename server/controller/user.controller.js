@@ -462,7 +462,7 @@ const updateEducation = async (req, res) => {
   if (req.body.marks_card == "" || typeof(req.body.marks_card)=='string') {
     info.marks_card = dat.marks_card;
   }
-  if (req.body.marks_card != "") {
+  if (typeof(req.body.marks_card) != "string") {
     info.marks_card = req.files.marks_card.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
