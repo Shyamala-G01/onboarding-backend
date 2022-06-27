@@ -412,7 +412,7 @@ const updateEducation = async (req, res) => {
   let dat = await educationalInfo.findOne({
     where: { id: id },
   });
-  console.log(req.files);
+  console.log(req.files.marks_card);
   const info = {
     type: req.body.type,
     name: req.body.name,
@@ -463,7 +463,7 @@ const updateEducation = async (req, res) => {
   }
   if (req.body.marks_card == "") {
     info.marks_card = dat.marks_card;
-  }if (req.body.marks_card != "") {
+  }if (req.body.marks_card != "" ) {
     info.marks_card = req.files.marks_card.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
