@@ -431,20 +431,20 @@ const updateEducation = async (req, res) => {
     req.body.type == "Masters/Post-Graduation"
   ) {
     if (typeof(req.body.provisional_marks_card) != "string") {
+      info.provisional_marks_card = req.files.provisional_marks_card.name;
       folderFunctions.removeFile(
         dat.provisional_marks_card,
         req.body.fk_education_users_id
       );
-      info.provisional_marks_card = req.files.provisional_marks_card.name;
     }
     if (typeof(req.body.convocation_certificate) != "string") {
      
+      info.convocation_certificate = req.files.convocation_certificate.name;
         folderFunctions.removeFile(
           dat.convocation_certificate,
           req.body.fk_education_users_id
         );
       
-      info.convocation_certificate = req.files.convocation_certificate.name;
     }
     if (
       req.body.provisional_marks_card == "" ||
