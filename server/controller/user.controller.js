@@ -1,3 +1,4 @@
+const sq = require("sequelize");
 const db = require("../model");
 const { genSaltSync, hashSync } = require("bcrypt");
 const { compareSync } = require("bcrypt");
@@ -14,7 +15,8 @@ const bankdetails = db.bankDetails;
 const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
-
+//
+const Op = sq.Op;
 //import file handler to create folder
 const folderFunctions = require("../controller/fileHandler");
 //add data to personal info table
@@ -229,7 +231,7 @@ const addEmployment = async (req, res) => {
 const getEmployemnt = async (req, res) => {
   let id = req.params.id;
   let employmentData = await employmentDetails.findAll({
-    where: { fk_employment_users_id: id },
+    where: { type:{[Op.between]: [startDate, endDate],},fk_employment_users_id: id },
   });
   console.log(employmentData);
   res.send(employmentData);
