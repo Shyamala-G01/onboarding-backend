@@ -408,7 +408,7 @@ const getEducation = async (req, res) => {
 
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
-  console.log(typeof(req.files.convocation_certificate.name))
+  console.log(req.files.convocation_certificate.name)
   let id = req.params.id;
   let dat = await educationalInfo.findOne({
     where: { id: id },
@@ -439,7 +439,7 @@ const updateEducation = async (req, res) => {
       );
     }
     if (typeof(req.body.convocation_certificate) != "string") {
-     
+     console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
       info.convocation_certificate = req.files.convocation_certificate.name;
         folderFunctions.removeFile(
           dat.convocation_certificate,
