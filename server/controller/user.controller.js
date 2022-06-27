@@ -203,18 +203,18 @@ const addEmployment = async (req, res) => {
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
   if (req.body.type != "Fresher") {
-    (info.org_name = req.body.organizationName),
-      (info.joining_date = req.body.joiningDate),
-      (info.relieving_date = req.body.relievingDate),
-      (info.relieving_letter = req.files.relievingLetter.name),
+    (info.org_name = req.body.org_name),
+      (info.joining_date = req.body.joining_date),
+      (info.relieving_date = req.body.relieving_date),
+      (info.relieving_letter = req.files.relieving_letter.name),
       (info.hr_name = req.body.hr_name);
   }
   if (req.body.type == "Recent") {
-    info.offer_letter = req.files.offerLetter.name;
-    info.pay_slip1 = req.files.payslip1.name;
-    info.pay_slip2 = req.files.payslip2.name;
-    info.pay_slip3 = req.files.payslip3.name;
-    info.notice_date = req.body.noticePeriodEndDate;
+    info.offer_letter = req.files.offer_letter.name;
+    info.pay_slip1 = req.files.pay_slip1.name;
+    info.pay_slip2 = req.files.pay_slip2.name;
+    info.pay_slip3 = req.files.pay_slip3.name;
+    info.notice_date = req.body.notice_date;
   }
 
   const userData = await employmentDetails.create(info);
@@ -240,9 +240,9 @@ const updateEmployemnt = async (req, res) => {
   const dat = await employmentDetails.findOne({ where: { id: ids } });
   const info = {
     type: req.body.type,
-    org_name: req.body.organizationName,
-    joining_date: req.body.joiningDate,
-    relieving_date: req.body.relievingDate,
+    org_name: req.body.org_name,
+    joining_date: req.body.joining_date,
+    relieving_date: req.body.relieving_date,
 
     hr_name: req.body.hr_name,
     created_at: req.body.created_at,
@@ -250,53 +250,53 @@ const updateEmployemnt = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if (req.body.relievingLetter == "") {
+  if (req.body.relieving_letter == "") {
     info.relieving_letter = dat.relieving_letter;
   } else {
-    info.relieving_letter = req.files.relievingLetter.name;
+    info.relieving_letter = req.files.relieving_letter.name;
   }
   if (req.body.type == "Recent") {
-    if (req.body.offerLetter != "") {
+    if (req.body.offer_letter != "") {
       folderFunctions.removeFile(
         dat.offer_letter,
         req.body.fk_employment_users_id
       );
-      info.offer_letter = req.files.offerLetter.name;
+      info.offer_letter = req.files.offer_letter.name;
     }
-    if (req.body.payslip1 != "") {
+    if (req.body.pay_slip1 != "") {
       folderFunctions.removeFile(
         dat.pay_slip1,
         req.body.fk_employment_users_id
       );
-      info.pay_slip1 = req.files.payslip1.name;
+      info.pay_slip1 = req.files.pay_slip1.name;
     }
-    if (req.body.payslip2 != "") {
+    if (req.body.pay_slip2 != "") {
       folderFunctions.removeFile(
         dat.pay_slip2,
         req.body.fk_employment_users_id
       );
-      info.pay_slip2 = req.files.payslip2.name;
+      info.pay_slip2 = req.files.pay_slip2.name;
     }
-    if (req.body.payslip3 != "") {
-      info.pay_slip3 = req.files.payslip3.name;
+    if (req.body.pay_slip3 != "") {
+      info.pay_slip3 = req.files.pay_slip3.name;
       folderFunctions.removeFile(
         dat.pay_slip3,
         req.body.fk_employment_users_id
       );
     }
-    if (req.body.offerLetter == "") {
+    if (req.body.offer_letter == "") {
       info.offer_letter = dat.offer_letter;
     }
-    if (req.body.payslip1 == "") {
+    if (req.body.pay_slip1 == "") {
       info.pay_slip1 = dat.pay_slip1;
     }
-    if (req.body.payslip2 == "") {
+    if (req.body.pay_slip2 == "") {
       info.pay_slip2 = dat.pay_slip2;
     }
-    if (req.body.payslip3 == "") {
+    if (req.body.pay_slip3 == "") {
       info.pay_slip3 = dat.pay_slip3;
     }
-    info.notice_date = req.body.noticePeriodEndDate;
+    info.notice_date = req.body.notice_date;
   }
 
   let employmentData = await employmentDetails.update(info, {
