@@ -509,7 +509,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     status: "completed",
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if (req.body.passportDetails != "") {
+  if (req.body.passport != "") {
     info.passport = req.files.passport.name;
   }
   let bank = {
