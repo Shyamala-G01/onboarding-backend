@@ -558,9 +558,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
-    aadhar: req.files.aadharCard.name,
     pan_card_number: req.body.pan_card_number,
-    pan_card: req.files.panCard.name,
     passport_number: req.body.passport_number,
     passport_expire_date: req.body.passport_expire,
     covid_certificate: req.files.covidCertificate.name,
@@ -569,13 +567,23 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
+  if(req.body.aadharCard==''){
+    info.aadhar=dat.aadhar
+  }if(req.body.aadharCard!=''){
+    info.aadhar=req.files.aadharCard.name
+    folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
+  }
   if (req.body.passportDetails == "") {
     info.passport = dat.passport;
-  } else if (dat.passport != req.files.passportDetails.name) {
+  }if (dat.passport != req.files.passportDetails.name) {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
-    info.passport = req.body.passportDetails;
-  } else {
-    info.passport = req.body.passportDetails;
+    info.passport = req.files.passportDetails.name;
+  }if(req.body.panCard==''){
+    info.pan_card=dat.pan_card
+  }if(req.body.panCard!=''){
+    folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
+    info.passport = req.files.panCard.name;
+
   }
   let bank = {
     account_holder_name: req.body.acc_holder_name,

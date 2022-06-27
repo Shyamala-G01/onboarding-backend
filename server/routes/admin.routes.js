@@ -13,4 +13,6 @@ Router.get('/getAdminImg/:id',authController.verifyToken,adminController.getImg)
 Router.delete('/deleteEmployee/:id',authController.verifyToken,adminController.deleteEmployee)
 Router.get('/getCounts',authController.verifyToken,adminController.getTotals)
 Router.get('/getPendingRecord',authController.verifyToken,adminController.getPendingRecord)
+Router.put('/updateProof',authController.verifyToken,adminController.putProofDetails)
+Router.put('/updateBank',authController.verifyToken,adminController.putBankDetails)
 module.exports = Router

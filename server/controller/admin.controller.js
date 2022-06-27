@@ -213,6 +213,74 @@ const getPendingRecord=async (req,res)=>{
   const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
   res.send(penRecords)
 }
+const putProofDetails = async (req, res) => {
+  let ids = req.params.id;
+  let dat = await ProofCertificates.findOne({ where: { fk_proof_users_id: ids } });
+  const info = {
+    aadhar_card_number: req.body.aadhar_card_number,
+    pan_card_number: req.body.pan_card_number,
+    passport_number: req.body.passport_number,
+    passport_expire_date: req.body.passport_expire,
+    covid_certificate: req.files.covidCertificate.name,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_proof_users_id: req.body.fk_proof_users_id,
+  };
+  if(req.body.aadharCard==''){
+    info.aadhar=dat.aadhar
+  }if(req.body.aadharCard!=''){
+    info.aadhar=req.files.aadharCard.name
+    folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
+  }
+  if (req.body.passportDetails == "") {
+    info.passport = dat.passport;
+  }if (dat.passport != req.files.passportDetails.name) {
+    folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
+    info.passport = req.files.passportDetails.name;
+  }if(req.body.panCard==''){
+    info.pan_card=dat.pan_card
+  }if(req.body.panCard!=''){
+    folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
+    info.passport = req.files.panCard.name;
+
+  }
+
+  let proofData = await ProofCertificates.update(info, {
+    where: { fk_proof_users_id: ids },
+  });
+  if(!proofData){
+    folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
+    res.send({ message: "cannot update" });  
+  }else{
+    res.send({message:'updated'})
+  }
+};
+const putBankDetails = async (req, res) => {
+  let ids = req.params.id;
+  let bank = {
+    account_holder_name: req.body.acc_holder_name,
+    account_number: req.body.acc_number,
+    account_type: req.body.type_of_acc,
+    bank_name: req.body.bank_name,
+    ifsc_code: req.body.ifsc_code,
+    pf_account_number: req.body.pf_acc,
+    uan_account_number: req.body.uan_acc,
+    created_at: req.body.created_at,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    fk_bank_users_id: req.body.fk_proof_users_id,
+  };
+  let bankData = await BankDetails.update(bank, {
+    where: { fk_bank_users_id: ids },
+  });
+
+  if ( bankData) {
+    res.send({ message: "updated" });
+  } else {
+    res.send({ message: "cannot update" });
+  }
+};
 module.exports = {
   addAdmin,
   addEmployee,
@@ -223,5 +291,7 @@ module.exports = {
   getRecentEmployees,
   deleteEmployee,
   getTotals,
-  getPendingRecord
+  getPendingRecord,
+  putProofDetails,
+  putBankDetails
 };
