@@ -359,15 +359,15 @@ const addEducation = async (req, res) => {
   console.log(req.body);
   console.log(req.files);
   const info = {
-    type: req.body.education,
-    name: req.body.School,
+    type: req.body.type,
+    name: req.body.name,
     board: req.body.board,
     course: req.body.course,
     specialization: req.body.specialization,
-    start_date: req.body.startDate,
-    end_date: req.body.endDate,
-    marks: req.body.percentage,
-    marks_card: req.files.marksheet.name,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    marks: req.body.marks,
+    marks_card: req.files.marks_card.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -379,12 +379,12 @@ const addEducation = async (req, res) => {
   ) {
     console.log("inside if");
     info.status = "completed";
-    if (req.body.provisionalCertificate != "") {
+    if (req.body.provisional_marks_card != "") {
       console.log("s");
-      info.provisional_marks_card = req.files.provisionalCertificate.name;
+      info.provisional_marks_card = req.files.provisional_marks_card.name;
     }
-    if (req.body.convocationCertificate != "") {
-      info.convocation_certificate = req.files.convocationCertificate.name;
+    if (req.body.convocation_certificate != "") {
+      info.convocation_certificate = req.files.convocation_certificate.name;
     }
   }
   const educationData = await educationalInfo.create(info);
