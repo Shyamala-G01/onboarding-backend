@@ -441,6 +441,7 @@ const updateEducation = async (req, res) => {
     if (typeof(req.body.convocation_certificate) != "string") {
      console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
       info.convocation_certificate = req.files.convocation_certificate.name;
+      console.log(req.files.convocation_certificate.name)
         // folderFunctions.removeFile(
         //   dat.convocation_certificate,
         //   req.body.fk_education_users_id
