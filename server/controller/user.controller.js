@@ -374,8 +374,8 @@ const addEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if (
-    req.body.education == "Graduation" ||
-    req.body.education == "Masters/Post-Graduation"
+    req.body.type == "Graduation" ||
+    req.body.type == "Masters/Post-Graduation"
   ) {
     console.log("inside if");
     info.status = "completed";
@@ -414,22 +414,22 @@ const updateEducation = async (req, res) => {
   });
   console.log(req.body);
   const info = {
-    type: req.body.education,
-    name: req.body.School,
+    type: req.body.type,
+    name: req.body.name,
     board: req.body.board,
     course: req.body.course,
     specialization: req.body.specialization,
-    start_date: req.body.startDate,
-    end_date: req.body.endDate,
-    marks: req.body.percentage,
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    marks: req.body.marks,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if (
-    req.body.education == "Graduation" ||
-    req.body.education == "Masters/Post-Graduation"
+    req.body.type == "Graduation" ||
+    req.body.type == "Masters/Post-Graduation"
   ) {
     if (req.body.provisionalCertificate != "") {
       console.log(dat.provisional_marks_card);
@@ -461,10 +461,10 @@ const updateEducation = async (req, res) => {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if (req.body.marksheet == "") {
+  if (req.body.marks_card == "") {
     info.marks_card = dat.marks_card;
-  } else if (dat.marks_card != req.files.marksheet.name) {
-    info.marks_card = req.files.marksheet.name;
+  } else if (dat.marks_card != req.files.marks_card.name) {
+    info.marks_card = req.files.marks_card.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
 
