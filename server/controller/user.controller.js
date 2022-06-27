@@ -554,6 +554,7 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
+  console.log(req.body.passport_expire_date)
   let ids = req.params.id;
   let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
