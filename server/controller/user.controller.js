@@ -412,7 +412,7 @@ const updateEducation = async (req, res) => {
   let dat = await educationalInfo.findOne({
     where: { id: id },
   });
-  console.log(req.body);
+  console.log(req.files);
   const info = {
     type: req.body.type,
     name: req.body.name,
