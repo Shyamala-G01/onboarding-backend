@@ -497,12 +497,12 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   console.log(req.body);
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
-    aadhar: req.files.aadharCard.name,
+    aadhar: req.files.aadhar.name,
     pan_card_number: req.body.pan_card_number,
-    pan_card: req.files.panCard.name,
+    pan_card: req.files.pan_card.name,
     passport_number: req.body.passport_number,
-    passport_expire_date: req.body.passport_expire,
-    covid_certificate: req.files.covidCertificate.name,
+    passport_expire_date: req.body.passport_expire_date,
+    covid_certificate: req.files.covid_certificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -513,17 +513,17 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     info.passport = req.files.passportDetails.name;
   }
   let bank = {
-    account_holder_name: req.body.acc_holder_name,
-    account_number: req.body.acc_number,
-    account_type: req.body.type_of_acc,
+    account_holder_name: req.body.account_holder_name,
+    account_number: req.body.account_number,
+    account_type: req.body.account_type,
     bank_name: req.body.bank_name,
     ifsc_code: req.body.ifsc_code,
-    pf_account_number: req.body.pf_acc,
-    uan_account_number: req.body.uan_acc,
+    pf_account_number: req.body.pf_account_number,
+    uan_account_number: req.body.uan_account_number,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    fk_bank_users_id: req.body.fk_proof_users_id,
+    fk_bank_users_id: req.body.fk_bank_users_id,
   };
   const proofData = await otherDetails.create(info);
   const bankData = await bankdetails.create(bank);
@@ -560,40 +560,40 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     aadhar_card_number: req.body.aadhar_card_number,
     pan_card_number: req.body.pan_card_number,
     passport_number: req.body.passport_number,
-    passport_expire_date: req.body.passport_expire,
-    covid_certificate: req.files.covidCertificate.name,
+    passport_expire_date: req.body.passport_expire_date,
+    covid_certificate: req.files.covid_certificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     status:'completed',
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if(req.body.aadharCard==''){
+  if(req.body.aadhar==''){
     info.aadhar=dat.aadhar
-  }if(req.body.aadharCard!=''){
-    info.aadhar=req.files.aadharCard.name
+  }if(req.body.aadhar!=''){
+    info.aadhar=req.files.aadhar.name
     folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
   }
-  if (req.body.passportDetails == "") {
+  if (req.body.passport == "") {
     info.passport = dat.passport;
-  }if (dat.passport != req.files.passportDetails.name) {
+  }if (dat.passport != req.files.passport.name) {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
-    info.passport = req.files.passportDetails.name;
-  }if(req.body.panCard==''){
+    info.passport = req.files.passport.name;
+  }if(req.body.pan_card==''){
     info.pan_card=dat.pan_card
-  }if(req.body.panCard!=''){
+  }if(req.body.pan_card!=''){
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
-    info.passport = req.files.panCard.name;
+    info.passport = req.files.pan_card.name;
 
   }
   let bank = {
-    account_holder_name: req.body.acc_holder_name,
-    account_number: req.body.acc_number,
-    account_type: req.body.type_of_acc,
+    account_holder_name: req.body.account_holder_name,
+    account_number: req.body.account_number,
+    account_type: req.body.account_type,
     bank_name: req.body.bank_name,
     ifsc_code: req.body.ifsc_code,
-    pf_account_number: req.body.pf_acc,
-    uan_account_number: req.body.uan_acc,
+    pf_account_number: req.body.pf_account_number,
+    uan_account_number: req.body.uan_account_number,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
