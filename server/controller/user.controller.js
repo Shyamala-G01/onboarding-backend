@@ -412,7 +412,7 @@ const updateEducation = async (req, res) => {
   let dat = await educationalInfo.findOne({
     where: { id: id },
   });
-  console.log(req.files.marks_card);
+  console.log(typeof(req.body.marks_card));
   const info = {
     type: req.body.type,
     name: req.body.name,
