@@ -185,9 +185,9 @@ const addEmployment = async (req, res) => {
   const empDtat = await employmentDetails.findOne({
     where: { fk_employment_users_id: req.body.fk_employment_users_id },
   });
-  console.log(data.status)
-  console.log(empDtat)
-  if (empDtat==null) {
+  console.log(data.status);
+  console.log(empDtat);
+  if (empDtat == null) {
     const usercredential = await user.update(
       { status: data.status + 20 },
 
@@ -231,7 +231,7 @@ const addEmployment = async (req, res) => {
 const getEmployemnt = async (req, res) => {
   let id = req.params.id;
   let employmentData = await employmentDetails.findAll({
-    where: { type:{[Op.ne]:'Fresher'},fk_employment_users_id: id },
+    where: { type: { [Op.ne]: "Fresher" }, fk_employment_users_id: id },
   });
   console.log(employmentData);
   res.send(employmentData);
@@ -346,9 +346,9 @@ const addEducation = async (req, res) => {
     where: { id: req.body.fk_education_users_id },
   });
   const edData = await educationalInfo.findAll({
-    where: { id: req.body.fk_education_users_id},
+    where: { id: req.body.fk_education_users_id },
   });
-  if (edData.length>3) {
+  if (edData.length > 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
 
@@ -412,7 +412,7 @@ const updateEducation = async (req, res) => {
   let dat = await educationalInfo.findOne({
     where: { id: id },
   });
-  console.log(typeof(req.body.marks_card));
+  console.log(typeof req.body.marks_card);
   const info = {
     type: req.body.type,
     name: req.body.name,
@@ -432,38 +432,38 @@ const updateEducation = async (req, res) => {
     req.body.type == "Masters/Post-Graduation"
   ) {
     if (req.body.provisionalCertificate != "") {
-      console.log(dat.provisional_marks_card);
-      console.log(req.files.provisionalCertificate.name);
-
-      if (dat.provisional_marks_card != req.files.provisionalCertificate.name) {
-        folderFunctions.removeFile(
-          dat.provisional_marks_card,
-          req.body.fk_education_users_id
-        );
-      }
+      folderFunctions.removeFile(
+        dat.provisional_marks_card,
+        req.body.fk_education_users_id
+      );
       info.provisional_marks_card = req.files.provisionalCertificate.name;
     }
     if (req.body.convocationCertificate != "") {
-      if (
-        dat.convocation_certificate != req.files.convocationCertificate.name
-      ) {
+     
         folderFunctions.removeFile(
           dat.convocation_certificate,
           req.body.fk_education_users_id
         );
-      }
+      
       info.convocation_certificate = req.files.convocationCertificate.name;
     }
-    if (req.body.provisionalCertificate == "") {
+    if (
+      req.body.provisionalCertificate == "" ||
+      typeof req.body.provisionalCertificate
+    ) {
       info.provisional_marks_card = dat.provisional_marks_card;
     }
-    if (req.body.convocationCertificate == "") {
+    if (
+      req.body.convocationCertificate == "" ||
+      typeof req.body.provisionalCertificate
+    ) {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if (req.body.marks_card == "") {
+  if (req.body.marks_card == "" || typeof req.body.marks_card) {
     info.marks_card = dat.marks_card;
-  }if (req.body.marks_card != "" ) {
+  }
+  if (req.body.marks_card != "") {
     info.marks_card = req.files.marks_card.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
@@ -556,7 +556,7 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
-  console.log(req.body.passport_expire_date)
+  console.log(req.body.passport_expire_date);
   let ids = req.params.id;
   let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
@@ -568,32 +568,39 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status:'completed',
+    status: "completed",
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if(req.body.aadhar==''){
-    info.aadhar=dat.aadhar
-  }if(req.body.aadhar!=''){
-    info.aadhar=req.files.aadhar.name
+  if (req.body.aadhar == "") {
+    info.aadhar = dat.aadhar;
+  }
+  if (req.body.aadhar != "") {
+    info.aadhar = req.files.aadhar.name;
     folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
   }
-  if(req.body.covid_certificate==''){
-    info.covid_certificate=dat.covid_certificate
-  }if(req.body.covid_certificate!=''){
-    info.covid_certificate=req.files.covid_certificate.name
-    folderFunctions.removeFile(dat.covid_certificate, req.body.fk_proof_users_id);
+  if (req.body.covid_certificate == "") {
+    info.covid_certificate = dat.covid_certificate;
+  }
+  if (req.body.covid_certificate != "") {
+    info.covid_certificate = req.files.covid_certificate.name;
+    folderFunctions.removeFile(
+      dat.covid_certificate,
+      req.body.fk_proof_users_id
+    );
   }
   if (req.body.passport == "") {
     info.passport = dat.passport;
-  }if (req.body.passport != "") {
+  }
+  if (req.body.passport != "") {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
     info.passport = req.files.passport.name;
-  }if(req.body.pan_card==''){
-    info.pan_card=dat.pan_card
-  }if(req.body.pan_card!=''){
+  }
+  if (req.body.pan_card == "") {
+    info.pan_card = dat.pan_card;
+  }
+  if (req.body.pan_card != "") {
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
     info.passport = req.files.pan_card.name;
-
   }
   let bank = {
     account_holder_name: req.body.account_holder_name,
@@ -606,7 +613,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status:'completed',
+    status: "completed",
     fk_bank_users_id: req.body.fk_proof_users_id,
   };
   let proofData = await otherDetails.update(info, {
@@ -781,7 +788,11 @@ const addImg = async (req, res) => {
     folderFunctions.removeFile(data.photo, req.body.id);
   }
   const usercredential = await user.update(
-    { photo: img,updated_at:req.body.updated_at,updated_by:req.body.updated_by },
+    {
+      photo: img,
+      updated_at: req.body.updated_at,
+      updated_by: req.body.updated_by,
+    },
 
     { where: { id: req.body.id } }
   );
