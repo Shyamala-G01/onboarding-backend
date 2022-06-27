@@ -412,7 +412,6 @@ const updateEducation = async (req, res) => {
   let dat = await educationalInfo.findOne({
     where: { id: id },
   });
-  console.log(typeof req.body.marks_card);
   const info = {
     type: req.body.type,
     name: req.body.name,
@@ -449,18 +448,18 @@ const updateEducation = async (req, res) => {
     }
     if (
       req.body.provisionalCertificate == "" ||
-      typeof req.body.provisionalCertificate
+      typeof(req.body.provisionalCertificate)=='string'
     ) {
       info.provisional_marks_card = dat.provisional_marks_card;
     }
     if (
       req.body.convocationCertificate == "" ||
-      typeof req.body.provisionalCertificate
+      typeof(req.body.provisionalCertificate)=='string'
     ) {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if (req.body.marks_card == "" || typeof req.body.marks_card) {
+  if (req.body.marks_card == "" || typeof(req.body.marks_card)=='string') {
     info.marks_card = dat.marks_card;
   }
   if (req.body.marks_card != "") {
