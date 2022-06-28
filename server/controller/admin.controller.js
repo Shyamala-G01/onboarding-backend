@@ -255,7 +255,7 @@ const putProofDetails = async (req, res) => {
   }
   if (typeof(req.body.pan_card) != "string") {
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
-    info.passport = req.files.pan_card.name;
+    info.pan_card = req.files.pan_card.name;
   }
 
   let proofData = await ProofCertificates.update(info, {
