@@ -221,29 +221,41 @@ const putProofDetails = async (req, res) => {
     pan_card_number: req.body.pan_card_number,
     passport_number: req.body.passport_number,
     passport_expire_date: req.body.passport_expire,
-    covid_certificate: req.files.covidCertificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if(req.body.aadharCard==''){
-    info.aadhar=dat.aadhar
-  }if(req.body.aadharCard!=''){
-    info.aadhar=req.files.aadharCard.name
+  if (req.body.aadhar == "" || typeof(req.body.aadhar)=='string') {
+    info.aadhar = dat.aadhar;
+  }
+  if (req.body.aadhar != "") {
+    info.aadhar = req.files.aadhar.name;
     folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
   }
-  if (req.body.passportDetails == "") {
+  if (req.body.covid_certificate == "" || typeof(req.body.covid_certificate)=='string') {
+    info.covid_certificate = dat.covid_certificate;
+  }
+  if (req.body.covid_certificate != "") {
+    info.covid_certificate = req.files.covid_certificate.name;
+    folderFunctions.removeFile(
+      dat.covid_certificate,
+      req.body.fk_proof_users_id
+    );
+  }
+  if (req.body.passport == "" || typeof(req.body.passport)=='string') {
     info.passport = dat.passport;
-  }if (dat.passport != req.files.passportDetails.name) {
+  }
+  if (req.body.passport != "" ) {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
-    info.passport = req.files.passportDetails.name;
-  }if(req.body.panCard==''){
-    info.pan_card=dat.pan_card
-  }if(req.body.panCard!=''){
+    info.passport = req.files.passport.name;
+  }
+  if (req.body.pan_card == "" || typeof(req.body.pan_card)=='string') {
+    info.pan_card = dat.pan_card;
+  }
+  if (req.body.pan_card != "") {
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
-    info.passport = req.files.panCard.name;
-
+    info.passport = req.files.pan_card.name;
   }
 
   let proofData = await ProofCertificates.update(info, {
