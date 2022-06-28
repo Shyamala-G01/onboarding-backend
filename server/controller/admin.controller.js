@@ -229,14 +229,14 @@ const putProofDetails = async (req, res) => {
   if (req.body.aadhar == "" || typeof(req.body.aadhar)=='string') {
     info.aadhar = dat.aadhar;
   }
-  if (req.body.aadhar != "") {
+  if (typeof(req.body.aadhar) != "string") {
     info.aadhar = req.files.aadhar.name;
     folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
   }
   if (req.body.covid_certificate == "" || typeof(req.body.covid_certificate)=='string') {
     info.covid_certificate = dat.covid_certificate;
   }
-  if (req.body.covid_certificate != "") {
+  if (typeof(req.body.covid_certificate) != "string") {
     info.covid_certificate = req.files.covid_certificate.name;
     folderFunctions.removeFile(
       dat.covid_certificate,
@@ -246,14 +246,14 @@ const putProofDetails = async (req, res) => {
   if (req.body.passport == "" || typeof(req.body.passport)=='string') {
     info.passport = dat.passport;
   }
-  if (req.body.passport != "" ) {
+  if (typeof(req.body.passport) != "string" ) {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
     info.passport = req.files.passport.name;
   }
   if (req.body.pan_card == "" || typeof(req.body.pan_card)=='string') {
     info.pan_card = dat.pan_card;
   }
-  if (req.body.pan_card != "") {
+  if (typeof(req.body.pan_card) != "string") {
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
     info.passport = req.files.pan_card.name;
   }
