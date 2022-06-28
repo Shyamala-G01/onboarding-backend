@@ -245,57 +245,56 @@ const updateEmployemnt = async (req, res) => {
     org_name: req.body.org_name,
     joining_date: req.body.joining_date,
     relieving_date: req.body.relieving_date,
-
     hr_name: req.body.hr_name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if (req.body.relieving_letter == "") {
+  if (req.body.relieving_letter == "" || typeof(req.body.relieving_letter)=='string' ) {
     info.relieving_letter = dat.relieving_letter;
   } else {
     info.relieving_letter = req.files.relieving_letter.name;
   }
   if (req.body.type == "Recent") {
-    if (req.body.offer_letter != "") {
+    if (typeof(req.body.offer_letter) != "string") {
       folderFunctions.removeFile(
         dat.offer_letter,
         req.body.fk_employment_users_id
       );
       info.offer_letter = req.files.offer_letter.name;
     }
-    if (req.body.pay_slip1 != "") {
+    if (typeof(req.body.pay_slip1 )!= "string") {
       folderFunctions.removeFile(
         dat.pay_slip1,
         req.body.fk_employment_users_id
       );
       info.pay_slip1 = req.files.pay_slip1.name;
     }
-    if (req.body.pay_slip2 != "") {
+    if (typeof(req.body.pay_slip2) != "string") {
       folderFunctions.removeFile(
         dat.pay_slip2,
         req.body.fk_employment_users_id
       );
       info.pay_slip2 = req.files.pay_slip2.name;
     }
-    if (req.body.pay_slip3 != "") {
+    if (typeof(req.body.pay_slip3) != "string") {
       info.pay_slip3 = req.files.pay_slip3.name;
       folderFunctions.removeFile(
         dat.pay_slip3,
         req.body.fk_employment_users_id
       );
     }
-    if (req.body.offer_letter == "") {
+    if (req.body.offer_letter= "" || typeof(req.body.offer_letter)=='string') {
       info.offer_letter = dat.offer_letter;
     }
-    if (req.body.pay_slip1 == "") {
+    if (req.body.pay_slip1 == "" || typeof(req.body.pay_slip1)=='string') {
       info.pay_slip1 = dat.pay_slip1;
     }
-    if (req.body.pay_slip2 == "") {
+    if (req.body.pay_slip2 == "" || typeof(req.body.pay_slip2)=='string') {
       info.pay_slip2 = dat.pay_slip2;
     }
-    if (req.body.pay_slip3 == "") {
+    if (req.body.pay_slip3 == "" || typeof(req.body.pay_slip3)=='string') {
       info.pay_slip3 = dat.pay_slip3;
     }
     info.notice_date = req.body.notice_date;
