@@ -214,6 +214,7 @@ const getPendingRecord=async (req,res)=>{
   res.send(penRecords)
 }
 const putProofDetails = async (req, res) => {
+  console.log(req.body)
   let ids = req.params.id;
   let dat = await ProofCertificates.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
