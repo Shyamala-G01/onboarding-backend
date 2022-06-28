@@ -96,7 +96,7 @@ const updatePersonalInfo = async (req, res) => {
 
   if (userData) {
     folderFunctions.uploadfile(req.files, req.body.id);
-    res.status(200).send(userData);
+    res.status(200).send({message:'updated'});
   } else {
     res.status(400).send({ message: "Unsuccessful" });
   }
@@ -432,6 +432,15 @@ const updateEducation = async (req, res) => {
     req.body.type == "Graduation" ||
     req.body.type == "Masters/Post-Graduation"
   ) {
+    if (typeof(req.body.convocation_certificate) != "string") {
+      console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
+       info.convocation_certificate = req.files.convocation_certificate.name;
+       console.log(req.files.convocation_certificate.name)
+         folderFunctions.removeFile(
+           dat.convocation_certificate,
+           req.body.fk_education_users_id
+         );
+     }
     if (typeof(req.body.provisional_marks_card) != "string") {
       info.provisional_marks_card = req.files.provisional_marks_card.name;
       folderFunctions.removeFile(
@@ -439,16 +448,7 @@ const updateEducation = async (req, res) => {
         req.body.fk_education_users_id
       );
     }
-    if (typeof(req.body.convocation_certificate) != "string") {
-     console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-      info.convocation_certificate = req.files.convocation_certificate.name;
-      console.log(req.files.convocation_certificate.name)
-        // folderFunctions.removeFile(
-        //   dat.convocation_certificate,
-        //   req.body.fk_education_users_id
-        // );
-      
-    }
+    
     if (
       req.body.provisional_marks_card == "" ||
       typeof(req.body.provisional_marks_card)=='string'
@@ -688,8 +688,11 @@ const updateDeclaration = async (req, res) => {
   let declarationData = await declaration.update(info, {
     where: { fk_declaration_users_id: id },
   });
-  console.log(declarationData);
-  res.send({ message: "updated" });
+  if(declarationData){
+
+    res.send({ message: "updated" });
+  }
+ 
 };
 const forgotpassword = async (req, res) => {
   let userMail = req.body.email;
