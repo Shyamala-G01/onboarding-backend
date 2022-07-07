@@ -192,7 +192,7 @@ const getRecentEmployees = async (req, res) => {
       created_at: {
         [Op.between]: [startDate, endDate],
       },
-    },
+    },order:[["created_at","DESC"]]
   });
   res.send(users);
 };
