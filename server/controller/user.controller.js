@@ -345,19 +345,17 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
-   if (edData.length >= 3) {
+  const edData = await educationalInfo.findAll({
+    where: { id: req.body.fk_education_users_id },
+  });
+  if (edData.length >= 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
-  
 
       { where: { id: req.body.fk_education_users_id } }
     );
   }
 
-  const edData = await educationalInfo.findAll({
-    where: { id: req.body.fk_education_users_id },
-  });
- 
   console.log(req.body);
   console.log(req.files);
   const info = {
