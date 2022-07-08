@@ -351,6 +351,7 @@ const addEducation = async (req, res) => {
   if (edData.length >= 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
+  
 
       { where: { id: req.body.fk_education_users_id } }
     );
