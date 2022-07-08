@@ -26,7 +26,7 @@ const addPersonalInfo = async (req, res) => {
   });
 
   const usercredential = await user.update(
-    { status: data.status + 20 },
+    { status: data.status + 40 },
 
     { where: { id: req.body.fk_person_users_id } }
   );
