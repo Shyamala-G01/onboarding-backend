@@ -345,7 +345,7 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
-  if (edData.length >= 3) {
+   if (edData.length >= 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
   
@@ -372,7 +372,6 @@ const addEducation = async (req, res) => {
     marks_card: req.files.marks_card.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
-    status : "completed",
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
@@ -381,7 +380,7 @@ const addEducation = async (req, res) => {
     req.body.type == "Masters/Post-Graduation"
   ) {
     console.log("inside if");
-  
+    info.status = "completed";
     if (req.body.provisional_marks_card != "") {
       console.log("s");
       info.provisional_marks_card = req.files.provisional_marks_card.name;
