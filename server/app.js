@@ -10,7 +10,7 @@ const app = express();
 
 const cors = require("cors");
 var corsOption = {
-  origin: "http://localhost:4200",
+  origin: "http://diggibyte.in/",
 };
 app.use(fileuplod())
 
