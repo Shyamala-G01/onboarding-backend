@@ -10,7 +10,7 @@ const app = express();
 
 const cors = require("cors");
 var corsOption = {
-  origin: "http://localhost:4200/",
+  origin: "http://localhost:4200",
 };
 app.use(fileuplod())
 
