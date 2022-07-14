@@ -668,9 +668,11 @@ const getDeclaration = async (req, res) => {
   let declarationData = await declaration.findOne({
     where: { fk_declaration_users_id: id },
   });
+  let dec = await user.fineOne({where: {id:fk_declaration_users_id}})
+
   console.log(declarationData);
-  res.send(declarationData);
-};
+
+  res.send( [declarationData,dec.status]);};
 //update perticular/specific OtherDetail i.e by id
 const updateDeclaration = async (req, res) => {
   let id = req.params.id;
