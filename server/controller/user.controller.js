@@ -668,7 +668,7 @@ const getDeclaration = async (req, res) => {
   let declarationData = await declaration.findOne({
     where: { fk_declaration_users_id: id },
   });
-  let dec = await user.findOne({where: {id:id}})
+  let dec = await user.findOne({where: {id:fk_declaration_users_id}})
  console.log(declarationData);
 
   res.send( [declarationData,dec.status]);};
