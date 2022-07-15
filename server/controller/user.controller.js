@@ -348,6 +348,9 @@ const addEducation = async (req, res) => {
   const edData = await educationalInfo.findAll({
     where: { id: req.body.fk_education_users_id },
   });
+  const d = await personalInfo.findAll({where: {id:id}})
+
+
   if (edData.length >= 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
