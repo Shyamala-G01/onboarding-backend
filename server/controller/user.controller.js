@@ -204,6 +204,7 @@ const addEmployment = async (req, res) => {
     status: "completed",
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
+  
   if (req.body.type != "Fresher") {
     (info.org_name = req.body.org_name),
       (info.joining_date = req.body.joining_date),
@@ -354,13 +355,7 @@ const addEducation = async (req, res) => {
 
   });
 
-  if(edData.start_date > data.dob)
-
-  {
-
-    console.log("error");
-
-  }
+  
   if (edData.length >= 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
@@ -386,6 +381,13 @@ const addEducation = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_education_users_id: req.body.fk_education_users_id,
   };
+  if(req.body.start_date > data.dob)
+
+  {
+
+    console.log("error");
+
+  }
   if (
     req.body.type == "Graduation" ||
     req.body.type == "Masters/Post-Graduation"
