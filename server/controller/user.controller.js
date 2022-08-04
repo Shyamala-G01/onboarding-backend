@@ -345,17 +345,9 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
-  const edData = await educationalInfo.findAll({
-    where: { id: req.body.fk_education_users_id },
-  });
-
-  if (edData.length >= 3) {
-    const usercredential = await user.update(
-      { status: userData.status + 20 },
-
-      { where: { id: req.body.fk_education_users_id } }
-    );
-  }
+ 
+  console.log(edData.length);
+  
 
   console.log(req.body);
   console.log(req.files);
@@ -375,7 +367,7 @@ const addEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if (
-    req.body.type == "Graduation" ||
+    req.body.type == "Graduation" ||   req.body.type == "Diploma" || 
     req.body.type == "Masters/Post-Graduation"
   ) {
     console.log("inside if");
@@ -389,6 +381,18 @@ const addEducation = async (req, res) => {
     }
   }
   const educationData = await educationalInfo.create(info);
+  const edData = await educationalInfo.findAll({
+    where: { id: req.body.fk_education_users_id },
+  });
+  if (edData.length == 2)
+   {
+    
+    const usercredential = await user.update(
+      { status: userData.status + 20 },
+
+      { where: { id: req.body.fk_education_users_id } }
+    );
+  }
   if (educationData) {
     folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
     res.status(200).send({ message: "Successful" });
@@ -430,7 +434,7 @@ const updateEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if (
-    req.body.type == "Graduation" ||
+    req.body.type == "Graduation" ||  req.body.type == "Diploma" ||
     req.body.type == "Masters/Post-Graduation"
   ) {
     if (typeof(req.body.convocation_certificate) != "string") {
@@ -488,6 +492,12 @@ const deleteEducation = async (req, res) => {
 
   res.send({ message: "deleted" });
 };
+// const deletefile = async(req,res) => {
+//   if(req.marks_card != null)
+//   {
+//     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
+//   }
+// }
 // adding other details
 const addOtherDetailsAndBankDetails = async (req, res) => {
   const userData = await user.findOne({
@@ -874,4 +884,5 @@ module.exports = {
   getImg,
   getOfferLetter,
   getStatus,
+  // deletefile
 };
