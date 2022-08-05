@@ -602,15 +602,17 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     info.passport = dat.passport;
   }
   if (req.body.passport != "") {
+    info.passport = req.files.passport.name;
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
-    // info.passport = req.files.passport.name;
+    
   }
   if (req.body.pan_card == "") {
     info.pan_card = dat.pan_card;
   }
   if (req.body.pan_card != "") {
+    info.passport = req.files.pan_card.name;
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
-    // info.passport = req.files.pan_card.name;
+   
   }
   let bank = {
     account_holder_name: req.body.account_holder_name,
