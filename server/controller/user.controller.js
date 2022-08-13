@@ -566,7 +566,8 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
-  console.log(req.body.passport_expire_date);
+  console.log("inside update")
+  console.log(req.body)
   let ids = req.params.id;
   let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
@@ -610,7 +611,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     info.pan_card = dat.pan_card;
   }
   if (req.body.pan_card != "") {
-    info.passport = req.files.pan_card.name;
+    info.pan_card = req.files.pan_card.name;
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
    
   }
@@ -645,7 +646,8 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
 
 //adding declaration
 const addDeclaration = async (req, res) => {
-  console.log(req)
+  console.log("inside add")
+  console.log(req.body)
   const userData = await user.findOne({
     where: { id: req.body.fk_declaration_users_id },
   });
