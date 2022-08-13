@@ -645,6 +645,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
 
 //adding declaration
 const addDeclaration = async (req, res) => {
+  console.log(req)
   const userData = await user.findOne({
     where: { id: req.body.fk_declaration_users_id },
   });
