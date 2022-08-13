@@ -506,7 +506,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
 
     { where: { id: req.body.fk_proof_users_id } }
   );
-  console.log(req.body);
+
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     aadhar: req.files.aadhar.name,
@@ -566,8 +566,7 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
-  console.log("inside update")
-  console.log(req.body)
+ 
   let ids = req.params.id;
   let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
@@ -646,8 +645,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
 
 //adding declaration
 const addDeclaration = async (req, res) => {
-  console.log("inside add")
-  console.log(req.body)
+  
   const userData = await user.findOne({
     where: { id: req.body.fk_declaration_users_id },
   });
