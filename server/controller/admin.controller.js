@@ -303,7 +303,7 @@ const deleteFile=async (req,resp)=>{
   let ids = req.params.id;
   console.log("cumin")
   console.log(req.body)
-  // folderFunctions.removeFile(req.body.fileName,ids)
+  folderFunctions.removeFile(req.body.fileName,ids)
 }
 module.exports = {
   addAdmin,
