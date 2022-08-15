@@ -16,5 +16,5 @@ Router.get('/getCounts',authController.verifyToken,adminController.getTotals)
 Router.get('/getPendingRecord',authController.verifyToken,adminController.getPendingRecord)
 Router.put('/updateProof/:id',authController.verifyToken,adminController.putProofDetails)
 Router.put('/updateBank/:id',authController.verifyToken,adminController.putBankDetails)
-Router.delete('/deleteFiles/:id',authController.verifyToken,adminController.deleteFile)
+Router.post('/deleteFiles/:id',authController.verifyToken,adminController.deleteFile)
 module.exports = Router
