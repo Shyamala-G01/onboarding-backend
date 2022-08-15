@@ -1,6 +1,7 @@
 const adminController = require('../controller/admin.controller');
 const authController = require("../controller/auth.controller");
 const Router = require('express').Router();
+const fileHandlerControiller=require("../controller/fileHandler")
 
 
 Router.post('/addAdmin',authController.verifyToken,adminController.addAdmin)
@@ -15,4 +16,5 @@ Router.get('/getCounts',authController.verifyToken,adminController.getTotals)
 Router.get('/getPendingRecord',authController.verifyToken,adminController.getPendingRecord)
 Router.put('/updateProof/:id',authController.verifyToken,adminController.putProofDetails)
 Router.put('/updateBank/:id',authController.verifyToken,adminController.putBankDetails)
+Router.delete('/deleteFiles/:id',authController.verifyToken,fileHandlerControiller.removeFile)
 module.exports = Router
