@@ -299,6 +299,11 @@ const putBankDetails = async (req, res) => {
     res.send({ message: "cannot update" });
   }
 };
+const deleteFile=async (req,resp)=>{
+  let ids = req.params.id;
+  console.log(req.body)
+  // folderFunctions.removeFile(req.body.fileName,ids)
+}
 module.exports = {
   addAdmin,
   addEmployee,
@@ -311,5 +316,6 @@ module.exports = {
   getTotals,
   getPendingRecord,
   putProofDetails,
-  putBankDetails
+  putBankDetails,
+  deleteFile
 };
