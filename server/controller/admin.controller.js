@@ -301,6 +301,7 @@ const putBankDetails = async (req, res) => {
 };
 const deleteFile=async (req,resp)=>{
   let ids = req.params.id;
+  console.log("cumin")
   console.log(req.body)
   // folderFunctions.removeFile(req.body.fileName,ids)
 }
