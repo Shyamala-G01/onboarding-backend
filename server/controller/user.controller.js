@@ -257,6 +257,10 @@ const updateEmployemnt = async (req, res) => {
   } else {
     info.relieving_letter = req.files.relieving_letter.name;
   }
+  if (req.body.relieving_letter != "") {
+    info.relieving_letter = req.files.relieving_letter.name;
+    folderFunctions.removeFile(dat.relieving_letter, req.body.fk_proof_users_id);
+  }
   if (req.body.type == "Recent") {
     if (typeof(req.body.offer_letter) != "string") {
       folderFunctions.removeFile(
