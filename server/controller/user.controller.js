@@ -252,14 +252,10 @@ const updateEmployemnt = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if (req.body.relieving_letter == "") {
+  if (req.body.relieving_letter == "" || typeof(req.body.relieving_letter)=="string" ) {
     info.relieving_letter = dat.relieving_letter;
-  } else if(req.body.relieving_letter !="" ) {
+  } else {
     info.relieving_letter = req.files.relieving_letter.name;
-    folderFunctions.removeFile(
-      dat.relieving_letter,
-      req.body.fk_employment_users_id
-    );
   }
   
   if (req.body.type == "Recent") {
