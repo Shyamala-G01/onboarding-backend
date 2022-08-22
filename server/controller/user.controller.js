@@ -240,7 +240,7 @@ const getEmployemnt = async (req, res) => {
 };
 const getStates = async(req,res)=>
 {
-  let statesData = await states.findAll({attributes:['State']});
+  let statesData = await states.findAll({attributes:['State'],distinct:true});
   console.log(statesData);
   res.send(statesData);
 }
