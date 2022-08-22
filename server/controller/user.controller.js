@@ -241,8 +241,9 @@ const getEmployemnt = async (req, res) => {
 const getStates = async(req,res)=>
 {
   let statesData = await states.findAll({attributes:['State']});
+  console.log(statesData);
 }
-console.log(statesData);
+
 const updateEmployemnt = async (req, res) => {
   let ids = req.params.id;
   const dat = await employmentDetails.findOne({ where: { id: ids } });
