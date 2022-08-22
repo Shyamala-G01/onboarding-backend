@@ -240,7 +240,7 @@ const getEmployemnt = async (req, res) => {
 };
 const getStates = async(req,res)=>
 {
-  let statesData = await states.findAll({attributes:[[Sequelize.fn('DISTINCT', Sequelize.col('State')),'State']]});
+  let statesData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('State')),'State']]});
   console.log(statesData);
   res.send(statesData);
 }
