@@ -11,6 +11,7 @@ const educationalInfo = db.educationalInfo;
 const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
 const bankdetails = db.bankDetails;
+const statesname= db.states;
 // mailing
 const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
@@ -237,6 +238,10 @@ const getEmployemnt = async (req, res) => {
   console.log(employmentData);
   res.send(employmentData);
 };
+const getStates = async(req,res)=>
+{
+  let statesData = await statesname.findAll();
+}
 
 const updateEmployemnt = async (req, res) => {
   let ids = req.params.id;
@@ -885,5 +890,6 @@ module.exports = {
   getImg,
   getOfferLetter,
   getStatus,
+  getStates
   // deletefile
 };

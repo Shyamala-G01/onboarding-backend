@@ -23,6 +23,11 @@ Router.post(
   authController.verifyToken,
   userController.addAddress
 );
+
+Router.get("/getStates",
+authController.verifyToken,
+userController.getStates);
+
 Router.put(
   "/updateAddress",
   authController.verifyToken,

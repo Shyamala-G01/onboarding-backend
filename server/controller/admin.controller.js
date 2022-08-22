@@ -218,6 +218,7 @@ const getPendingRecord=async (req,res)=>{
   const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
   res.send(penRecords)
 }
+
 const putProofDetails = async (req, res) => {
   console.log(req.files)
   let ids = req.params.id;
