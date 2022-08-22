@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       "tb_country",
       {
         ID: {
-          type: DataTypes.INT,
+          type: DataTypes.INTEGER,
         
         },
        City: {
