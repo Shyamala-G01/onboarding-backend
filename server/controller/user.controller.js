@@ -898,7 +898,7 @@ module.exports = {
   getImg,
   getOfferLetter,
   getStatus,
-  getStates,
+  // getStates,
   getCity
   // deletefile
 };
