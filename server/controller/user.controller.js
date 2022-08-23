@@ -246,7 +246,7 @@ const getStates = async(req,res)=>
 }
 const getCity = async(req,res)=>
 {
-  let cityData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('City')),'City']]});
+  let cityData = await states.findAll({attributes:'City'});
   console.log(cityData);
   res.send(cityData);
 }
