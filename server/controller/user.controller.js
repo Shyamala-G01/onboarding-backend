@@ -238,13 +238,12 @@ const getEmployemnt = async (req, res) => {
   console.log(employmentData);
   res.send(employmentData);
 };
-const getStates = async(req,res)=>
-{
-  let statesData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('State')),'State']]});
-  // console.log(statesData);
-  console.log("hai")
-  res.send(statesData);
-}
+// const getStates = async(req,res)=>
+// {
+//   let statesData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('State')),'State']]});
+//   console.log(statesData);
+//   res.send(statesData);
+// }
 const getCity = async(req,res)=>
 {
   let cityData = await states.findAll({attributes:['City']});
