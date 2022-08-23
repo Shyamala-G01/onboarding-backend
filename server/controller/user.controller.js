@@ -244,6 +244,12 @@ const getStates = async(req,res)=>
   console.log(statesData);
   res.send(statesData);
 }
+const getCity = async(req,res)=>
+{
+  let cityData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('City')),'City']]});
+  console.log(cityData);
+  res.send(cityData);
+}
 
 const updateEmployemnt = async (req, res) => {
   let ids = req.params.id;
@@ -892,6 +898,7 @@ module.exports = {
   getImg,
   getOfferLetter,
   getStatus,
-  getStates
+  getStates,
+  getCity
   // deletefile
 };
