@@ -32,6 +32,11 @@ Router.get("/getCity",
 authController.verifyToken,
 userController.getCity);
 
+Router.get("/getBankNames",
+authController.verifyToken,
+userController.getBankNames);
+
+
 
 Router.put(
   "/updateAddress",

@@ -12,6 +12,7 @@ const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
 const bankdetails = db.bankDetails;
 const states= db.states;
+const bankname = db.bankname;
 // mailing
 const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
@@ -241,14 +242,19 @@ const getEmployemnt = async (req, res) => {
 const getStates = async(req,res)=>
 {
   let statesData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('State')),'State']]});
-  console.log(statesData);
+ 
   res.send(statesData);
 }
 const getCity = async(req,res)=>
 {
   let cityData = await states.findAll({attributes:['City','District']});
-  console.log(cityData);
+
   res.send(cityData);
+}
+const getBankNames =async(req,res)=>
+{
+  let bankName = await bankname.findAll({attributes:['bank_name']})
+  res.send(bankName);
 }
 
 const updateEmployemnt = async (req, res) => {
@@ -899,6 +905,7 @@ module.exports = {
   getOfferLetter,
   getStatus,
   getStates,
-  getCity
+  getCity,
+  getBankNames
   // deletefile
 };
