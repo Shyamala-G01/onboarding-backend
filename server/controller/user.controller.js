@@ -241,7 +241,8 @@ const getEmployemnt = async (req, res) => {
 const getStates = async(req,res)=>
 {
   let statesData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('State')),'State']]});
-  console.log(statesData);
+  // console.log(statesData);
+  console.log("hai")
   res.send(statesData);
 }
 const getCity = async(req,res)=>
