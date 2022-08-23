@@ -36,7 +36,7 @@ db.admin = require("./admin.model")(sequelize, DataTypes);
 db.user = require("./user.model")(sequelize, DataTypes);
 db.roles = require("./roles.model")(sequelize, DataTypes);
 db.personalInfo = require("./personalInfo.model")(sequelize, DataTypes);
-// db.states = require("./citySatesCountry.model")(sequelize,DataTypes);
+db.states = require("./citySatesCountry.model")(sequelize,DataTypes);
 db.address = require("./address.model")(sequelize, DataTypes);
 db.employmentDetails = require("./employmentDetails.model")(
   sequelize,
