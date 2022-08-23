@@ -24,9 +24,14 @@ Router.post(
   userController.addAddress
 );
 
-// Router.get("/getStates",
-// authController.verifyToken,
-// userController.getStates);
+Router.get("/getStates",
+authController.verifyToken,
+userController.getStates);
+
+Router.get("/getCity",
+authController.verifyToken,
+userController.getCity);
+
 
 Router.put(
   "/updateAddress",
