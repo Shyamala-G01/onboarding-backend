@@ -231,6 +231,7 @@ const putProofDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
+    esi_no: req.body.esi_no,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
   if (req.body.aadhar == "" || typeof(req.body.aadhar)=='string') {
@@ -288,6 +289,7 @@ const putBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
+    esi_no: req.body.esi_no,
     fk_bank_users_id: req.body.fk_proof_users_id,
   };
   let bankData = await BankDetails.update(bank, {
