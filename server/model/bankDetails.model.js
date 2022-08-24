@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         status: {
           type: DataTypes.STRING,
         },
+        ESI:{
+          type:DataTypes.INTEGER,
+        }
       },
       {
         freezeTableName: true,
