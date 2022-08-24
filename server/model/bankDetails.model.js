@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         esi_no:
         {
-          type: DataTypes.INTEGER,
+          type: DataTypes.STRING,
         }
   
       },
