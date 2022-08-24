@@ -555,6 +555,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
+    esi_no: req.body.esi_no,
     fk_bank_users_id: req.body.fk_bank_users_id,
   };
   const proofData = await otherDetails.create(info);
@@ -646,6 +647,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
     status: "completed",
+    esi_no: req.body.esi_no,
     fk_bank_users_id: req.body.fk_proof_users_id,
   };
   let proofData = await otherDetails.update(info, {

@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         status: {
           type: DataTypes.STRING,
         },
+        esi_no:
+        {
+          type: DataTypes.INTEGER,
+        }
   
       },
       {
