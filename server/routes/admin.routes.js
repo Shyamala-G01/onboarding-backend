@@ -17,4 +17,5 @@ Router.get('/getPendingRecord',authController.verifyToken,adminController.getPen
 Router.put('/updateProof/:id',authController.verifyToken,adminController.putProofDetails)
 Router.put('/updateBank/:id',authController.verifyToken,adminController.putBankDetails)
 Router.post('/deleteFiles/:id',authController.verifyToken,adminController.deleteFile)
+Router.get('/getnotification',authController.verifyToken,adminController.getnotification)
 module.exports = Router
