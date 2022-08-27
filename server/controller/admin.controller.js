@@ -335,5 +335,5 @@ module.exports = {
   putProofDetails,
   putBankDetails,
   deleteFile,
-  getnotification
+  // getnotification
 };
