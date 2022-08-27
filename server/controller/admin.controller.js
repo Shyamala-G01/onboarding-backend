@@ -121,12 +121,12 @@ Password:${pass}`);
       });
       folderFunctions.uploadfile(req.files, req.body.id);
       //add notification
-      let notify = {
-        name:req.body.name,
-        message:'Employee Added',
-        date:req.body.created_at
-      }
-      const notification = await notification.create(notify);
+      // let notify = {
+      //   name:req.body.name,
+      //   message:'Employee Added',
+      //   date:req.body.created_at
+      // }
+      // const notification = await notification.create(notify);
 
       res.status(200).send({ message: "Registered Successfully" });
     } else {
@@ -135,10 +135,10 @@ Password:${pass}`);
   }
 };
 //get notification
-const getnotification = async(req,res)=>{
-  let notification = await notification.findAll({});
-  res.send(notification);
-}
+// const getnotification = async(req,res)=>{
+//   let notification = await notification.findAll({});
+//   res.send(notification);
+// }
 const getEmploees = async (req, res) => {
   let users = await user.findAll({});
   res.send(users);
