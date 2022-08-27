@@ -10,7 +10,7 @@ const EmploymentDetails = db.employmentDetails;
 const ProofCertificates = db.proofCertificates;
 const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
-const notification = db.notification;
+// const notification = db.notification;
 //
 const Op = sq.Op;
 //encrypting and comparing
