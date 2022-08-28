@@ -126,7 +126,7 @@ Password:${pass}`);
         message:'Employee Added',
         noti_date:req.body.created_at
       }
-      const notification = await notification.create(notify);
+      const notific = await notification.create(notify);
 
       res.status(200).send({ message: "Registered Successfully" });
     } else {
