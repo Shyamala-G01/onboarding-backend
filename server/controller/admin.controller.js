@@ -10,7 +10,7 @@ const EmploymentDetails = db.employmentDetails;
 const ProofCertificates = db.proofCertificates;
 const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
-// const notification = db.notification;
+const notification = db.notification;
 //
 const Op = sq.Op;
 //encrypting and comparing
@@ -121,12 +121,12 @@ Password:${pass}`);
       });
       folderFunctions.uploadfile(req.files, req.body.id);
       //add notification
-      // let notify = {
-      //   name:req.body.name,
-      //   message:'Employee Added',
-      //   date:req.body.created_at
-      // }
-      // const notification = await notification.create(notify);
+      let notify = {
+        name:req.body.name,
+        message:'Employee Added',
+        noti_date:req.body.created_at
+      }
+      const notification = await notification.create(notify);
 
       res.status(200).send({ message: "Registered Successfully" });
     } else {
@@ -134,11 +134,14 @@ Password:${pass}`);
     }
   }
 };
-//get notification
-// const getnotification = async(req,res)=>{
-//   let notification = await notification.findAll({});
-//   res.send(notification);
-// }
+
+//delete notification
+const deletenotification = async(req,res)=>{
+  let deletenoti = await notification.destroy();
+  let count = await notification.count();
+  res.send({counts:count});
+}
+
 const getEmploees = async (req, res) => {
   let users = await user.findAll({});
   res.send(users);
@@ -224,8 +227,10 @@ const deleteEmployee = async (req, res) => {
 };
 const getTotals = async (req, res) => {
   const totalCount = await user.count();
+  let notifications = await notification.findAll({});
+  let notifycount = await notification.count();
   const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
-  res.send({total:totalCount,pcount:pendCount })
+  res.send({total:totalCount,pcount:pendCount,noti:notifications,noticount:notifycount})
 };
 const getPendingRecord=async (req,res)=>{
   const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
@@ -335,5 +340,5 @@ module.exports = {
   putProofDetails,
   putBankDetails,
   deleteFile,
-  // getnotification
+  deletenotification
 };

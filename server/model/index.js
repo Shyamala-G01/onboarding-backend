@@ -50,7 +50,7 @@ db.proofCertificates = require("./proofCertificate.model")(
 );
 db.declaration = require("./declaration.model")(sequelize, DataTypes);
 db.bankDetails=require('./bankDetails.model')(sequelize, DataTypes)
-db.notification=require("./notification.model")(sequelize,DataTypes);
+// db.notification=require("./notification.model")(sequelize,DataTypes);
 // Syncing table with schema
 db.sequelize
   .sync({ force: false })
