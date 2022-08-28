@@ -219,15 +219,20 @@ const getRecentEmployees = async (req, res) => {
 };
 const deleteEmployee = async (req, res) => {
   let ids = req.params.id;
+  let userdata = await user.findOne({where:{id:ids}});
+  let notifyobj = { name:userdata.name,
+    message:'Employee Added',
+    noti_date:new Date()}
+  let datas = await notification.create(notifyobj);
+
   let data = await user.destroy({
     where: { id: ids },
   });
-
   res.send({ message: "deleted" });
 };
 const getTotals = async (req, res) => {
   const totalCount = await user.count();
-  let notifications = await notification.findAll({});
+  let notifications = await notification.findAll();
   let notifycount = await notification.count();
   const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
   res.send({total:totalCount,pcount:pendCount,noti:notifications,noticount:notifycount})
