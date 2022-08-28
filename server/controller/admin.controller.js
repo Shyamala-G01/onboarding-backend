@@ -221,7 +221,7 @@ const deleteEmployee = async (req, res) => {
   let ids = req.params.id;
   let userdata = await user.findOne({where:{id:ids}});
   let notifyobj = { name:userdata.name,
-    message:'Employee Added',
+    message:'Employee Deleted',
     noti_date:new Date()}
   let datas = await notification.create(notifyobj);
 
