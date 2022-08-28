@@ -137,7 +137,7 @@ Password:${pass}`);
 
 //delete notification
 const deletenotification = async(req,res)=>{
-  let deletenoti = await notification.destroy();
+  let deletenoti = await notification.destroyAll();
   let count = await notification.count();
   res.send({counts:count});
 }
