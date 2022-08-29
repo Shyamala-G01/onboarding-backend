@@ -10,6 +10,7 @@ const EmploymentDetails = db.employmentDetails;
 const ProofCertificates = db.proofCertificates;
 const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
+const notification = db.notification;
 //
 const Op = sq.Op;
 //encrypting and comparing
@@ -119,12 +120,27 @@ Password:${pass}`);
         }
       });
       folderFunctions.uploadfile(req.files, req.body.id);
+      //add notification
+      let notify = {
+        name:req.body.name,
+        message:'Employee Added',
+        noti_date:req.body.created_at
+      }
+      const notific = await notification.create(notify);
+
       res.status(200).send({ message: "Registered Successfully" });
     } else {
       res.status(404).send({ message: "Cannot Register" });
     }
   }
 };
+
+//delete notification
+const deletenotification = async(req,res)=>{
+  let deletenoti = await notification.destroy({truncate:true});
+  let count = await notification.count();
+  res.send({counts:count});
+}
 
 const getEmploees = async (req, res) => {
   let users = await user.findAll({});
@@ -203,16 +219,23 @@ const getRecentEmployees = async (req, res) => {
 };
 const deleteEmployee = async (req, res) => {
   let ids = req.params.id;
+  let userdata = await user.findOne({where:{id:ids}});
+  let notifyobj = { name:userdata.name,
+    message:'Employee Deleted',
+    noti_date:new Date()}
+  let datas = await notification.create(notifyobj);
+
   let data = await user.destroy({
     where: { id: ids },
   });
-
   res.send({ message: "deleted" });
 };
 const getTotals = async (req, res) => {
   const totalCount = await user.count();
+  let notifications = await notification.findAll();
+  let notifycount = await notification.count();
   const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
-  res.send({total:totalCount,pcount:pendCount })
+  res.send({total:totalCount,pcount:pendCount,noti:notifications,noticount:notifycount})
 };
 const getPendingRecord=async (req,res)=>{
   const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
@@ -321,5 +344,6 @@ module.exports = {
   getPendingRecord,
   putProofDetails,
   putBankDetails,
-  deleteFile
+  deleteFile,
+  deletenotification
 };
