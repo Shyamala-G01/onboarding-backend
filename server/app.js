@@ -27,13 +27,13 @@ app.get("/", (req, res) => {
 });
 
 // admin endpoint handler
-app.use("api", Router);
+app.use("/api", Router);
 
 // auth
-app.use("api", AuthRouter);
+app.use("/api", AuthRouter);
 
 // user
-app.use("api", userRouter);
+app.use("/api", userRouter);
 
 // Start the server
 app.listen(PORT, () => {
