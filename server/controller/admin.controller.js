@@ -94,7 +94,7 @@ const addEmployee = async (req, res) => {
     };
     let password = req.body.name.replaceAll(" ", "");
     // let pass = password + "@!" + Math.floor(Math.random() * 10);
-    let pass = password.substring(0,4) + "@!" + phone_number.substring(6,9);
+    let pass = password.substring(0,4) + "@!" + Math.floor (phone_number.substring(6,9));
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
