@@ -93,7 +93,8 @@ const addEmployee = async (req, res) => {
       status: req.body.status,
     };
     let password = req.body.name.replaceAll(" ", "");
-    let pass = password + "@!" + Math.floor(Math.random() * 10);
+    // let pass = password + "@!" + Math.floor(Math.random() * 10);
+    let pass = password.substring(0,4) + "@!" + phone_number.substring(6,9);
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
@@ -102,14 +103,12 @@ const addEmployee = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       (mailOptions.subject = "Welcome To Diggibyte Family"),
-        (mailOptions.text = `We take great pleasure in welcoming you into the world of Diggibyte!
-As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
-We value your feedback and would like to hear from you. Please complete your onboarding details by clicking below URL.
+        (mailOptions.text = ` by clicking below URL.
         
-URL: http://diggibyte.in
+           URL: http://diggibyte.in
 
-Username: ${info.email}
-Password:${pass}`);
+          Username: ${info.email}
+          Password:${pass}`);
 
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
