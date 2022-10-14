@@ -49,7 +49,7 @@ const addAdmin = async (req, res) => {
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = "ADMIN PORTAL REGISTRATION SUCCESSFULL"),
+      (mailOptions.subject = "Admin Portal Registration Successfully"),
         (mailOptions.text = `username: ${info.email}
                           password:${pass}`);
       transporter.sendMail(mailOptions, function (err, info) {
@@ -92,9 +92,10 @@ const addEmployee = async (req, res) => {
       updated_by: req.body.updated_by,
       status: req.body.status,
     };
-    let password = req.body.name.replaceAll(" ", "");
+    // let password = req.body.name.replaceAll(" ", "");
     // let pass = password + "@!" + Math.floor(Math.random() * 10);
-    let pass = password.substring(0,4) + "@!" + Math.floor (Math.random() * 10);
+    let password = req.body.id; 
+    let pass = password.substring(0,2)+ '@#' + password.substring(2,6)
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {

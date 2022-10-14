@@ -22,9 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       designation: {
         type: DataTypes.STRING,
       },
-      // offer_letter:{
-      //   type: DataTypes.STRING,
-      // },
       created_at: {
         type: DataTypes.DATE,
       },
