@@ -104,10 +104,16 @@ const addEmployee = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       (mailOptions.subject = "Welcome To Diggibyte Family"),
-        (mailOptions.text = ` by clicking below URL.
+        (mailOptions.text = 
+          
+          (<img src= "/assets/images/emailtemplate.png"></img>)
+          ` by clicking below URL.
+
+        
         
            URL: http://diggibyte.in
 
+           
           Username: ${info.email}
           Password:${pass}`);
 
