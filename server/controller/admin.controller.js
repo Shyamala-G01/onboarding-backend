@@ -103,10 +103,7 @@ const addEmployee = async (req, res) => {
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
-      transporter.use('compile',hbs({
-        viewEngine:'express-handlebars',
-        viewPath:'./views/'
-      }))
+    
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
@@ -116,7 +113,7 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-      (mailOptions.template='template');
+      (mailOptions.html='<img src="./assets/images/emailtemplate.png"></img>');
 
         (mailOptions.text = ` 
 
