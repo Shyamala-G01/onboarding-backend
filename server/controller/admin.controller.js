@@ -104,19 +104,19 @@ const addEmployee = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       (mailOptions.subject = "Welcome To Diggibyte Family"),
-        (mailOptions.text = 
-          
-          (<img src= "/assets/images/emailtemplate.png"></img>)
-          ` by clicking below URL.
+      (mailOptions.attachments= [{filename: 'emailtemplate.png',
+        content: fs.createReadStream('onboarding-backend\server\assets\images\emailtemplate.png')
+    }])
 
+
+        (mailOptions.text = ` 
+
+        URL: http://diggibyte.in
         
-        
-           URL: http://diggibyte.in
+         Username: ${info.email}
+       Password:${pass}`);
 
-           
-          Username: ${info.email}
-          Password:${pass}`);
-
+  
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
