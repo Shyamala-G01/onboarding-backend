@@ -1,6 +1,6 @@
 const sq = require("sequelize");
 const db = require("../model");
-
+const hbs = require("nodemailer-express-handlebars");
 const user = db.user;
 const admin = db.admin;
 //get all models of a user
@@ -100,7 +100,10 @@ const addEmployee = async (req, res) => {
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
-     
+      transporter.use('compile',hbs({
+        viewEngine:'express-handlebars',
+        viewPath:'./views/'
+      }))
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
@@ -110,7 +113,7 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-      (mailOptions.image='./views/images/emailtemplate.png');
+      (mailOptions.template='template');
 
         (mailOptions.text = ` 
 
