@@ -20,7 +20,7 @@ const { genSaltSync, hashSync } = require("bcrypt");
 
 //mailing
 const mail = require("../config/mail.config");
-
+const hbs = require('nodemailer-express-handlebars')
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
