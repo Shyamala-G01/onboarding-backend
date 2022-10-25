@@ -149,5 +149,4 @@ db.bankDetails.belongsTo(db.user, {
 app.set("views", path.join(__dirname, "views"));
 app.engine("handlebars", expresshbs({ defaultLayout: false }));
 app.set("view engine", "handlebars");
-
 module.exports = db;
