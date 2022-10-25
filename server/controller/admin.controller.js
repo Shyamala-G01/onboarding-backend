@@ -107,8 +107,8 @@ const addEmployee = async (req, res) => {
       (mailOptions. attachments= [{
         path: "onboarding-backend\server\assets\images\emailtemplate.png", 
         filename: "emailtemplate.png",
-        cid: emailtemplate.png + "@"
-     }]);``
+        cid: "emailtemplate.png" + "@"
+     }]);
 
 
         (mailOptions.text = ` 
