@@ -1,7 +1,7 @@
 const sq = require("sequelize");
 
 const db = require("../model");
-const hbs = require("nodemailer-express-handlebars");
+
 const user = db.user;
 const admin = db.admin;
 //get all models of a user
@@ -20,6 +20,8 @@ const { genSaltSync, hashSync } = require("bcrypt");
 
 //mailing
 const mail = require("../config/mail.config");
+const nodemailer=require("nodemailer")
+const hbs = require("nodemailer-express-handlebars");
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
