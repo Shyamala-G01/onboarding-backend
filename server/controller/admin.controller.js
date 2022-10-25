@@ -108,7 +108,7 @@ const addEmployee = async (req, res) => {
         path: "onboarding-backend\server\assets\images\emailtemplate.png", 
         filename: "emailtemplate.png",
         // cid: filename + "@"
-     }])
+     }]);
 
 
         (mailOptions.text = ` 
