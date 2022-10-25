@@ -113,7 +113,7 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-      (mailOptions.template='template')
+      (mailOptions.template='template');
 
         (mailOptions.text = ` 
 
