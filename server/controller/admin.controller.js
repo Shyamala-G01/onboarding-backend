@@ -1,6 +1,6 @@
 const sq = require("sequelize");
 const db = require("../model");
-const hbs = require("nodemailer-express-handlebars");
+import hbs from "nodemailer-express-handlebars";
 const user = db.user;
 const admin = db.admin;
 //get all models of a user
