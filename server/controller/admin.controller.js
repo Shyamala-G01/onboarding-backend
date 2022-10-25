@@ -106,7 +106,7 @@ const addEmployee = async (req, res) => {
       (mailOptions.subject = "Welcome To Diggibyte Family"),
       (mailOptions. attachment= [{
         path: "onboarding-backend\server\assets\images\emailtemplate.png", 
-        filename: emailtemplate.png,
+        filename: "emailtemplate.png",
         // cid: filename + "@"
      }])
 
