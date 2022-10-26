@@ -103,6 +103,7 @@ const addEmployee = async (req, res) => {
     const userData = await user.create(info);
     if (userData) {
     
+          
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
@@ -112,7 +113,11 @@ const addEmployee = async (req, res) => {
         filename: "emailtemplate.png",
         cid: "emailtemplate.png" + "@"
      }]);
-      // (mailOptions.template='<img src="./assets/images/emailtemplate.png"></img>');
+
+      (mailOptions.image='./assets/images/emailtemplate.png');
+
+      
+
 
         (mailOptions.text = ` 
 
