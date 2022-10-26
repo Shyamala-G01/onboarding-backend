@@ -20,7 +20,7 @@ const { genSaltSync, hashSync } = require("bcrypt");
 
 //mailing
 const mail = require("../config/mail.config");
-const hbs = require('nodemailer-express-handlebars')
+
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
@@ -112,7 +112,7 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-      (mailOptions.template='<img src="./assets/images/emailtemplate.png"></img>');
+     
 
         (mailOptions.text = ` 
 
