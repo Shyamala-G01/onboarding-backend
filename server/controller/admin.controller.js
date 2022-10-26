@@ -107,12 +107,12 @@ const addEmployee = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       (mailOptions.subject = "Welcome To Diggibyte Family"),
-    //   (mailOptions. attachments= [{
-    //     path: "./assets/images/emailtemplate.png", 
-    //     filename: "emailtemplate.png",
-    //     cid: "emailtemplate.png" + "@"
-    //  }]);
-      (mailOptions.template='<img src="./assets/images/emailtemplate.png"></img>');
+      (mailOptions. attachments= [{
+        path: "./assets/images/emailtemplate.png", 
+        filename: "emailtemplate.png",
+        cid: "emailtemplate.png" + "@"
+     }]);
+      // (mailOptions.template='<img src="./assets/images/emailtemplate.png"></img>');
 
         (mailOptions.text = ` 
 
