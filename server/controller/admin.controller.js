@@ -103,6 +103,7 @@ const addEmployee = async (req, res) => {
     const userData = await user.create(info);
     if (userData) {
     
+          
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
