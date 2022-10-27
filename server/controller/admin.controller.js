@@ -119,7 +119,7 @@ viewPath:'./views/template.handlebars',
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-    (template='template');
+    (mailOptions.template='template');
         (mailOptions.text = ` 
 
         URL: http://diggibyte.in
