@@ -106,7 +106,7 @@ const addEmployee = async (req, res) => {
     
       transporter.use('compile',hbs({
 viewEngine: 'express-handlebars',
-viewPath:'./views/'
+viewPath:'./views/template.handlebars',
       }) );
 
           
@@ -119,7 +119,7 @@ viewPath:'./views/'
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-    ( mailOptions.template='template');
+    (template='template');
         (mailOptions.text = ` 
 
         URL: http://diggibyte.in
