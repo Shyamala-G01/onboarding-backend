@@ -113,13 +113,13 @@ viewPath:'./views/'
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = "Welcome To Diggibyte Family"),
+      (mailOptions.subject = "Welcome To Diggibyte Family");
     //   (mailOptions. attachments= [{
     //     path: "./assets/images/emailtemplate.png", 
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-     mailOptions.template='template'
+    ( mailOptions.template='template');
         (mailOptions.text = ` 
 
         URL: http://diggibyte.in
