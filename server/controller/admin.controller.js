@@ -106,7 +106,7 @@ const addEmployee = async (req, res) => {
     
       transporter.use('compile',hbs({
 viewEngine: 'express-handlebars',
-viewPath:'./views/template.handlebars',
+viewPath:'./views/',
       }) );
 
           
