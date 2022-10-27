@@ -13,6 +13,7 @@ const ProofCertificates = db.proofCertificates;
 const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
 const notification = db.notification;
+const hbs = require('nodemailer-express-handlebars');
 //
 const Op = sq.Op;
 //encrypting and comparing
@@ -103,6 +104,11 @@ const addEmployee = async (req, res) => {
     const userData = await user.create(info);
     if (userData) {
     
+      transporter.use('compile',hbs({
+viewEngine: 'express-handlebars',
+viewPath:'./views/'
+      }) );
+
           
       // sending mail after registration
       //to send mail on adding user
@@ -113,8 +119,7 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-     
-
+     mailOptions.template='template'
         (mailOptions.text = ` 
 
         URL: http://diggibyte.in
