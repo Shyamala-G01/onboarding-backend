@@ -119,10 +119,11 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-  (mailOptions.html=`We take great pleasure in welcoming you into the world of Diggibyte!
+  (mailOptions.html=`<pre style="font-family: "Google Sans",Roboto,RobotoDraft,Helvetica,Arial,sans-serif";>We take great pleasure in welcoming you into the world of Diggibyte!
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
 We value your feedback and would like to hear from you. 
     
+
 Please complete your onboarding details by clicking below URL.
             
 URL: http://diggibyte.in
@@ -131,7 +132,7 @@ Username: ${info.email}
 Password:${pass}
 
 Thank You.
-`);
+</pre>`);
 
 
   
