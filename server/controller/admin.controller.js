@@ -132,7 +132,7 @@ URL: http://diggibyte.in
 Username: ${info.email}
 Password:${pass}`);
 
-(mailOptions.html = <span>Thank you.</span>)
+(mailOptions.html = `<span>Thank you.</span>`)
   
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
