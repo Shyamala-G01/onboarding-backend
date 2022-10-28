@@ -13,7 +13,7 @@ const ProofCertificates = db.proofCertificates;
 const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
 const notification = db.notification;
-const hbs = require('nodemailer-express-handlebars');
+// const hbs = require('nodemailer-express-handlebars');
 //
 const Op = sq.Op;
 //encrypting and comparing
@@ -25,9 +25,9 @@ const mail = require("../config/mail.config");
 const mailOptions = mail.mailOptions;
 const transporter = mail.transporter;
 
-//import file handler to create folder
-const folderFunctions = require("../controller/fileHandler");
-const { Sequelize } = require("../model");
+// //import file handler to create folder
+// const folderFunctions = require("../controller/fileHandler");
+// const { Sequelize } = require("../model");
 // contoller for adding admin
 const addAdmin = async (req, res) => {
   const salt = genSaltSync(10);
@@ -104,10 +104,10 @@ const addEmployee = async (req, res) => {
     const userData = await user.create(info);
     if (userData) {
     
-      transporter.use('compile',hbs({
-viewEngine: 'express-handlebars',
-viewPath:'./views/',
-      }) );
+//       transporter.use('compile',hbs({
+// viewEngine: 'express-handlebars',
+// viewPath:'./views/',
+//       }) );
 
           
       // sending mail after registration
