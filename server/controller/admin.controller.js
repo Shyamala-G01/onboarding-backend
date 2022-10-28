@@ -22,11 +22,11 @@ const { genSaltSync, hashSync } = require("bcrypt");
 //mailing
 const mail = require("../config/mail.config");
 
-const mailOptions = mail.mailOptions;
-const transporter = mail.transporter;
+// const mailOptions = mail.mailOptions;
+// const transporter = mail.transporter;
 
 //import file handler to create folder
-const folderFunctions = require("../controller/fileHandler");
+// const folderFunctions = require("../controller/fileHandler");
 const { Sequelize } = require("../model");
 // contoller for adding admin
 const addAdmin = async (req, res) => {
@@ -104,10 +104,10 @@ const addEmployee = async (req, res) => {
     const userData = await user.create(info);
     if (userData) {
     
-      transporter.use('compile',hbs({
-viewEngine: 'express-handlebars',
-viewPath:'./views/',
-      }) );
+//       transporter.use('compile',hbs({
+// viewEngine: 'express-handlebars',
+// viewPath:'./views/',
+//       }) );
 
           
       // sending mail after registration
