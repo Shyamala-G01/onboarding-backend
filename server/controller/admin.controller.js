@@ -113,7 +113,7 @@ const addEmployee = async (req, res) => {
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = <h1>Welcome To Diggibyte Family</h1>);
+      (mailOptions.subject = "Welcome To Diggibyte Family");
     //   (mailOptions. attachments= [{
     //     path: "./assets/images/emailtemplate.png", 
     //     filename: "emailtemplate.png",
@@ -133,7 +133,7 @@ const addEmployee = async (req, res) => {
   Password:${pass}`);
 
   `Thank you`
-  
+
   
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
