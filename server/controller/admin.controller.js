@@ -13,7 +13,7 @@ const ProofCertificates = db.proofCertificates;
 const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
 const notification = db.notification;
-const hbs = require('nodemailer-express-handlebars');
+// const hbs = require('nodemailer-express-handlebars');
 //
 const Op = sq.Op;
 //encrypting and comparing
