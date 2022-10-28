@@ -113,24 +113,27 @@ const addEmployee = async (req, res) => {
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = "Welcome To Diggibyte Family");
+      (mailOptions.subject = <h1>Welcome To Diggibyte Family</h1>);
     //   (mailOptions. attachments= [{
     //     path: "./assets/images/emailtemplate.png", 
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-    (mailOptions.text = `We take great pleasure in welcoming you into the world of Diggibyte!
-    As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
-    We value your feedback and would like to hear from you. 
+  (mailOptions.text = `We take great pleasure in welcoming you into the world of Diggibyte!
+  As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
+  We value your feedback and would like to hear from you. 
     
     
     
-    Please complete your onboarding details by clicking below URL.
+  Please complete your onboarding details by clicking below URL.
             
-    URL: http://diggibyte.in
+  URL: http://diggibyte.in
     
-    Username: ${info.email}
-    Password:${pass}`);
+  Username: ${info.email}
+  Password:${pass}`);
+
+  `Thank you`
+  
   
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
