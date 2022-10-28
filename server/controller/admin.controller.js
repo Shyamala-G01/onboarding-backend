@@ -130,10 +130,9 @@ Please complete your onboarding details by clicking below URL.
 URL: http://diggibyte.in
     
 Username: ${info.email}
-Password:${pass}
+Password:${pass}`);
 
-Thank you`);
-
+(mailOptions.html = <span>Thank you.</span>)
   
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
