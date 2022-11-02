@@ -54,13 +54,21 @@ const addAdmin = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
+      (mailOptions.html = 
 
+      `Welcome to Onboarding Web App, you have registered as "Admin" 
+      Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.
+       You will be provided with the access to view, edit and delete the details and documents provided by the employees.
       
-        (mailOptions.text = `
-        
-        
         username: ${info.email}
-                             password:${pass}`);
+        password:${pass}
+
+        Thank You,
+        HR Department
+        Stay Safe! Stay Healthy!
+        </pre>`);
+
+
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
@@ -126,7 +134,7 @@ const addEmployee = async (req, res) => {
     //  }]);
   (mailOptions.html=`<pre> We take great pleasure in welcoming you to Diggibyte Family!
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
-We value your feedback and would like to hear from you. </pre>
+We value your feedback and would like to hear from you. 
     
 
 Please complete your onboarding details by clicking below URL.
@@ -138,7 +146,7 @@ Password:${pass}
 
 Thank You,
 HR Department
-Stay Safe! Stay Healthy!
+Stay Safe! Stay Healthy!</pre>
 `);
 
 
