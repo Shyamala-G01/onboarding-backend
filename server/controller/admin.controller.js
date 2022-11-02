@@ -58,15 +58,14 @@ const addAdmin = async (req, res) => {
 
 `<pre>Welcome to Onboarding Web App, you have registered as "Admin" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.You will be provided with the access to view, edit and delete the details and documents provided by the employees.
 
-      URL: http://diggibyte.in
+URL: http://diggibyte.in
 
+username: ${info.email}
+password:${pass}
 
-      username: ${info.email}
-      password:${pass}
-
-      Thank You,
-      HR Department
-      Stay Safe! Stay Healthy! 
+Thank You,
+HR Department
+Stay Safe! Stay Healthy! 
       </pre>`);
 
 
