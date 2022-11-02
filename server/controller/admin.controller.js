@@ -53,9 +53,11 @@ const addAdmin = async (req, res) => {
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = "Admin Portal Registration Successfully"),
+      (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
+
+      
         (mailOptions.text = `username: ${info.email}
-                          password:${pass}`);
+                             password:${pass}`);
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
@@ -119,9 +121,9 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-  (mailOptions.html=`We take great pleasure in welcoming you to Diggibyte Family!
+  (mailOptions.html=`<pre> We take great pleasure in welcoming you to Diggibyte Family!
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
-We value your feedback and would like to hear from you. 
+We value your feedback and would like to hear from you. </pre>
     
 
 Please complete your onboarding details by clicking below URL.
