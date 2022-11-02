@@ -56,8 +56,19 @@ const addAdmin = async (req, res) => {
       (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
 
       
-        (mailOptions.text = `username: ${info.email}
-                             password:${pass}`);
+        (mailOptions.text = `Welcome to Onboarding Web App, 
+        you have registered as "Admin" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App. 
+        You will be provided with the access to view, edit and delete the details and documents provided by the employees.
+        
+        username: ${info.email}
+        password:${pass}
+        
+        
+        Thank You,
+        HR Department
+        Stay Safe! Stay Healthy!
+
+        `);
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
