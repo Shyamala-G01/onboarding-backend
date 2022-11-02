@@ -61,7 +61,7 @@ const addAdmin = async (req, res) => {
 URL: http://diggibyte.in
 
 username: ${info.email}
-password:${pass}
+password: ${pass}
 
 Thank You,
 HR Department
@@ -142,7 +142,7 @@ Please complete your onboarding details by clicking below URL.
 URL: http://diggibyte.in
     
 Username: ${info.email}
-Password:${pass}
+Password: ${pass}
 
 Thank You,
 HR Department
