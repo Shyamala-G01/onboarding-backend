@@ -56,7 +56,7 @@ const addAdmin = async (req, res) => {
       (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
       (mailOptions.html = 
 
-      `Welcome to Onboarding Web App, you have registered as "Admin" 
+      `<pre>Welcome to Onboarding Web App, you have registered as "Admin" 
       Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.
        You will be provided with the access to view, edit and delete the details and documents provided by the employees.
 
