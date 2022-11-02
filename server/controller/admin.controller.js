@@ -56,19 +56,11 @@ const addAdmin = async (req, res) => {
       (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
 
       
-        (mailOptions.text = `Welcome to Onboarding Web App, 
-        you have registered as "Admin" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App. 
-        You will be provided with the access to view, edit and delete the details and documents provided by the employees.
+        (mailOptions.text = `
+        
         
         username: ${info.email}
-        password:${pass}
-        
-        
-        Thank You,
-        HR Department
-        Stay Safe! Stay Healthy!
-
-        `);
+                             password:${pass}`);
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
@@ -112,7 +104,7 @@ const addEmployee = async (req, res) => {
     // let password = req.body.name.replaceAll(" ", "");
     // let pass = password + "@!" + Math.floor(Math.random() * 10);
     let password = req.body.id; 
-    // let pass = password.substring(0,2)+ '@#' + password.substring(2,6);
+    let pass = password.substring(0,2)+ '@#' + password.substring(2,6)
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
@@ -132,9 +124,9 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-  (mailOptions.html=`<pre>We take great pleasure in welcoming you to Diggibyte Family!
+  (mailOptions.html=`<pre> We take great pleasure in welcoming you to Diggibyte Family!
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
-We value your feedback and would like to hear from you. 
+We value your feedback and would like to hear from you. </pre>
     
 
 Please complete your onboarding details by clicking below URL.
@@ -142,11 +134,11 @@ Please complete your onboarding details by clicking below URL.
 URL: http://diggibyte.in
     
 Username: ${info.email}
-Password: ${pass}
+Password:${pass}
 
 Thank You,
 HR Department
-Stay Safe! Stay Healthy!</pre>
+Stay Safe! Stay Healthy!
 `);
 
 
