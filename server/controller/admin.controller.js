@@ -132,7 +132,7 @@ const addEmployee = async (req, res) => {
     //     filename: "emailtemplate.png",
     //     cid: "emailtemplate.png" + "@"
     //  }]);
-  (mailOptions.html=`<pre> We take great pleasure in welcoming you to Diggibyte Family!
+  (mailOptions.html=`<pre>We take great pleasure in welcoming you to Diggibyte Family!
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
 We value your feedback and would like to hear from you. 
     
