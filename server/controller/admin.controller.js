@@ -46,7 +46,7 @@ const addAdmin = async (req, res) => {
       created_by_admin: req.body.created_by_admin,
     };
     let password = req.body.name.replaceAll(" ", "");
-    let pass = "Welcome1" + password + "@!";
+    let pass = password.substring(0,2) +'@#' +password.substring(2,6);
     info.password = hashSync(pass, salt);
     const adminData = await admin.create(info);
     if (adminData) {
