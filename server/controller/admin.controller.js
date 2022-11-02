@@ -112,7 +112,7 @@ const addEmployee = async (req, res) => {
     // let password = req.body.name.replaceAll(" ", "");
     // let pass = password + "@!" + Math.floor(Math.random() * 10);
     let password = req.body.id; 
-    let pass = (password.substring(0,2)+ '@#' + password.substring(2,6));
+    let pass = password.substring(0,2) +'@#' +password.substring(2,6);
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
