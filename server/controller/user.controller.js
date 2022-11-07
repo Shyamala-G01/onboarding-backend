@@ -770,10 +770,18 @@ const forgotpassword = async (req, res) => {
 };
 function forgotPassEmail(pass, email) {
   mailOptions.to = `${email}`;
-  (mailOptions.subject = "WELCOME TO DIGGIBYTE FAMILY"),
-    (mailOptions.text = `username: ${email}
-
-                        password:${pass}`);
+  (mailOptions.subject = " Reset your password"),
+  (mailOptions.text = ` <pre>  We received your request to reset your Onboarding password.
+  Please click the link below to change your password now.
+    
+  
+  Username:${email}
+  Password:${pass}
+    
+  Thank you,
+  HR Department.
+  Stay Safe! Stay Healthy!
+    </pre>`);
 
   const data = transporter.sendMail(mailOptions, function (err) {
     if (err) {

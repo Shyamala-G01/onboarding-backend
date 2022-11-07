@@ -34,7 +34,7 @@ const addAdmin = async (req, res) => {
   // already exit or not
   const adminMail = await admin.findOne({ where: { email: req.body.email } });
   if (adminMail) {
-    res.send({ message: "Admin Exist" });
+    res.send({ message: "Admin Exists" });
   } else {
     let info = {
       id: req.body.id,
@@ -64,7 +64,7 @@ username: ${info.email}
 password: ${pass}
 
 Thank You,
-HR Department
+HR Department.
 Stay Safe! Stay Healthy! 
       </pre>`);
 
@@ -126,6 +126,10 @@ const addEmployee = async (req, res) => {
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
+      var maillist = [
+        'chaya.pu@diggibyte.com',
+        'mahananda.reddy@diggibyte.com',
+      ];
       (mailOptions.subject = "Important!! - Welcome Aboard! Let's Get You Started");
     //   (mailOptions. attachments= [{
     //     path: "./assets/images/emailtemplate.png", 
