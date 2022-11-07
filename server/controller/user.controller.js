@@ -770,8 +770,8 @@ const forgotpassword = async (req, res) => {
 };
 function forgotPassEmail(pass, email) {
   mailOptions.to = `${email}`;
-  (mailOptions.subject = " Reset your password"),
-  (mailOptions.text = ` <pre>  We received your request to reset your Onboarding password.
+  (mailOptions.subject = " Onboarding Application : Reset your password"),
+  (mailOptions.text = `  We received your request to reset your Onboarding password.
   Please click the link below to change your password now.
     
   
@@ -780,8 +780,7 @@ function forgotPassEmail(pass, email) {
     
   Thank you,
   HR Department.
-  Stay Safe! Stay Healthy!
-    </pre>`);
+  Stay Safe! Stay Healthy!`);
 
   const data = transporter.sendMail(mailOptions, function (err) {
     if (err) {
