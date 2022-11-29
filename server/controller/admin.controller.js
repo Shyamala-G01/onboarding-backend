@@ -66,7 +66,7 @@ password: ${pass}
 Thank You,
 HR Department.
 Stay Safe! Stay Healthy! 
-      </pre>`);
+</pre>`);
 
 
       transporter.sendMail(mailOptions, function (err, info) {
@@ -80,7 +80,7 @@ Stay Safe! Stay Healthy!
 
       res.status(200).send({ message: "Registered Successfully" });
     } else {
-      res.status(404).send({ message: "Cannot Register" });
+      res.status(404).send({ message: "Cannot Register Successfully" });
     }
   }
 };
@@ -116,20 +116,11 @@ const addEmployee = async (req, res) => {
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
-    
-//       transporter.use('compile',hbs({
-// viewEngine: 'express-handlebars',
-// viewPath:'./views/',
-//       }) );
 
           
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      var maillist = [
-        'chaya.pu@diggibyte.com',
-        'mahananda.reddy@diggibyte.com',
-      ];
       (mailOptions.subject = "Important!! - Welcome Aboard! Let's Get You Started");
     //   (mailOptions. attachments= [{
     //     path: "./assets/images/emailtemplate.png", 
