@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-  from: "hr@diggibyte.com",
+  from: "svc_fullstack@diggibyte.com",
 };
 
 module.exports = { transporter, mailOptions };
