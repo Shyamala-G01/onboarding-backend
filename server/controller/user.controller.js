@@ -732,7 +732,7 @@ const forgotpassword = async (req, res) => {
   let userMail = req.body.email;
   let userdata = await user.findOne({ where: { email: userMail } });
   let admindata = await admin.findOne({ where: { email: userMail } });
-  let password = req.body.email.substring(0, 5);
+  let password = req.body.id; 
   let pass = password.substring(0,2) +'@#' +password.substring(2,6);
   const salt = genSaltSync(10);
   let chnagedPass = hashSync(pass, salt);
@@ -772,7 +772,7 @@ function forgotPassEmail(pass, email) {
   mailOptions.to = `${email}`;
   (mailOptions.subject = " Onboarding Application : Reset your password"),
   (mailOptions.text = `  We received your request to reset your Onboarding password.
-  Please enter auto generated password below to reset new password.
+  Please enter auto generated password to reset new password.
   
   
   
