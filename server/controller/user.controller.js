@@ -772,7 +772,7 @@ function forgotPassEmail(pass, email) {
   mailOptions.to = `${email}`;
   (mailOptions.subject = " Onboarding Application : Reset your password"),
   (mailOptions.text = `  We received your request to reset your Onboarding password.
-  Please enter auto generated password  to reset new password.
+  Please enter auto generated password below to reset new password.
   
   
   
