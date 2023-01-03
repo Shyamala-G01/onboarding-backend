@@ -732,7 +732,7 @@ const forgotpassword = async (req, res) => {
   let userMail = req.body.email;
   let userdata = await user.findOne({ where: { email: userMail } });
   let admindata = await admin.findOne({ where: { email: userMail } });
-  let password = req.body.id
+  let password = req.body.id; 
   let pass = password.substring(0,2) +'@#' +password.substring(2,6);
   const salt = genSaltSync(10);
   let chnagedPass = hashSync(pass, salt);
