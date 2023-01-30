@@ -367,6 +367,45 @@ const deleteFile=async (req,resp)=>{
   console.log(req.body)
   folderFunctions.removeFile(req.body.fileName,ids)
 }
+const sendEmailForPendingProfile = async (req, res) =>
+ {
+  var emails=[]
+  const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
+  console.log(penRecords)
+  penRecords.forEach((element)=>{
+  emails.push(element.email);
+  })
+ console.log(emails)
+
+ emails.forEach((email)=>{
+   const mail={
+    from :"svc_fullstack@diggibyte.com",
+    to:email,
+    subject:"Reminder: Pending Onboarding Profile",
+    html:
+    `Hi,<br><br>
+    This mail is to remind you that your onboarding profile is still pending completion.
+     We are looking forward to welcoming you to our team, but in order to do that, 
+     we need you to complete and submit your onboarding profile as soon as possible.<br><br>
+     Please make sure to complete and submit your onboarding profile.
+    If you have any questions or need assistance, please reach out to the HR department.<br><br>
+    Thank you for your prompt attention to this matter.<br><br>
+    Regards,<br>
+    <strong>HR Department</strong> `
+   }
+
+     const data = transporter.sendMail(mail, function (err) 
+     {
+      if (err) 
+      {
+        res.status(400).send({ message: "Unsuccess" });
+       }
+        else {
+          res.status(200).send({ message: "Success" });
+       }
+      });
+    })
+};
 module.exports = {
   addAdmin,
   addEmployee,
@@ -381,5 +420,6 @@ module.exports = {
   putProofDetails,
   putBankDetails,
   deleteFile,
-  deletenotification
+  deletenotification,
+  sendEmailForPendingProfile
 };

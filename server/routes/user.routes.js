@@ -159,4 +159,8 @@ Router.get(
   authController.verifyToken,
   userController.getStatus
 );
+Router.post( 
+  "/sendEmails", 
+  userController.getEmailAfterSubmit
+  );
 module.exports = Router;

@@ -887,6 +887,45 @@ const getStatus = async (req, res) => {
     decStatus: decla,
   });
 };
+const getEmailAfterSubmit = async (req, res) =>
+ {
+   let name = req.body.name;
+   let designation = req.body.designation
+   console.log(name)
+   const mail={
+    from :"svc_fullstack@diggibyte.com",
+    to:"mahananda.reddy@diggibyte.com",
+    subject:`Onboarding Documents Received from ${name}`,
+    html:
+    `Dear HR Team,<br>
+    This mail is to inform you that <strong>${name}</strong> has successfully
+    submitted all of the required onboarding documents.We have received and processed the following:<br>
+    <ul>
+    <li> Personal Details </li>
+    <li> Educational Information </li>
+    <li> Other Details </li>
+    <li> Bank Details etc...  </li>
+    </ul><br>
+    Please review and confirm that all necessary documents have been received. 
+    Once confirmed, please proceed with scheduling orientation and any necessary training for the 
+    new employee.<br><br>
+    Thank you,<br>
+    ${name},<br>
+    ${designation}.`
+   }
+
+     const data = transporter.sendMail(mail, function (err) 
+     {
+      if (err) 
+      {
+        res.status(400);
+       }
+        else {
+          res.status(200);
+       }
+      });
+};
+
 module.exports = {
   addPersonalInfo,
   updatePersonalInfo,
@@ -916,6 +955,7 @@ module.exports = {
   getStatus,
   getStates,
   getCity,
-  getBankNames
+  getBankNames,
+  getEmailAfterSubmit
   // deletefile
 };
