@@ -104,7 +104,7 @@ const updatePersonalInfo = async (req, res) => {
   }
 };
 
-// Address
+// Address 
 const addAddress = async (req, res) => {
   const info = {
     type: req.body.type,
@@ -904,7 +904,7 @@ const getEmailAfterSubmit = async (req, res) =>
     <li> Personal Details </li>
     <li> Educational Information </li>
     <li> Other Details </li>
-    <li> Bank Details etc...  </li>
+    <li> Bank Details etc...</li>
     </ul><br>
     Please review and confirm that all necessary documents have been received. 
     Once confirmed, please proceed with scheduling orientation and any necessary training for the 
