@@ -104,7 +104,7 @@ const updatePersonalInfo = async (req, res) => {
   }
 };
 
-// Address
+// Address 
 const addAddress = async (req, res) => {
   const info = {
     type: req.body.type,
