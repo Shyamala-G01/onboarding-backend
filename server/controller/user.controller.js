@@ -23,17 +23,17 @@ const Op = sq.Op;
 const folderFunctions = require("../controller/fileHandler");
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
-  const data = await user.findOne({
-    where: { id: req.body.fk_person_users_id },
-  });
+  // const data = await user.findOne({
+  //   where: { id: req.body.fk_person_users_id },
+  // });
 
-  const usercredential = await user.update(
-    { status: data.status + 40 },
+  // const usercredential = await user.update(
+  //   { status: data.status + 40 },
 
-    { where: { id: req.body.fk_person_users_id } }
-  );
-  console.log("s");
-  console.log(req.body);
+  //   { where: { id: req.body.fk_person_users_id } }
+  // );
+  // console.log("s");
+  // console.log(req.body);
 
   const userData = await personalInfo.create(
     {
@@ -127,6 +127,7 @@ const addAddress = async (req, res) => {
     res.status(400).send({ message: "Unsuccessful" });
   }
 };
+
 const updateAddAddress = async (req, res) => {
   console.log(req.body);
   const info = {
@@ -904,7 +905,7 @@ const getEmailAfterSubmit = async (req, res) =>
     <li> Personal Details </li>
     <li> Educational Information </li>
     <li> Other Details </li>
-    <li> Bank Details etc...  </li>
+    <li> Bank Details etc...</li>
     </ul><br>
     Please review and confirm that all necessary documents have been received. 
     Once confirmed, please proceed with scheduling orientation and any necessary training for the 

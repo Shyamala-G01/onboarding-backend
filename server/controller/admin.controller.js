@@ -276,6 +276,8 @@ const getTotals = async (req, res) => {
 const getPendingRecord=async (req,res)=>{
   const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
   res.send(penRecords)
+
+ 
 }
 
 const putProofDetails = async (req, res) => {
@@ -375,7 +377,7 @@ const sendEmailForPendingProfile = async (req, res) =>
   penRecords.forEach((element)=>{
   emails.push(element.email);
   })
- console.log(emails)
+
 
  emails.forEach((email)=>{
    const mail={
@@ -394,18 +396,21 @@ const sendEmailForPendingProfile = async (req, res) =>
     <strong>HR Department</strong> `
    }
 
-     const data = transporter.sendMail(mail, function (err) 
+   let data = transporter.sendMail(mail, function (err) 
      {
       if (err) 
       {
-        res.status(400).send({ message: "Unsuccess" });
+        res.send({message:"Email Sent Unsuccessfully"});
+        console.log(err)
        }
         else {
-          res.status(200).send({ message: "Success" });
+          res.send({message:"Email Sent Successfully"});
+          console.log("data"+data)
        }
       });
     })
 };
+
 module.exports = {
   addAdmin,
   addEmployee,
