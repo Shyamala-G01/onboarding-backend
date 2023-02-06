@@ -21,7 +21,7 @@ app.use(fileuplod())
 app.use(bodyParser.json());
 // for url encoded
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads',express.static(require('path').join('/home/diggiserveradmin/OnBoarding-Documnets')))
+app.use('/api/uploads',express.static(require('path').join('/home/diggiserveradmin/OnBoarding-Documnets')))
 app.get("/", (req, res) => {
   res.send({ message: "Hello" });
 });
