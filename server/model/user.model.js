@@ -41,6 +41,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },photo:{
         type:DataTypes.STRING
+      },
+      approved_status:{
+        type: DataTypes.STRING
+      },
+      approved_at:{
+        type:DataTypes.DATE
+      },
+      completed_status:{
+        type: DataTypes.STRING
       }
     },
     {

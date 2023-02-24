@@ -11,7 +11,7 @@ const educationalInfo = db.educationalInfo;
 const otherDetails = db.proofCertificates;
 const declaration = db.declaration;
 const bankdetails = db.bankDetails;
-const states= db.states;
+const states = db.states;
 const bankname = db.bankname;
 // mailing
 const mail = require("../config/mail.config");
@@ -23,15 +23,19 @@ const Op = sq.Op;
 const folderFunctions = require("../controller/fileHandler");
 //add data to personal info table
 const addPersonalInfo = async (req, res) => {
-  // const data = await user.findOne({
-  //   where: { id: req.body.fk_person_users_id },
-  // });
+  const data = await user.findOne({
+    where: { id: req.body.fk_person_users_id },
+  });
 
-  // const usercredential = await user.update(
-  //   { status: data.status + 40 },
+  const usercredential = await user.update(
+    { status: data.status + 20 },
 
-  //   { where: { id: req.body.fk_person_users_id } }
-  // );
+    { where: { id: req.body.fk_person_users_id } }
+  );
+  await user.update(
+    { completed_status: "In Progress" },
+    { where: { id: req.body.fk_person_users_id } }
+  );
   // console.log("s");
   // console.log(req.body);
 
@@ -48,7 +52,7 @@ const addPersonalInfo = async (req, res) => {
       created_at: req.body.created_at,
       updated_at: req.body.updated_at,
       updated_by: req.body.updated_by,
-      status: "completed",
+      status: "In Progress",
       fk_person_users_id: req.body.fk_person_users_id,
     },
 
@@ -98,13 +102,13 @@ const updatePersonalInfo = async (req, res) => {
 
   if (userData) {
     folderFunctions.uploadfile(req.files, req.body.id);
-    res.status(200).send({message:'updated'});
+    res.status(200).send({ message: "updated" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
   }
 };
 
-// Address 
+// Address
 const addAddress = async (req, res) => {
   const info = {
     type: req.body.type,
@@ -188,26 +192,17 @@ const addEmployment = async (req, res) => {
   const empDtat = await employmentDetails.findOne({
     where: { fk_employment_users_id: req.body.fk_employment_users_id },
   });
-  console.log(data.status);
-  console.log(empDtat);
-  if (empDtat == null) {
-    const usercredential = await user.update(
-      { status: data.status + 20 },
-
-      { where: { id: req.body.fk_employment_users_id } }
-    );
-  }
-  console.log(req.body);
-
+ 
   const info = {
     type: req.body.type,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status: "completed",
+    status: "In Progress",
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
   if (req.body.type != "Fresher") {
+    
     (info.org_name = req.body.org_name),
       (info.joining_date = req.body.joining_date),
       (info.relieving_date = req.body.relieving_date),
@@ -221,42 +216,62 @@ const addEmployment = async (req, res) => {
     info.pay_slip3 = req.files.pay_slip3.name;
     info.notice_date = req.body.notice_date;
   }
-
-  const userData = await employmentDetails.create(info);
-  if (userData) {
-    folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
-    res.status(200).send({ message: "Successful" });
-  } else {
-    res.status(400).send({ message: "Unsuccessful" });
+  if (empDtat == null) {
+    const userData = await employmentDetails.create(info);
+    if (userData) {
+      folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
+        const usercredential = await user.update(
+          { status: data.status + 20 },
+    
+          { where: { id: req.body.fk_employment_users_id } }
+        );
+        await user.update(
+          { completed_status: "In Progress" },
+          { where: { id: req.body.fk_employment_users_id } }
+        );
+        res.status(200).send({ message: "Successful" });
+      
+    } else {
+      res.status(400).send({ message: "Unsuccessful" });
+    }
+  }
+  else if(req.body.type != 'Fresher' && empDtat.type != 'Fresher' || empDtat == null){
+    const userData = await employmentDetails.create(info);
+    if (userData) {
+      folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
+      res.status(200).send({ message: "Successful" });
+    } else {
+      res.status(400).send({ message: "Unsuccessful" });
+    }
   }
 };
 
 const getEmployemnt = async (req, res) => {
   let id = req.params.id;
   let employmentData = await employmentDetails.findAll({
-    where: { type: { [Op.ne]: "Fresher" }, fk_employment_users_id: id },
+    where: { fk_employment_users_id: id },
+    // type: { [Op.ne]: "Fresher" },
     // where:{fk_employment_users_id: id },
   });
   console.log(employmentData);
   res.send(employmentData);
 };
-const getStates = async(req,res)=>
-{
-  let statesData = await states.findAll({attributes:[[sq.fn('DISTINCT', sq.col('State')),'State']]});
- 
+const getStates = async (req, res) => {
+  let statesData = await states.findAll({
+    attributes: [[sq.fn("DISTINCT", sq.col("State")), "State"]],
+  });
+
   res.send(statesData);
-}
-const getCity = async(req,res)=>
-{
-  let cityData = await states.findAll({attributes:['City','District']});
+};
+const getCity = async (req, res) => {
+  let cityData = await states.findAll({ attributes: ["City", "District"] });
 
   res.send(cityData);
-}
-const getBankNames =async(req,res)=>
-{
-  let bankName = await bankname.findAll({attributes:['bank_name']})
+};
+const getBankNames = async (req, res) => {
+  let bankName = await bankname.findAll({ attributes: ["bank_name"] });
   res.send(bankName);
-}
+};
 
 const updateEmployemnt = async (req, res) => {
   let ids = req.params.id;
@@ -272,51 +287,56 @@ const updateEmployemnt = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
-  if (req.body.relieving_letter == "" || typeof(req.body.relieving_letter)=="string" ) {
+  if (
+    req.body.relieving_letter == "" ||
+    typeof req.body.relieving_letter == "string"
+  ) {
     info.relieving_letter = dat.relieving_letter;
   } else {
     info.relieving_letter = req.files.relieving_letter.name;
   }
-  
+
   if (req.body.type == "Recent") {
-    if (typeof(req.body.offer_letter) != "string") {
+    if (typeof req.body.offer_letter != "string") {
       folderFunctions.removeFile(
         dat.offer_letter,
         req.body.fk_employment_users_id
       );
       info.offer_letter = req.files.offer_letter.name;
     }
-    if (typeof(req.body.pay_slip1 )!= "string") {
+    if (typeof req.body.pay_slip1 != "string") {
       folderFunctions.removeFile(
         dat.pay_slip1,
         req.body.fk_employment_users_id
       );
       info.pay_slip1 = req.files.pay_slip1.name;
     }
-    if (typeof(req.body.pay_slip2) != "string") {
+    if (typeof req.body.pay_slip2 != "string") {
       folderFunctions.removeFile(
         dat.pay_slip2,
         req.body.fk_employment_users_id
       );
       info.pay_slip2 = req.files.pay_slip2.name;
     }
-    if (typeof(req.body.pay_slip3) != "string") {
+    if (typeof req.body.pay_slip3 != "string") {
       info.pay_slip3 = req.files.pay_slip3.name;
       folderFunctions.removeFile(
         dat.pay_slip3,
         req.body.fk_employment_users_id
       );
     }
-    if (req.body.offer_letter= "" || typeof(req.body.offer_letter)=='string') {
+    if (
+      (req.body.offer_letter = "" || typeof req.body.offer_letter == "string")
+    ) {
       info.offer_letter = dat.offer_letter;
     }
-    if (req.body.pay_slip1 == "" || typeof(req.body.pay_slip1)=='string') {
+    if (req.body.pay_slip1 == "" || typeof req.body.pay_slip1 == "string") {
       info.pay_slip1 = dat.pay_slip1;
     }
-    if (req.body.pay_slip2 == "" || typeof(req.body.pay_slip2)=='string') {
+    if (req.body.pay_slip2 == "" || typeof req.body.pay_slip2 == "string") {
       info.pay_slip2 = dat.pay_slip2;
     }
-    if (req.body.pay_slip3 == "" || typeof(req.body.pay_slip3)=='string') {
+    if (req.body.pay_slip3 == "" || typeof req.body.pay_slip3 == "string") {
       info.pay_slip3 = dat.pay_slip3;
     }
     info.notice_date = req.body.notice_date;
@@ -339,6 +359,21 @@ const deleteEmployemnt = async (req, res) => {
   });
   // console.log(employmentData);
   res.send({ message: "deleted" });
+  const userData = await user.findOne({
+    where: { id: req.body.empid },
+  });
+
+  const empData = await employmentDetails.findAll({
+    where: { fk_employment_users_id: req.body.empid },
+  });
+  console.log("length:" + empData.length);
+  if (empData.length <= 0) {
+    const usercredential = await user.update(
+      { status: userData.status - 20 },
+
+      { where: { id: req.body.empid } }
+    );
+  }
 };
 
 // Get personal information
@@ -366,7 +401,7 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
- 
+
   console.log(req.body);
   console.log(req.files);
   const info = {
@@ -385,11 +420,16 @@ const addEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if (
-    req.body.type == "Graduation" ||   req.body.type == "Diploma" || 
+    req.body.type == "Graduation" ||
+    req.body.type == "Diploma" ||
     req.body.type == "Masters/Post-Graduation"
   ) {
     console.log("inside if");
-    info.status = "completed";
+    info.status = "In Progress";
+    await user.update(
+      { completed_status: "In Progress" },
+      { where: { id: req.body.fk_education_users_id } }
+    );
     if (req.body.provisional_marks_card != "") {
       console.log("s");
       info.provisional_marks_card = req.files.provisional_marks_card.name;
@@ -400,11 +440,10 @@ const addEducation = async (req, res) => {
   }
   const educationData = await educationalInfo.create(info);
   const edData = await educationalInfo.findAll({
-    where: { id: req.body.fk_education_users_id },
+    where: { fk_education_users_id: req.body.fk_education_users_id },
   });
-  if (edData.length == 2)
-   {
-    
+  console.log("length:" + edData.length);
+  if (edData.length > 2) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
 
@@ -431,8 +470,8 @@ const getEducation = async (req, res) => {
 
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
-  console.log(req.body)
-  console.log(req.files)
+  console.log(req.body);
+  console.log(req.files);
   let id = req.params.id;
   let dat = await educationalInfo.findOne({
     where: { id: id },
@@ -452,43 +491,44 @@ const updateEducation = async (req, res) => {
     fk_education_users_id: req.body.fk_education_users_id,
   };
   if (
-    req.body.type == "Graduation" ||  req.body.type == "Diploma" ||
+    req.body.type == "Graduation" ||
+    req.body.type == "Diploma" ||
     req.body.type == "Masters/Post-Graduation"
   ) {
-    if (typeof(req.body.convocation_certificate) != "string") {
-      console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-       info.convocation_certificate = req.files.convocation_certificate.name;
-       console.log(req.files.convocation_certificate.name)
-         folderFunctions.removeFile(
-           dat.convocation_certificate,
-           req.body.fk_education_users_id
-         );
-     }
-    if (typeof(req.body.provisional_marks_card) != "string") {
+    if (typeof req.body.convocation_certificate != "string") {
+      console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+      info.convocation_certificate = req.files.convocation_certificate.name;
+      console.log(req.files.convocation_certificate.name);
+      folderFunctions.removeFile(
+        dat.convocation_certificate,
+        req.body.fk_education_users_id
+      );
+    }
+    if (typeof req.body.provisional_marks_card != "string") {
       info.provisional_marks_card = req.files.provisional_marks_card.name;
       folderFunctions.removeFile(
         dat.provisional_marks_card,
         req.body.fk_education_users_id
       );
     }
-    
+
     if (
       req.body.provisional_marks_card == "" ||
-      typeof(req.body.provisional_marks_card)=='string'
+      typeof req.body.provisional_marks_card == "string"
     ) {
       info.provisional_marks_card = dat.provisional_marks_card;
     }
     if (
       req.body.convocation_certificate == "" ||
-      typeof(req.body.provisional_marks_card)=='string'
+      typeof req.body.provisional_marks_card == "string"
     ) {
       info.convocation_certificate = dat.convocation_certificate;
     }
   }
-  if (req.body.marks_card == "" || typeof(req.body.marks_card)=='string') {
+  if (req.body.marks_card == "" || typeof req.body.marks_card == "string") {
     info.marks_card = dat.marks_card;
   }
-  if (typeof(req.body.marks_card) != "string") {
+  if (typeof req.body.marks_card != "string") {
     info.marks_card = req.files.marks_card.name;
     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
   }
@@ -503,12 +543,27 @@ const updateEducation = async (req, res) => {
 
 //delete specific education details
 const deleteEducation = async (req, res) => {
+  console.log(req.body.empid);
   let id = Number(req.params.id);
   let educationData = await educationalInfo.destroy({
     where: { id: id },
   });
-
   res.send({ message: "deleted" });
+  const userData = await user.findOne({
+    where: { id: req.body.empid },
+  });
+
+  const edData = await educationalInfo.findAll({
+    where: { fk_education_users_id: req.body.empid },
+  });
+  console.log("length:" + edData.length);
+  if (edData.length <= 2) {
+    const usercredential = await user.update(
+      { status: userData.status - 20 },
+
+      { where: { id: req.body.empid } }
+    );
+  }
 };
 // const deletefile = async(req,res) => {
 //   if(req.marks_card != null)
@@ -527,7 +582,10 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
 
     { where: { id: req.body.fk_proof_users_id } }
   );
-
+  await user.update(
+    { completed_status: "In Progress" },
+    { where: { id: req.body.fk_proof_users_id } }
+  );
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     aadhar: req.files.aadhar.name,
@@ -539,7 +597,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status: "completed",
+    status: "In Progress",
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
   if (req.body.passport != "") {
@@ -556,6 +614,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
+    status: "In Progress",
     esi_no: req.body.esi_no,
     fk_bank_users_id: req.body.fk_bank_users_id,
   };
@@ -588,7 +647,6 @@ const getOtherDetailAndBankDetails = async (req, res) => {
 };
 //update perticular/specific OtherDetail i.e by id
 const updateOtherDetailAndBankDetails = async (req, res) => {
- 
   let ids = req.params.id;
   let dat = await otherDetails.findOne({ where: { fk_proof_users_id: ids } });
   const info = {
@@ -600,7 +658,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status: "completed",
+    status: "In Progress",
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
   if (req.body.aadhar == "") {
@@ -626,7 +684,6 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   if (req.body.passport != "") {
     info.passport = req.files.passport.name;
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
-    
   }
   if (req.body.pan_card == "") {
     info.pan_card = dat.pan_card;
@@ -634,7 +691,6 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
   if (req.body.pan_card != "") {
     info.pan_card = req.files.pan_card.name;
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
-   
   }
   let bank = {
     account_holder_name: req.body.account_holder_name,
@@ -647,7 +703,7 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status: "completed",
+    status: "In Progress",
     esi_no: req.body.esi_no,
     fk_bank_users_id: req.body.fk_proof_users_id,
   };
@@ -668,16 +724,10 @@ const updateOtherDetailAndBankDetails = async (req, res) => {
 
 //adding declaration
 const addDeclaration = async (req, res) => {
-  
   const userData = await user.findOne({
     where: { id: req.body.fk_declaration_users_id },
   });
 
-  const usercredential = await user.update(
-    { status: userData.status + 20 },
-
-    { where: { id: req.body.fk_declaration_users_id } }
-  );
   console.log(req.body);
   const info = {
     joining_date: req.body.joiningDate,
@@ -686,11 +736,21 @@ const addDeclaration = async (req, res) => {
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
-    status: "completed",
+    status: "In Progress",
     fk_declaration_users_id: req.body.fk_declaration_users_id,
   };
   const declarationData = await declaration.create(info);
   if (declarationData) {
+    
+  const usercredential = await user.update(
+    { status: userData.status + 20 },
+
+    { where: { id: req.body.fk_declaration_users_id } }
+  );
+  await user.update(
+    { completed_status: "In Progress" },
+    { where: { id: req.body.fk_declaration_users_id } }
+  );
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -702,10 +762,11 @@ const getDeclaration = async (req, res) => {
   let declarationData = await declaration.findOne({
     where: { fk_declaration_users_id: id },
   });
-  let dec = await user.findOne({where: {id:id}})
- console.log(declarationData);
+  let dec = await user.findOne({ where: { id: id } });
+  console.log(declarationData);
 
-  res.send( [declarationData,dec.status]);};
+  res.send([declarationData, dec.status]);
+};
 //update perticular/specific OtherDetail i.e by id
 const updateDeclaration = async (req, res) => {
   let id = req.params.id;
@@ -723,18 +784,16 @@ const updateDeclaration = async (req, res) => {
   let declarationData = await declaration.update(info, {
     where: { fk_declaration_users_id: id },
   });
-  if(declarationData){
-
+  if (declarationData) {
     res.send({ message: "updated" });
   }
- 
 };
 const forgotpassword = async (req, res) => {
   let userMail = req.body.email;
   let userdata = await user.findOne({ where: { email: userMail } });
   let admindata = await admin.findOne({ where: { email: userMail } });
   let password = req.body.email.substring(0, 5);
-  let pass = password.substring(0,2) +'@#' +password.substring(2,6);
+  let pass = password.substring(0, 2) + "@#" + password.substring(2, 6);
   const salt = genSaltSync(10);
   let chnagedPass = hashSync(pass, salt);
   console.log(userdata);
@@ -772,7 +831,7 @@ const forgotpassword = async (req, res) => {
 function forgotPassEmail(pass, email) {
   mailOptions.to = `${email}`;
   (mailOptions.subject = " Onboarding Application : Reset your password"),
-  (mailOptions.text = `  We received your request to reset your Onboarding password.
+    (mailOptions.text = `  We received your request to reset your Onboarding password.
   Please enter auto generated password to reset new password.
   
   
@@ -794,13 +853,17 @@ function forgotPassEmail(pass, email) {
   return true;
 }
 const checkPassword = async (req, res) => {
-  const oldPass = req.body.autoPass;
+  let oldPass = req.body.autoPass;
   let newpas = req.body.password;
-  const salt = genSaltSync(10);
+  let salt = genSaltSync(10);
+  console.log(salt,newpas)
   let chnagedPass = hashSync(newpas, salt);
+  console.log(chnagedPass)
   let Useremail = req.body.email;
-  const userdata = await user.findOne({ where: { email: Useremail } });
-  const admindata = await admin.findOne({ where: { email: Useremail } });
+  let userdata = await user.findOne({ where: { email: Useremail } });
+  console.log(userdata)
+  let admindata = await admin.findOne({ where: { email: Useremail } });
+  console.log(admindata)
   if (userdata != null) {
     if ((oldPass, userdata.password)) {
       const usercredential = await user.update(
@@ -809,9 +872,9 @@ const checkPassword = async (req, res) => {
         { where: { email: Useremail } }
       );
       if (usercredential) {
-        res.status(200).send({ message: "Password Updated successfully" });
+        res.send({ message: "Password Updated successfully" });
       } else {
-        res.status(400).send({ message: "Password cannot be updated" });
+        res.send({ message: "Password cannot be updated" });
       }
     }
   } else if (admindata != null) {
@@ -822,9 +885,9 @@ const checkPassword = async (req, res) => {
         { where: { email: Useremail } }
       );
       if (usercredential) {
-        res.status(200).send({ message: "Password Updated successfully" });
+        res.send({ message: "Password Updated successfully" });
       } else {
-        res.status(400).send({ message: "Password cannot be updated" });
+        res .send({ message: "Password cannot be updated" });
       }
     }
   }
@@ -888,17 +951,16 @@ const getStatus = async (req, res) => {
     decStatus: decla,
   });
 };
-const getEmailAfterSubmit = async (req, res) =>
- {
-   let name = req.body.name;
-   let designation = req.body.designation
-   console.log(name)
-   const mail={
-    from :"svc_fullstack@diggibyte.com",
-    to:"mahananda.reddy@diggibyte.com",
-    subject:`Onboarding Documents Received from ${name}`,
-    html:
-    `Dear HR Team,<br>
+const getEmailAfterSubmit = async (req, res) => {
+  let name = req.body.name;
+  let designation = req.body.designation;
+  console.log(name);
+  console.log(designation);
+  const mail = {
+    from: "svc_fullstack@diggibyte.com",
+    to: "chaya.pu@diggibyte.com",
+    subject: `Onboarding Documents Received from ${name}`,
+    html: `Dear HR Team,<br>
     This mail is to inform you that <strong>${name}</strong> has successfully
     submitted all of the required onboarding documents.We have received and processed the following:<br>
     <ul>
@@ -912,19 +974,16 @@ const getEmailAfterSubmit = async (req, res) =>
     new employee.<br><br>
     Thank you,<br>
     ${name},<br>
-    ${designation}.`
-   }
+    ${designation}.`,
+  };
 
-     const data = transporter.sendMail(mail, function (err) 
-     {
-      if (err) 
-      {
-        res.status(400);
-       }
-        else {
-          res.status(200);
-       }
-      });
+  const data = transporter.sendMail(mail, function (err) {
+    if (err) {
+      res.status(400);
+    } else {
+      res.status(200);
+    }
+  });
 };
 
 module.exports = {
@@ -957,6 +1016,6 @@ module.exports = {
   getStates,
   getCity,
   getBankNames,
-  getEmailAfterSubmit
+  getEmailAfterSubmit,
   // deletefile
 };

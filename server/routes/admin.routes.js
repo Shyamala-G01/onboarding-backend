@@ -9,6 +9,7 @@ Router.post('/addUser',authController.verifyToken,adminController.addEmployee)
 Router.get('/getUsers',authController.verifyToken,adminController.getEmploees)
 Router.get('/getRecentUsers',authController.verifyToken,adminController.getRecentEmployees)
 Router.get('/getUserById/:id',authController.verifyToken,adminController.getEmployeeById)
+Router.get('/getEmploy/:id',authController.verifyToken,adminController.getEmploy)
 Router.put('/addAdminImg',authController.verifyToken,adminController.addImg)
 Router.get('/getAdminImg/:id',authController.verifyToken,adminController.getImg)
 Router.delete('/deleteEmployee/:id',authController.verifyToken,adminController.deleteEmployee)
@@ -19,4 +20,6 @@ Router.put('/updateBank/:id',authController.verifyToken,adminController.putBankD
 Router.post('/deleteFiles/:id',authController.verifyToken,adminController.deleteFile)
 Router.get('/deletenotification',authController.verifyToken,adminController.deletenotification)
 Router.get('/sendEmailsToPendngPrf',authController.verifyToken,adminController.sendEmailForPendingProfile);
+Router.post('/sendEmailsForMissingDoc',authController.verifyToken,adminController.sendMissedDocuments);
+Router.post('/sendApprovedMail',authController.verifyToken,adminController.sendApprovedEmail);
 module.exports = Router

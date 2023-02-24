@@ -45,9 +45,10 @@ Router.put(
 );
 Router.post(
   "/changePassword",
-  authController.verifyToken,
+ 
   userController.changePassword
 );
+// authController.verifyToken,
 Router.post(
   "/addEmployment",
   authController.verifyToken,

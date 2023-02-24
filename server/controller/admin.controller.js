@@ -45,8 +45,8 @@ const addAdmin = async (req, res) => {
       created_at: req.body.created_at,
       created_by_admin: req.body.created_by_admin,
     };
-    let password = req.body.id; 
-    let pass = password.substring(0,2) +'@#' +password.substring(2,6);
+    let password = req.body.id;
+    let pass = password.substring(0, 2) + "@#" + password.substring(2, 6);
     info.password = hashSync(pass, salt);
     const adminData = await admin.create(info);
     if (adminData) {
@@ -54,9 +54,7 @@ const addAdmin = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
-      (mailOptions.html = 
-
-`<pre>Welcome to Onboarding Web App, you have registered as "<b>Admin</b>" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.You will be provided with the access to view, edit and delete the details and documents provided by the employees.
+        (mailOptions.html = `<pre>Welcome to Onboarding Web App, you have registered as "<b>Admin</b>" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.You will be provided with the access to view, edit and delete the details and documents provided by the employees.
 
 URL: http://diggibyte.in
 
@@ -67,7 +65,6 @@ Thank You,
 HR Department.
 Stay Safe! Stay Healthy! 
 </pre>`);
-
 
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
@@ -111,23 +108,22 @@ const addEmployee = async (req, res) => {
     };
     // let password = req.body.name.replaceAll(" ", "");
     // let pass = password + "@!" + Math.floor(Math.random() * 10);
-    let password = req.body.id; 
-    let pass = password.substring(0,2) +'@#' +password.substring(2,6);
+    let password = req.body.id;
+    let pass = password.substring(0, 2) + "@#" + password.substring(2, 6);
     info.password = hashSync(pass, salt);
     const userData = await user.create(info);
     if (userData) {
-
-          
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = "Important!! - Welcome Aboard! Let's Get You Started");
-    //   (mailOptions. attachments= [{
-    //     path: "./assets/images/emailtemplate.png", 
-    //     filename: "emailtemplate.png",
-    //     cid: "emailtemplate.png" + "@"
-    //  }]);
-  (mailOptions.html=`<pre>We take great pleasure in <b>welcoming you to Diggibyte Family!</b>
+      mailOptions.subject =
+        "Important!! - Welcome Aboard! Let's Get You Started";
+      //   (mailOptions. attachments= [{
+      //     path: "./assets/images/emailtemplate.png",
+      //     filename: "emailtemplate.png",
+      //     cid: "emailtemplate.png" + "@"
+      //  }]);
+      mailOptions.html = `<pre>We take great pleasure in <b>welcoming you to Diggibyte Family!</b>
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
 We value your feedback and would like to hear from you. 
     
@@ -143,10 +139,8 @@ Thank You,
 HR Department
 Stay Safe! Stay Healthy!
 </pre>
-`);
+`;
 
-
-  
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
         if (err) {
@@ -158,10 +152,10 @@ Stay Safe! Stay Healthy!
       folderFunctions.uploadfile(req.files, req.body.id);
       //add notification
       let notify = {
-        name:req.body.name,
-        message:'Employee Added',
-        noti_date:req.body.created_at
-      }
+        name: req.body.name,
+        message: "Employee Added",
+        noti_date: req.body.created_at,
+      };
       const notific = await notification.create(notify);
 
       res.status(200).send({ message: "Registered Successfully" });
@@ -172,14 +166,18 @@ Stay Safe! Stay Healthy!
 };
 
 //delete notification
-const deletenotification = async(req,res)=>{
-  let deletenoti = await notification.destroy({truncate:true});
+const deletenotification = async (req, res) => {
+  let deletenoti = await notification.destroy({ truncate: true });
   let count = await notification.count();
-  res.send({counts:count});
-}
+  res.send({ counts: count });
+};
 
 const getEmploees = async (req, res) => {
   let users = await user.findAll({});
+  res.send(users);
+};
+const getEmploy = async (req, res) => {
+  let users = await user.findAll({ where: { id: req.params.id }});
   res.send(users);
 };
 const getEmployeeById = async (req, res) => {
@@ -196,7 +194,6 @@ const getEmployeeById = async (req, res) => {
       {
         model: EducationalInfo,
         as: "educational_info",
-        
       },
       {
         model: EmploymentDetails,
@@ -216,7 +213,6 @@ const getEmployeeById = async (req, res) => {
       },
     ],
     where: { id: req.params.id },
-    
   });
   res.send(users);
 };
@@ -249,16 +245,19 @@ const getRecentEmployees = async (req, res) => {
       created_at: {
         [Op.between]: [startDate, endDate],
       },
-    },order:[["created_at","DESC"]]
+    },
+    order: [["created_at", "DESC"]],
   });
   res.send(users);
 };
 const deleteEmployee = async (req, res) => {
   let ids = req.params.id;
-  let userdata = await user.findOne({where:{id:ids}});
-  let notifyobj = { name:userdata.name,
-    message:'Employee Deleted',
-    noti_date:new Date()}
+  let userdata = await user.findOne({ where: { id: ids } });
+  let notifyobj = {
+    name: userdata.name,
+    message: "Employee Deleted",
+    noti_date: new Date(),
+  };
   let datas = await notification.create(notifyobj);
 
   let data = await user.destroy({
@@ -270,20 +269,27 @@ const getTotals = async (req, res) => {
   const totalCount = await user.count();
   let notifications = await notification.findAll();
   let notifycount = await notification.count();
-  const pendCount = await user.count({ where: { status: {[Op.lt]:100} } });
-  res.send({total:totalCount,pcount:pendCount,noti:notifications,noticount:notifycount})
+  const pendCount = await user.count({ where: { status: { [Op.lt]: 100 } } });
+  res.send({
+    total: totalCount,
+    pcount: pendCount,
+    noti: notifications,
+    noticount: notifycount,
+  });
 };
-const getPendingRecord=async (req,res)=>{
-  const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
-  res.send(penRecords)
-
- 
-}
+const getPendingRecord = async (req, res) => {
+  const penRecords = await user.findAll({
+    where: { status: { [Op.lt]: 100 } },
+  });
+  res.send(penRecords);
+};
 
 const putProofDetails = async (req, res) => {
-  console.log(req.files)
+  console.log(req.files);
   let ids = req.params.id;
-  let dat = await ProofCertificates.findOne({ where: { fk_proof_users_id: ids } });
+  let dat = await ProofCertificates.findOne({
+    where: { fk_proof_users_id: ids },
+  });
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     pan_card_number: req.body.pan_card_number,
@@ -295,34 +301,37 @@ const putProofDetails = async (req, res) => {
     esi_no: req.body.esi_no,
     fk_proof_users_id: req.body.fk_proof_users_id,
   };
-  if (req.body.aadhar == "" || typeof(req.body.aadhar)=='string') {
+  if (req.body.aadhar == "" || typeof req.body.aadhar == "string") {
     info.aadhar = dat.aadhar;
   }
-  if (typeof(req.body.aadhar) != "string") {
+  if (typeof req.body.aadhar != "string") {
     info.aadhar = req.files.aadhar.name;
     folderFunctions.removeFile(dat.aadhar, req.body.fk_proof_users_id);
   }
-  if (req.body.covid_certificate == "" || typeof(req.body.covid_certificate)=='string') {
+  if (
+    req.body.covid_certificate == "" ||
+    typeof req.body.covid_certificate == "string"
+  ) {
     info.covid_certificate = dat.covid_certificate;
   }
-  if (typeof(req.body.covid_certificate) != "string") {
+  if (typeof req.body.covid_certificate != "string") {
     info.covid_certificate = req.files.covid_certificate.name;
     folderFunctions.removeFile(
       dat.covid_certificate,
       req.body.fk_proof_users_id
     );
   }
-  if (req.body.passport == "" || typeof(req.body.passport)=='string') {
+  if (req.body.passport == "" || typeof req.body.passport == "string") {
     info.passport = dat.passport;
   }
-  if (typeof(req.body.passport) != "string" ) {
+  if (typeof req.body.passport != "string") {
     folderFunctions.removeFile(dat.passport, req.body.fk_proof_users_id);
     info.passport = req.files.passport.name;
   }
-  if (req.body.pan_card == "" || typeof(req.body.pan_card)=='string') {
+  if (req.body.pan_card == "" || typeof req.body.pan_card == "string") {
     info.pan_card = dat.pan_card;
   }
-  if (typeof(req.body.pan_card) != "string") {
+  if (typeof req.body.pan_card != "string") {
     folderFunctions.removeFile(dat.pan_card, req.body.fk_proof_users_id);
     info.pan_card = req.files.pan_card.name;
   }
@@ -330,11 +339,11 @@ const putProofDetails = async (req, res) => {
   let proofData = await ProofCertificates.update(info, {
     where: { fk_proof_users_id: ids },
   });
-  if(!proofData){
+  if (!proofData) {
     folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
-    res.send({ message: "cannot update" });  
-  }else{
-    res.send({message:'updated'})
+    res.send({ message: "cannot update" });
+  } else {
+    res.send({ message: "updated" });
   }
 };
 const putBankDetails = async (req, res) => {
@@ -357,35 +366,34 @@ const putBankDetails = async (req, res) => {
     where: { fk_bank_users_id: ids },
   });
 
-  if ( bankData) {
+  if (bankData) {
     res.send({ message: "updated" });
   } else {
     res.send({ message: "cannot update" });
   }
 };
-const deleteFile=async (req,resp)=>{
+const deleteFile = async (req, resp) => {
   let ids = req.params.id;
-  console.log("cumin")
-  console.log(req.body)
-  folderFunctions.removeFile(req.body.fileName,ids)
-}
-const sendEmailForPendingProfile = async (req, res) =>
- {
-  var emails=[]
-  const penRecords = await user.findAll({ where: { status: {[Op.lt]:100} } });
-  console.log(penRecords)
-  penRecords.forEach((element)=>{
-  emails.push(element.email);
-  })
+  console.log("cumin");
+  console.log(req.body);
+  folderFunctions.removeFile(req.body.fileName, ids);
+};
+const sendEmailForPendingProfile = async (req, res) => {
+  var emails = [];
+  const penRecords = await user.findAll({
+    where: { status: { [Op.lt]: 100 } },
+  });
+  console.log(penRecords);
+  penRecords.forEach((element) => {
+    emails.push(element.email);
+  });
 
-
- emails.forEach((email)=>{
-   const mail={
-    from :"svc_fullstack@diggibyte.com",
-    to:email,
-    subject:"Reminder: Pending Onboarding Profile",
-    html:
-    `Hi,<br><br>
+  emails.forEach((email) => {
+    const mail = {
+      from: "svc_fullstack@diggibyte.com",
+      to: email,
+      subject: "Reminder: Pending Onboarding Profile",
+      html: `Hi,<br><br>
     This mail is to remind you that your onboarding profile is still pending completion.
      We are looking forward to welcoming you to our team, but in order to do that, 
      we need you to complete and submit your onboarding profile as soon as possible.<br><br>
@@ -393,24 +401,108 @@ const sendEmailForPendingProfile = async (req, res) =>
     If you have any questions or need assistance, please reach out to the HR department.<br><br>
     Thank you for your prompt attention to this matter.<br><br>
     Regards,<br>
-    <strong>HR Department</strong> `
-   }
+    <strong>HR Department</strong> `,
+    };
 
-   let data = transporter.sendMail(mail, function (err) 
-     {
-      if (err) 
-      {
-        res.send({message:"Email Sent Unsuccessfully"});
-        console.log(err)
-       }
-        else {
-          res.send({message:"Email Sent Successfully"});
-          console.log("data"+data)
-       }
-      });
-    })
+    let data = transporter.sendMail(mail, function (err) {
+      if (err) {
+        res.send({ message: "Email Sent Unsuccessfully" });
+        console.log(err);
+      } else {
+        res.send({ message: "Email Sent Successfully" });
+        console.log("data" + data);
+      }
+    });
+  });
 };
+const sendMissedDocuments = async (req, res) => {
+  let email = req.body.email;
+  let comments = req.body.comment;
+  console.log(email, comments);
+  const mail = {
+    from: "svc_fullstack@diggibyte.com",
+    to: email,
+    subject: `Send Pending Documents`,
+    html: `Hi,<br><br>
+   ${comments}<br><br>
+   Thank you for your prompt attention to this matter.<br><br>
+    Regards,<br>
+    <strong>HR Department</strong> `,
+  };
 
+  const data = transporter.sendMail(mail, function (err) {
+    if (err) {
+      res.send({ message: "Email Sent Unsuccessfully" });
+      console.log(err);
+    } else {
+      res.send({ message: "Email Sent Successfully" });
+    }
+  });
+};
+const sendApprovedEmail = async (req, res) => {
+  let email = req.body.email;
+  let id = req.body.user_id
+  let approved_at = req.body.approved_at
+  await PersnonalInfo.update(
+    { status: "Completed" },
+    { where: { fk_person_users_id: id } }
+  );
+  await EmploymentDetails.update(
+    { status: "Completed" },
+    { where: { fk_employment_users_id: id } }
+  );
+  await EducationalInfo.update(
+    { status: "Completed" },
+    { where: { fk_education_users_id: id } }
+  );
+  await ProofCertificates.update(
+    { status: "Completed" },
+    { where: { fk_proof_users_id: id } }
+  );
+  await BankDetails.update(
+    { status: "Completed" },
+    { where: { fk_bank_users_id: id } }
+  );
+  
+  await Declaration.update(
+    { status: "Completed" },
+    { where: { fk_declaration_users_id: id } }
+  );
+  await user.update(
+    { approved_status: "Completed" },
+    { where: { id: id } }
+  );
+  await user.update(
+    { approved_at: approved_at },
+    { where: { id: id } }
+  );
+  await user.update(
+    { completed_status: "Completed"},
+    { where: { id: id } }
+  );
+  
+  // let comments = req.body.comment
+  console.log(email);
+  const mail = {
+    from: "svc_fullstack@diggibyte.com",
+    to: email,
+    subject: `Approved`,
+    html: `Hi,<br><br>
+   Your data and  all documents have been approved<br><br>
+   Thank you for your prompt attention to this matter.<br><br>
+    Regards,<br>
+    <strong>HR Department</strong> `,
+  };
+
+  const data = transporter.sendMail(mail, function (err) {
+    if (err) {
+      res.send({ message: "Email Sent Unsuccessfully" });
+      console.log(err);
+    } else {
+      res.send({ message: "Email Sent Successfully" });
+    }
+  });
+};
 module.exports = {
   addAdmin,
   addEmployee,
@@ -426,5 +518,8 @@ module.exports = {
   putBankDetails,
   deleteFile,
   deletenotification,
-  sendEmailForPendingProfile
+  sendEmailForPendingProfile,
+  sendMissedDocuments,
+  sendApprovedEmail,
+  getEmploy
 };
