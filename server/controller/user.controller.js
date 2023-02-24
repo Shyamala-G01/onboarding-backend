@@ -958,7 +958,7 @@ const getEmailAfterSubmit = async (req, res) => {
   console.log(designation);
   const mail = {
     from: "svc_fullstack@diggibyte.com",
-    to: "chaya.pu@diggibyte.com",
+    to: "rashika.rashu@diggibyte.com",
     subject: `Onboarding Documents Received from ${name}`,
     html: `Dear HR Team,<br>
     This mail is to inform you that <strong>${name}</strong> has successfully

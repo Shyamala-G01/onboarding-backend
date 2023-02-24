@@ -56,7 +56,7 @@ const addAdmin = async (req, res) => {
       (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
         (mailOptions.html = `<pre>Welcome to Onboarding Web App, you have registered as "<b>Admin</b>" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.You will be provided with the access to view, edit and delete the details and documents provided by the employees.
 
-URL: http://diggibyte.in
+URL: http://52.172.88.185/
 
 username: ${info.email}
 password: ${pass}
@@ -130,7 +130,7 @@ We value your feedback and would like to hear from you.
 
 Please complete your onboarding details by clicking below URL.
             
-URL: http://diggibyte.in
+URL: http://52.172.88.185/
     
 Username: ${info.email}
 Password: ${pass}
