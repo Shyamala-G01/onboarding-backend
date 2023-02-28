@@ -49,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
         type:DataTypes.DATE
       },
       completed_status:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue:'Yet To Start'
       }
     },
     {

@@ -221,14 +221,14 @@ const addEmployment = async (req, res) => {
     if (userData) {
       folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
         const usercredential = await user.update(
-          { status: data.status + 20 },
+          { status: data.status + 20,completed_status: "In Progress"  },
     
           { where: { id: req.body.fk_employment_users_id } }
         );
-        await user.update(
-          { completed_status: "In Progress" },
-          { where: { id: req.body.fk_employment_users_id } }
-        );
+        // await user.update(
+        //   { completed_status: "In Progress" },
+        //   { where: { id: req.body.fk_employment_users_id } }
+        // );
         res.status(200).send({ message: "Successful" });
       
     } else {

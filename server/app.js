@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const Router = require("./routes/admin.routes");
 const AuthRouter = require("./routes/auth.routes");
 const userRouter = require("./routes/user.routes");
-// const PORT = process.env.PORT || 1337;
+const PORT = process.env.PORT || 1337;
 // const PORT = process.env.PORT || 8080;
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(fileuplod())
 app.use(bodyParser.json());
 // for url encoded
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads',express.static(require('path').join('/home/diggiserveradmin/OnBoarding-Documnets')))
+app.use('/api/uploads',express.static(require('path').join('/home/diggiserveradmin/OnBoarding-Documnets')))
 app.get("/", (req, res) => {
   res.send({ message: "Hello" });
 });

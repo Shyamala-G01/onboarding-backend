@@ -5,7 +5,7 @@ const { database } = require("../config/db.config");
 
 
 // Creating instance or Configuring
-const sequelize = new Sequelize("ON_BOARDING", "root", "4sf17cs403", {
+const sequelize = new Sequelize("ON_BOARDING", "fullStack", "root@123", {
   host: "localhost",
   dialect: "mysql",
   operatorsAliases: true,
@@ -55,7 +55,7 @@ db.bankDetails=require('./bankDetails.model')(sequelize, DataTypes)
 db.notification=require("./notification.model")(sequelize,DataTypes);
 // Syncing table with schema
 db.sequelize
-  .sync({ force: false })
+  .sync({force:false})
   .then(() => {
     console.log("Sync");
   })

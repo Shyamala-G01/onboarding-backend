@@ -36,8 +36,6 @@ Router.get("/getBankNames",
 authController.verifyToken,
 userController.getBankNames);
 
-
-
 Router.put(
   "/updateAddress",
   authController.verifyToken,
