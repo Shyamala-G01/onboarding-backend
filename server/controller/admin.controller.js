@@ -34,6 +34,7 @@ const addAdmin = async (req, res) => {
   // already exit or not
   const adminMail = await admin.findOne({ where: { email: req.body.email } });
   if (adminMail) {
+    console.log("admin")
     res.send({ message: "Admin Exists" });
   } else {
     let info = {
@@ -177,7 +178,7 @@ const getEmploees = async (req, res) => {
   res.send(users);
 };
 const getEmploy = async (req, res) => {
-  let users = await user.findAll({ where: { id: req.params.id }});
+  let users = await user.findAll({ where: { id: req.params.id } });
   res.send(users);
 };
 const getEmployeeById = async (req, res) => {
@@ -441,8 +442,8 @@ const sendMissedDocuments = async (req, res) => {
 };
 const sendApprovedEmail = async (req, res) => {
   let email = req.body.email;
-  let id = req.body.user_id
-  let approved_at = req.body.approved_at
+  let id = req.body.user_id;
+  let approved_at = req.body.approved_at;
   await PersnonalInfo.update(
     { status: "Completed" },
     { where: { fk_person_users_id: id } }
@@ -463,24 +464,15 @@ const sendApprovedEmail = async (req, res) => {
     { status: "Completed" },
     { where: { fk_bank_users_id: id } }
   );
-  
+
   await Declaration.update(
     { status: "Completed" },
     { where: { fk_declaration_users_id: id } }
   );
-  await user.update(
-    { approved_status: "Completed" },
-    { where: { id: id } }
-  );
-  await user.update(
-    { approved_at: approved_at },
-    { where: { id: id } }
-  );
-  await user.update(
-    { completed_status: "Completed"},
-    { where: { id: id } }
-  );
-  
+  await user.update({ approved_status: "Completed" }, { where: { id: id } });
+  await user.update({ approved_at: approved_at }, { where: { id: id } });
+  await user.update({ completed_status: "Completed" }, { where: { id: id } });
+
   // let comments = req.body.comment
   console.log(email);
   const mail = {
@@ -503,6 +495,65 @@ const sendApprovedEmail = async (req, res) => {
     }
   });
 };
+const getAdmins = async (req, res) => {
+  let admins = await admin.findAll({});
+  res.send(admins);
+};
+const deleteAdmin = async (req, res) => {
+  let ids = req.params.id;
+  let admindata = await admin.findOne({ where: { id: ids } });
+  let data = await admin.destroy({
+    where: { id: ids },
+  });
+  res.send({ message: "deleted" });
+};
+const getOneEmployeeData = async (req, res) => {
+  let ids = await user.findOne({
+    attributes: ["id"],
+    where: { name: req.body.name },
+  });
+  console.log(ids);
+  let users = await user.findAll({
+    include: [
+      {
+        model: PersnonalInfo,
+        as: "personal_info",
+      },
+      {
+        model: Address,
+        as: "address",
+      },
+      {
+        model: EducationalInfo,
+        as: "educational_info",
+      },
+      {
+        model: EmploymentDetails,
+        as: "employment_details",
+      },
+      {
+        model: ProofCertificates,
+        as: "other_details",
+      },
+      {
+        model: BankDetails,
+        as: "bank_detail",
+      },
+      {
+        model: Declaration,
+        as: "other_declaration",
+      },
+    ],
+    where: { id: ids.id },
+  });
+  res.send(users);
+};
+const getOneuserData = async (req, res) => {
+  let data = await user.findOne({
+    where: { name: req.body.name },
+  });
+  res.send(data);
+}
 module.exports = {
   addAdmin,
   addEmployee,
@@ -521,5 +572,9 @@ module.exports = {
   sendEmailForPendingProfile,
   sendMissedDocuments,
   sendApprovedEmail,
-  getEmploy
+  getEmploy,
+  getAdmins,
+  deleteAdmin,
+  getOneEmployeeData,
+  getOneuserData
 };

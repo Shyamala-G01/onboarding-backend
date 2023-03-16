@@ -22,4 +22,8 @@ Router.get('/deletenotification',authController.verifyToken,adminController.dele
 Router.get('/sendEmailsToPendngPrf',authController.verifyToken,adminController.sendEmailForPendingProfile);
 Router.post('/sendEmailsForMissingDoc',authController.verifyToken,adminController.sendMissedDocuments);
 Router.post('/sendApprovedMail',authController.verifyToken,adminController.sendApprovedEmail);
+Router.get('/getAdmins',authController.verifyToken,adminController.getAdmins);
+Router.delete('/deleteAdmin/:id',authController.verifyToken,adminController.deleteAdmin);
+Router.post('/getOneEmployee',authController.verifyToken,adminController.getOneEmployeeData);
+Router.post('/getUserData',authController.verifyToken,adminController.getOneuserData);
 module.exports = Router
