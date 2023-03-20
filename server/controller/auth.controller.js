@@ -13,7 +13,7 @@ const getData = async (req, res) => {
       let pass = req.body.password;
       if (compareSync(pass, data.password)) {
         let token = jwt.sign({ id: data.id }, config.secret, {
-          expiresIn: 8640,
+          expiresIn: '24h',
         });
         console.log(data);
         res.status(200).send({
