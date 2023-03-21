@@ -18,11 +18,12 @@ const transporter = nodemailer.createTransport({
     user: process.env.user,
     pass: process.env.pass,
    
+   
     }
 });
 
 const mailOptions = {
-  from: "svc_fullstack@diggibyte.com",
+  from: "diggisupport@diggibyte.com",
 };
 
 module.exports = { transporter, mailOptions };

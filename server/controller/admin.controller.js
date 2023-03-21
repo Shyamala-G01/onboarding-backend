@@ -391,7 +391,7 @@ const sendEmailForPendingProfile = async (req, res) => {
 
   emails.forEach((email) => {
     const mail = {
-      from: "svc_fullstack@diggibyte.com",
+      from: "diggisupport@diggibyte.com",
       to: email,
       subject: "Reminder: Pending Onboarding Profile",
       html: `Hi,<br><br>
@@ -421,7 +421,7 @@ const sendMissedDocuments = async (req, res) => {
   let comments = req.body.comment;
   console.log(email, comments);
   const mail = {
-    from: "svc_fullstack@diggibyte.com",
+    from: "diggisupport@diggibyte.com",
     to: email,
     subject: `Send Pending Documents`,
     html: `Hi,<br><br>
@@ -476,7 +476,7 @@ const sendApprovedEmail = async (req, res) => {
   // let comments = req.body.comment
   console.log(email);
   const mail = {
-    from: "svc_fullstack@diggibyte.com",
+    from: "diggisupport@diggibyte.com",
     to: email,
     subject: `Approved`,
     html: `Hi,<br><br>
