@@ -254,6 +254,7 @@ const getRecentEmployees = async (req, res) => {
 const deleteEmployee = async (req, res) => {
   let ids = req.params.id;
   let userdata = await user.findOne({ where: { id: ids } });
+
   let notifyobj = {
     name: userdata.name,
     message: "Employee Deleted",
@@ -262,6 +263,9 @@ const deleteEmployee = async (req, res) => {
   let datas = await notification.create(notifyobj);
 
   let data = await user.destroy({
+    where: { id: ids },
+  });
+  await admin.destroy({
     where: { id: ids },
   });
   res.send({ message: "deleted" });
@@ -381,19 +385,21 @@ const deleteFile = async (req, resp) => {
 };
 const sendEmailForPendingProfile = async (req, res) => {
   var emails = [];
-  const penRecords = await user.findAll({
-    where: { status: { [Op.lt]: 100 } },
-  });
-  console.log(penRecords);
-  penRecords.forEach((element) => {
-    emails.push(element.email);
-  });
+  // const penRecords = await user.findAll({
+  //   where: { status: { [Op.lt]: 100 } },
+  // });
+  // console.log(penRecords);
+  // penRecords.forEach((element) => {
+  //   emails.push(element.email);
+  // });
+  emails = req.body.email;
 
   emails.forEach((email) => {
+ 
     const mail = {
       from: "diggisupport@diggibyte.com",
       to: email,
-      subject: "Reminder: Pending Onboarding Profile",
+      subject: "Remainder:To Complete Onboarding Profile",
       html: `Hi,<br><br>
     This mail is to remind you that your onboarding profile is still pending completion.
      We are looking forward to welcoming you to our team, but in order to do that, 
@@ -423,7 +429,7 @@ const sendMissedDocuments = async (req, res) => {
   const mail = {
     from: "diggisupport@diggibyte.com",
     to: email,
-    subject: `Send Pending Documents`,
+    subject: `Remainder to complete onboarding profile`,
     html: `Hi,<br><br>
    ${comments}<br><br>
    Thank you for your prompt attention to this matter.<br><br>

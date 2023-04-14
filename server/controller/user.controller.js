@@ -443,7 +443,7 @@ const addEducation = async (req, res) => {
     where: { fk_education_users_id: req.body.fk_education_users_id },
   });
   console.log("length:" + edData.length);
-  if (edData.length > 2) {
+  if (edData.length == 3) {
     const usercredential = await user.update(
       { status: userData.status + 20 },
 
@@ -557,7 +557,7 @@ const deleteEducation = async (req, res) => {
     where: { fk_education_users_id: req.body.empid },
   });
   console.log("length:" + edData.length);
-  if (edData.length <= 2) {
+  if (edData.length <= 2 && userData.status == 40 ) {
     const usercredential = await user.update(
       { status: userData.status - 20 },
 
@@ -577,15 +577,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     where: { id: req.body.fk_proof_users_id },
   });
 
-  const usercredential = await user.update(
-    { status: userData.status + 20 },
-
-    { where: { id: req.body.fk_proof_users_id } }
-  );
-  await user.update(
-    { completed_status: "In Progress" },
-    { where: { id: req.body.fk_proof_users_id } }
-  );
+ 
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     aadhar: req.files.aadhar.name,
@@ -593,7 +585,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     pan_card: req.files.pan_card.name,
     passport_number: req.body.passport_number,
     passport_expire_date: req.body.passport_expire_date,
-    covid_certificate: req.files.covid_certificate.name,
+    // covid_certificate: req.files.covid_certificate.name,
     created_at: req.body.created_at,
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
@@ -603,6 +595,10 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   if (req.body.passport != "") {
     info.passport = req.files.passport.name;
   }
+  if (req.body.covid_certificate != "") {
+    info.covid_certificate = req.files.covid_certificate.name;
+  }
+
   let bank = {
     account_holder_name: req.body.account_holder_name,
     account_number: req.body.account_number,
@@ -623,6 +619,15 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   if (proofData && bankData) {
     console.log("other detail inside");
     folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
+    const usercredential = await user.update(
+      { status: userData.status + 20 },
+  
+      { where: { id: req.body.fk_proof_users_id } }
+    );
+    await user.update(
+      { completed_status: "In Progress" },
+      { where: { id: req.body.fk_proof_users_id } }
+    );
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -827,31 +832,32 @@ const forgotpassword = async (req, res) => {
   } else {
     res.status(200).send({ message: "Email doesnt exists" });
   }
-};
-function forgotPassEmail(pass, email) {
-  mailOptions.to = `${email}`;
-  (mailOptions.subject = " Onboarding Application : Reset your password"),
-    (mailOptions.text = `  We received your request to reset your Onboarding password.
-  Please enter auto generated password to reset new password.
-  
-  
-  
-  Username:${email}
-  Password:${pass}
+  function forgotPassEmail(pass, email) {
+    mailOptions.to = `${email}`;
+    (mailOptions.subject = " Onboarding Application : Reset your password"),
+      (mailOptions.text = `  We received your request to reset your Onboarding password.
+    Please enter auto generated password to reset new password.
     
-  Thank you,
-  HR Department.
-  Stay Safe! Stay Healthy!`);
+    
+    
+    Username:${email}
+    Password:${pass}
+      
+    Thank you,
+    HR Department.
+    Stay Safe! Stay Healthy!`);
+  
+    const data = transporter.sendMail(mailOptions, function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("sent");
+      }
+    });
+    return true;
+  }
+};
 
-  const data = transporter.sendMail(mailOptions, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("sent");
-    }
-  });
-  return true;
-}
 const checkPassword = async (req, res) => {
   let oldPass = req.body.autoPass;
   let newpas = req.body.password;
@@ -928,7 +934,9 @@ const getStatus = async (req, res) => {
     attributes: ["status"],
   });
   const educational_info = await educationalInfo.findOne({
-    where: { fk_education_users_id: reqId, type: "Graduation" },
+    where: { fk_education_users_id: reqId, type: {
+      [Op.or]: ['Graduation', 'Diploma']
+    }},
     attributes: ["status"],
   });
   const employment = await employmentDetails.findOne({
@@ -954,36 +962,44 @@ const getStatus = async (req, res) => {
 const getEmailAfterSubmit = async (req, res) => {
   let name = req.body.name;
   let designation = req.body.designation;
-  console.log(name);
-  console.log(designation);
-  const mail = {
-    from: "diggisupport@diggibyte.com",
-    to: "rashika.rashu@diggibyte.com",
-    subject: `Onboarding Documents Received from ${name}`,
-    html: `Dear HR Team,<br>
-    This mail is to inform you that <strong>${name}</strong> has successfully
-    submitted all of the required onboarding documents.We have received and processed the following:<br>
-    <ul>
-    <li> Personal Details </li>
-    <li> Educational Information </li>
-    <li> Other Details </li>
-    <li> Bank Details etc...</li>
-    </ul><br>
-    Please review and confirm that all necessary documents have been received. 
-    Once confirmed, please proceed with scheduling orientation and any necessary training for the 
-    new employee.<br><br>
-    Thank you,<br>
-    ${name},<br>
-    ${designation}.`,
-  };
-
-  const data = transporter.sendMail(mail, function (err) {
-    if (err) {
-      res.status(400);
-    } else {
-      res.status(200);
+  console.log(name,designation,req.body.empid)
+  let updated = await user.update(
+    { completed_status: "In Review" },
+    { where: { id: req.body.empid } }
+  );
+  console.log(updated)
+    if(updated)
+    {
+      const mail = {
+        from: "diggisupport@diggibyte.com",
+        to: "chaya.pu@diggibyte.com",
+        subject: `Onboarding Documents Received from ${name}`,
+        html: `Dear HR Team,<br>
+        This mail is to inform you that <strong>${name}</strong> has successfully
+        submitted all of the required onboarding documents.We have received and processed the following:<br>
+        <ul>
+        <li> Personal Details </li>
+        <li> Educational Information </li>
+        <li> Other Details </li>
+        <li> Bank Details etc...</li>
+        </ul><br>
+        Please review and confirm that all necessary documents have been received. 
+        Once confirmed, please proceed with scheduling orientation and any necessary training for the 
+        new employee.<br><br>
+        Thank you,<br>
+        ${name},<br>
+        ${designation}.`,
+      };
+    
+      const data = transporter.sendMail(mail, function (err) {
+        if (err) {
+          res.send({ message: "Email not Sent" });
+        } else {
+          res.send({ message: "Email Sent Successfully" });;
+        }
+      });
     }
-  });
+  
 };
 
 module.exports = {

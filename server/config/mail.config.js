@@ -15,9 +15,10 @@ const transporter = nodemailer.createTransport({
   },
 
   auth: {
-    user: process.env.user,
-    pass: process.env.pass,
-   
+    // user: process.env.user,
+    // pass: process.env.pass,
+    user: "diggisupport@diggibyte.com",
+    pass: "zlgvxyqjvpzswqxx",
    
     }
 });

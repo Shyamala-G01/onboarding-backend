@@ -2,8 +2,6 @@ const config = require("../config/db.config");
 const { Sequelize, DataTypes } = require("sequelize");
 const { database } = require("../config/db.config");
 
-
-
 // Creating instance or Configuring
 const sequelize = new Sequelize("ON_BOARDING","fullStack","root@123", {
   host: "localhost",
