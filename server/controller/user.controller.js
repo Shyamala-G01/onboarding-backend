@@ -367,6 +367,16 @@ const deleteEmployemnt = async (req, res) => {
     where: { fk_employment_users_id: req.body.empid },
   });
   console.log("length:" + empData.length);
+  // if (empData.length <= 0) {
+  //   const usercredential = await user.update(
+  //     { status: userData.status - 20 },
+  //    { where: { id: req.body.empid } }
+  //   );
+  //   await user.update(
+  //     { status: 0 },
+  //    { where: { id: req.body.empid } }
+  //   );
+  // }
   if (empData.length <= 0) {
     const usercredential = await user.update(
       { status: userData.status - 20 },
@@ -972,7 +982,7 @@ const getEmailAfterSubmit = async (req, res) => {
     {
       const mail = {
         from: "diggisupport@diggibyte.com",
-        to: "chaya.pu@diggibyte.com",
+        to: "rashika.rashu@diggibyte.com",
         subject: `Onboarding Documents Received from ${name}`,
         html: `Dear HR Team,<br>
         This mail is to inform you that <strong>${name}</strong> has successfully
