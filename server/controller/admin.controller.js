@@ -183,6 +183,7 @@ const getEmploy = async (req, res) => {
   res.send(users);
 };
 const getEmployeeById = async (req, res) => {
+  try{
   let users = await user.findAll({
     include: [
       {
@@ -221,6 +222,12 @@ const getEmployeeById = async (req, res) => {
     where: { id: req.params.id },
   });
   res.send(users);
+}
+catch(err)
+{
+  console.log(err);
+  res.status(500).send(err);
+}
 };
 const addImg = async (req, res) => {
   let img = req.files.photo.name + "-" + req.body.id;
