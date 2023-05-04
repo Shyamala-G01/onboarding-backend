@@ -4,6 +4,7 @@ const db = require("../model");
 
 const user = db.user;
 const admin = db.admin;
+const comment = db.comments;
 //get all models of a user
 const PersnonalInfo = db.personalInfo;
 const Address = db.address;
@@ -212,6 +213,10 @@ const getEmployeeById = async (req, res) => {
         model: Declaration,
         as: "other_declaration",
       },
+      {
+        model:comment,
+        as:"comment"
+      }
     ],
     where: { id: req.params.id },
   });
@@ -422,29 +427,44 @@ const sendEmailForPendingProfile = async (req, res) => {
     });
   });
 };
-const sendMissedDocuments = async (req, res) => {
-  let email = req.body.email;
-  let comments = req.body.comment;
-  console.log(email, comments);
+const sendComments = async (req, res) => {
+  let ids = await user.findOne({
+    attributes:["id"],
+    where:{name:req.body.name}
+  });
+  const info={
+    comments:req.body.comment,
+    updated_at:req.body.updated_at,
+    updated_by:req.body.updated_by,
+    updated_by_id:req.body.updated_by_id,
+    fk_comment_users_id:ids.id
+  }
+  console.log(info)
+  comment.create(info).then((data)=>{
+
   const mail = {
     from: "diggisupport@diggibyte.com",
-    to: email,
+    to: req.body.email,
     subject: `Remainder to complete onboarding profile`,
     html: `Hi,<br><br>
-   ${comments}<br><br>
+   ${info.comments}<br><br>
    Thank you for your prompt attention to this matter.<br><br>
     Regards,<br>
     <strong>HR Department</strong> `,
   };
 
-  const data = transporter.sendMail(mail, function (err) {
+  transporter.sendMail(mail, function (err) {
     if (err) {
       res.send({ message: "Email Sent Unsuccessfully" });
       console.log(err);
     } else {
-      res.send({ message: "Email Sent Successfully" });
+      res.send({ message: "Email Sent Successfully",data:data });
     }
   });
+  }).catch((err)=>{
+    res.status(500).send(err)
+  });
+ 
 };
 const sendApprovedEmail = async (req, res) => {
   let email = req.body.email;
@@ -576,7 +596,7 @@ module.exports = {
   deleteFile,
   deletenotification,
   sendEmailForPendingProfile,
-  sendMissedDocuments,
+  sendComments,
   sendApprovedEmail,
   getEmploy,
   getAdmins,

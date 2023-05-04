@@ -20,7 +20,7 @@ Router.put('/updateBank/:id',authController.verifyToken,adminController.putBankD
 Router.post('/deleteFiles/:id',authController.verifyToken,adminController.deleteFile)
 Router.get('/deletenotification',authController.verifyToken,adminController.deletenotification)
 Router.post('/sendEmailsToPendngPrf',authController.verifyToken,adminController.sendEmailForPendingProfile);
-Router.post('/sendEmailsForMissingDoc',authController.verifyToken,adminController.sendMissedDocuments);
+Router.post('/sendEmailsForMissingDoc',authController.verifyToken,adminController.sendComments);
 Router.post('/sendApprovedMail',authController.verifyToken,adminController.sendApprovedEmail);
 Router.get('/getAdmins',authController.verifyToken,adminController.getAdmins);
 Router.delete('/deleteAdmin/:id',authController.verifyToken,adminController.deleteAdmin);

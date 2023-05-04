@@ -51,6 +51,8 @@ db.proofCertificates = require("./proofCertificate.model")(
 db.declaration = require("./declaration.model")(sequelize, DataTypes);
 db.bankDetails=require('./bankDetails.model')(sequelize, DataTypes)
 db.notification=require("./notification.model")(sequelize,DataTypes);
+db.comments=require("./comment.model")(sequelize,DataTypes);
+
 // Syncing table with schema
 db.sequelize
   .sync({force:false})
@@ -144,5 +146,11 @@ db.bankDetails.belongsTo(db.user, {
   as: "bank_details",
 });
 
+db.comments.belongsTo(db.user, {
+  foreignKey: "fk_comment_users_id"});
 
+  db.user.hasMany(db.comments, {
+    foreignKey: "fk_comment_users_id",
+    as: "comment",
+  });
 module.exports = db;

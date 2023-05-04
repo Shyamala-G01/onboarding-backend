@@ -411,9 +411,6 @@ const addEducation = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_education_users_id },
   });
-
-  console.log(req.body);
-  console.log(req.files);
   const info = {
     type: req.body.type,
     name: req.body.name,
@@ -844,18 +841,18 @@ const forgotpassword = async (req, res) => {
   }
   function forgotPassEmail(pass, email) {
     mailOptions.to = `${email}`;
-    (mailOptions.subject = " Onboarding Application : Reset your password"),
-      (mailOptions.text = `  We received your request to reset your Onboarding password.
-    Please enter auto generated password to reset new password.
-    
-    
-    
-    Username:${email}
-    Password:${pass}
+    (mailOptions.subject = "Onboarding Application : Reset your password"),
+      (mailOptions.html = 
+        `Hi,<br>
+            We have received your request to reset your Onboarding password.<br>
+    Please enter auto generated password to reset new password.<br><br>
+     
+    Username:${email}<br>
+    Password:${pass}<br><br>
       
-    Thank you,
-    HR Department.
-    Stay Safe! Stay Healthy!`);
+    Thank you,<br>
+    HR Department.<br>
+    Stay Safe! Stay Healthy!<br>`);
   
     const data = transporter.sendMail(mailOptions, function (err) {
       if (err) {
@@ -982,7 +979,8 @@ const getEmailAfterSubmit = async (req, res) => {
     {
       const mail = {
         from: "diggisupport@diggibyte.com",
-        to: "rashika.rashu@diggibyte.com",
+        // to: "rashika.rashu@diggibyte.com",
+        to: "chaya.pu@diggibyte.com",
         subject: `Onboarding Documents Received from ${name}`,
         html: `Dear HR Team,<br>
         This mail is to inform you that <strong>${name}</strong> has successfully
