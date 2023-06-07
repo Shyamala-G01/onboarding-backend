@@ -397,6 +397,7 @@ const deleteFile = async (req, resp) => {
 };
 const sendEmailForPendingProfile = async (req, res) => {
   var emails = [];
+
   // const penRecords = await user.findAll({
   //   where: { status: { [Op.lt]: 100 } },
   // });
@@ -419,6 +420,9 @@ const sendEmailForPendingProfile = async (req, res) => {
      Please make sure to complete and submit your onboarding profile.
     If you have any questions or need assistance, please reach out to the HR department.<br><br>
     Thank you for your prompt attention to this matter.<br><br>
+
+    URL: http://52.172.88.185/<br><br>
+
     Regards,<br>
     <strong>HR Department</strong> `,
     };
