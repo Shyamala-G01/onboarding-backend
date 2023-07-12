@@ -35,7 +35,7 @@ const addAdmin = async (req, res) => {
   // already exit or not
   const adminMail = await admin.findOne({ where: { email: req.body.email } });
   if (adminMail) {
-    console.log("admin")
+    console.log("admin");
     res.send({ message: "Admin Exists" });
   } else {
     let info = {
@@ -183,51 +183,49 @@ const getEmploy = async (req, res) => {
   res.send(users);
 };
 const getEmployeeById = async (req, res) => {
-  try{
-  let users = await user.findAll({
-    include: [
-      {
-        model: PersnonalInfo,
-        as: "personal_info",
-      },
-      {
-        model: Address,
-        as: "address",
-      },
-      {
-        model: EducationalInfo,
-        as: "educational_info",
-      },
-      {
-        model: EmploymentDetails,
-        as: "employment_details",
-      },
-      {
-        model: ProofCertificates,
-        as: "other_details",
-      },
-      {
-        model: BankDetails,
-        as: "bank_detail",
-      },
-      {
-        model: Declaration,
-        as: "other_declaration",
-      },
-      {
-        model:comment,
-        as:"comment"
-      }
-    ],
-    where: { id: req.params.id },
-  });
-  res.send(users);
-}
-catch(err)
-{
-  console.log(err);
-  res.status(500).send(err);
-}
+  try {
+    let users = await user.findAll({
+      include: [
+        {
+          model: PersnonalInfo,
+          as: "personal_info",
+        },
+        {
+          model: Address,
+          as: "address",
+        },
+        {
+          model: EducationalInfo,
+          as: "educational_info",
+        },
+        {
+          model: EmploymentDetails,
+          as: "employment_details",
+        },
+        {
+          model: ProofCertificates,
+          as: "other_details",
+        },
+        {
+          model: BankDetails,
+          as: "bank_detail",
+        },
+        {
+          model: Declaration,
+          as: "other_declaration",
+        },
+        {
+          model: comment,
+          as: "comment",
+        },
+      ],
+      where: { id: req.params.id },
+    });
+    res.send(users);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
 };
 const addImg = async (req, res) => {
   let img = req.files.photo.name + "-" + req.body.id;
@@ -408,7 +406,6 @@ const sendEmailForPendingProfile = async (req, res) => {
   emails = req.body.email;
 
   emails.forEach((email) => {
- 
     const mail = {
       from: "diggisupport@diggibyte.com",
       to: email,
@@ -440,42 +437,46 @@ const sendEmailForPendingProfile = async (req, res) => {
 };
 const sendComments = async (req, res) => {
   let ids = await user.findOne({
-    attributes:["id"],
-    where:{name:req.body.name}
+    attributes: ["id"],
+    where: { name: req.body.name },
   });
-  const info={
-    comments:req.body.comment,
-    updated_at:req.body.updated_at,
-    updated_by:req.body.updated_by,
-    updated_by_id:req.body.updated_by_id,
-    fk_comment_users_id:ids.id
-  }
-  console.log(info)
-  comment.create(info).then((data)=>{
-
-  const mail = {
-    from: "diggisupport@diggibyte.com",
-    to: req.body.email,
-    subject: `Remainder to complete onboarding profile`,
-    html: `Hi,<br><br>
+  const info = {
+    comments: req.body.comment,
+    updated_at: req.body.updated_at,
+    updated_by: req.body.updated_by,
+    updated_by_id: req.body.updated_by_id,
+    fk_comment_users_id: ids.id,
+  };
+  console.log(info);
+  comment
+    .create(info)
+    .then((data) => {
+      const mail = {
+        from: "diggisupport@diggibyte.com",
+        to: req.body.email,
+        subject: `Remainder to complete onboarding profile`,
+        html: `
    ${info.comments}<br><br>
    Thank you for your prompt attention to this matter.<br><br>
+
+   URL: http://52.172.88.185/<br><br>
+
     Regards,<br>
     <strong>HR Department</strong> `,
-  };
+      };
 
-  transporter.sendMail(mail, function (err) {
-    if (err) {
-      res.send({ message: "Email Sent Unsuccessfully" });
-      console.log(err);
-    } else {
-      res.send({ message: "Email Sent Successfully",data:data });
-    }
-  });
-  }).catch((err)=>{
-    res.status(500).send(err)
-  });
- 
+      transporter.sendMail(mail, function (err) {
+        if (err) {
+          res.send({ message: "Email Sent Unsuccessfully" });
+          console.log(err);
+        } else {
+          res.send({ message: "Email Sent Successfully", data: data });
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };
 const sendApprovedEmail = async (req, res) => {
   let email = req.body.email;
@@ -590,7 +591,7 @@ const getOneuserData = async (req, res) => {
     where: { name: req.body.name },
   });
   res.send(data);
-}
+};
 module.exports = {
   addAdmin,
   addEmployee,
@@ -613,5 +614,5 @@ module.exports = {
   getAdmins,
   deleteAdmin,
   getOneEmployeeData,
-  getOneuserData
+  getOneuserData,
 };

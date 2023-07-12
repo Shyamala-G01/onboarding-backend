@@ -192,7 +192,7 @@ const addEmployment = async (req, res) => {
   const empDtat = await employmentDetails.findOne({
     where: { fk_employment_users_id: req.body.fk_employment_users_id },
   });
- 
+
   const info = {
     type: req.body.type,
     created_at: req.body.created_at,
@@ -202,7 +202,6 @@ const addEmployment = async (req, res) => {
     fk_employment_users_id: req.body.fk_employment_users_id,
   };
   if (req.body.type != "Fresher") {
-    
     (info.org_name = req.body.org_name),
       (info.joining_date = req.body.joining_date),
       (info.relieving_date = req.body.relieving_date),
@@ -220,22 +219,23 @@ const addEmployment = async (req, res) => {
     const userData = await employmentDetails.create(info);
     if (userData) {
       folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
-        const usercredential = await user.update(
-          { status: data.status + 20,completed_status: "In Progress"  },
-    
-          { where: { id: req.body.fk_employment_users_id } }
-        );
-        // await user.update(
-        //   { completed_status: "In Progress" },
-        //   { where: { id: req.body.fk_employment_users_id } }
-        // );
-        res.status(200).send({ message: "Successful" });
-      
+      const usercredential = await user.update(
+        { status: data.status + 20, completed_status: "In Progress" },
+
+        { where: { id: req.body.fk_employment_users_id } }
+      );
+      // await user.update(
+      //   { completed_status: "In Progress" },
+      //   { where: { id: req.body.fk_employment_users_id } }
+      // );
+      res.status(200).send({ message: "Successful" });
     } else {
       res.status(400).send({ message: "Unsuccessful" });
     }
-  }
-  else if(req.body.type != 'Fresher' && empDtat.type != 'Fresher' || empDtat == null){
+  } else if (
+    (req.body.type != "Fresher" && empDtat.type != "Fresher") ||
+    empDtat == null
+  ) {
     const userData = await employmentDetails.create(info);
     if (userData) {
       folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
@@ -408,62 +408,154 @@ const getPersonalInfoData = async (req, res) => {
 
 //adding educational details
 const addEducation = async (req, res) => {
-  const userData = await user.findOne({
-    where: { id: req.body.fk_education_users_id },
-  });
-  const info = {
-    type: req.body.type,
-    name: req.body.name,
-    board: req.body.board,
-    course: req.body.course,
-    specialization: req.body.specialization,
-    start_date: req.body.start_date,
-    end_date: req.body.end_date,
-    marks: req.body.marks,
-    marks_card: req.files.marks_card.name,
-    created_at: req.body.created_at,
-    updated_at: req.body.updated_at,
-    updated_by: req.body.updated_by,
-    fk_education_users_id: req.body.fk_education_users_id,
-  };
-  if (
-    req.body.type == "Graduation" ||
-    req.body.type == "Diploma" ||
-    req.body.type == "Masters/Post-Graduation"
-  ) {
-    console.log("inside if");
-    info.status = "In Progress";
-    await user.update(
-      { completed_status: "In Progress" },
-      { where: { id: req.body.fk_education_users_id } }
-    );
-    if (req.body.provisional_marks_card != "") {
-      console.log("s");
-      info.provisional_marks_card = req.files.provisional_marks_card.name;
-    }
-    if (req.body.convocation_certificate != "") {
-      info.convocation_certificate = req.files.convocation_certificate.name;
-    }
-  }
-  const educationData = await educationalInfo.create(info);
-  const edData = await educationalInfo.findAll({
-    where: { fk_education_users_id: req.body.fk_education_users_id },
-  });
-  console.log("length:" + edData.length);
-  if (edData.length == 3) {
-    const usercredential = await user.update(
-      { status: userData.status + 20 },
+  try {
+    let educationalData = await educationalInfo.findOne({
+      where: {
+        type: req.body.type,
+        fk_education_users_id: req.body.fk_education_users_id,
+      },
+    });
 
-      { where: { id: req.body.fk_education_users_id } }
-    );
-  }
-  if (educationData) {
-    folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
-    res.status(200).send({ message: "Successful" });
-  } else {
-    res.status(400).send({ message: "Unsuccessful" });
+    if (educationalData) {
+      res.send({ message: req.body.type + " already added" });
+    } else {
+      const userData = await user.findOne({
+        where: { id: req.body.fk_education_users_id },
+      });
+      const info = {
+        type: req.body.type,
+        name: req.body.name,
+        board: req.body.board,
+        course: req.body.course,
+        specialization: req.body.specialization,
+        start_date: req.body.start_date,
+        end_date: req.body.end_date,
+        marks: req.body.marks,
+        marks_card: req.files.marks_card.name,
+        created_at: req.body.created_at,
+        updated_at: req.body.updated_at,
+        updated_by: req.body.updated_by,
+        fk_education_users_id: req.body.fk_education_users_id,
+      };
+      if (
+        req.body.type == "Graduation" ||
+        req.body.type == "Diploma" ||
+        req.body.type == "Masters/Post-Graduation"
+      ) {
+        console.log("inside if");
+        info.status = "In Progress";
+        await user.update(
+          { completed_status: "In Progress" },
+          { where: { id: req.body.fk_education_users_id } }
+        );
+        if (req.body.provisional_marks_card != "") {
+          console.log("s");
+          info.provisional_marks_card = req.files.provisional_marks_card.name;
+        }
+        if (req.body.convocation_certificate != "") {
+          info.convocation_certificate = req.files.convocation_certificate.name;
+        }
+      }
+      const educationData = await educationalInfo.create(info);
+      const edData = await educationalInfo.findAll({
+        where: { fk_education_users_id: req.body.fk_education_users_id },
+      });
+      console.log("length:" + edData.length);
+      if (edData.length == 3) {
+        const usercredential = await user.update(
+          { status: userData.status + 20 },
+
+          { where: { id: req.body.fk_education_users_id } }
+        );
+      }
+      if (educationData) {
+        folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
+        res.status(200).send({ message: "Record Saved Successfully" });
+      } else {
+        res.status(400).send({ message: "Record Saved Unsuccessfully" });
+      }
+    }
+  } 
+  catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
+// const addEducation = async (req, res) => {
+//   try {
+//     let educationalData = await educationalInfo.findOne({
+//       where: {
+//         type: req.body.type,
+//         fk_education_users_id: req.body.fk_education_users_id,
+//       },
+//     });
+
+//     if (educationalData) {
+//       res.send({ message: req.body.type + " already added" });
+//     } else {
+//       const userData = await user.findOne({
+//         where: { id: req.body.fk_education_users_id },
+//       });
+
+//       const info = {
+//         type: req.body.type,
+//         name: req.body.name,
+//         board: req.body.board,
+//         course: req.body.course,
+//         specialization: req.body.specialization,
+//         start_date: req.body.start_date,
+//         end_date: req.body.end_date,
+//         marks: req.body.marks,
+//         marks_card: req.files.marks_card.name,
+//         created_at: req.body.created_at,
+//         updated_at: req.body.updated_at,
+//         updated_by: req.body.updated_by,
+//         fk_education_users_id: req.body.fk_education_users_id,
+//       };
+
+//       if (
+//         req.body.type == "Graduation" ||
+//         req.body.type == "Diploma" ||
+//         req.body.type == "Masters/Post-Graduation"
+//       ) {
+//         info.status = "In Progress";
+//         await user.update(
+//           { completed_status: "In Progress" },
+//           { where: { id: req.body.fk_education_users_id } }
+//         );
+//         if (req.body.provisional_marks_card != "") {
+//           info.provisional_marks_card = req.files.provisional_marks_card.name;
+//         }
+//         if (req.body.convocation_certificate != "") {
+//           info.convocation_certificate = req.files.convocation_certificate.name;
+//         }
+//       }
+
+//       const educationData = await educationalInfo.create(info);
+
+//       if (educationData) {
+//         folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
+//         const edData = await educationalInfo.findAll({
+//           where: { fk_education_users_id: req.body.fk_education_users_id },
+//         });
+
+//         if (edData.length == 3) {
+//           await user.update(
+//             { status: userData.status + 20 },
+//             { where: { id: req.body.fk_education_users_id } }
+//           );
+//         }
+
+//         res.status(200).send({ message: "Record Saved Successfully" });
+//       } else {
+//         res.status(400).send({ message: "Record Saved Unsuccessfully" });
+//       }
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ message: "Internal Server Error" });
+//   }
+// };
 
 //get education based on id
 const getEducation = async (req, res) => {
@@ -471,7 +563,6 @@ const getEducation = async (req, res) => {
   let educationData = await educationalInfo.findAll({
     where: { fk_education_users_id: id },
   });
-  console.log(educationData);
   res.send(educationData);
 };
 
@@ -564,7 +655,7 @@ const deleteEducation = async (req, res) => {
     where: { fk_education_users_id: req.body.empid },
   });
   console.log("length:" + edData.length);
-  if (edData.length <= 2 && userData.status == 40 ) {
+  if (edData.length <= 2 && userData.status != 0) {
     const usercredential = await user.update(
       { status: userData.status - 20 },
 
@@ -584,7 +675,6 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     where: { id: req.body.fk_proof_users_id },
   });
 
- 
   const info = {
     aadhar_card_number: req.body.aadhar_card_number,
     aadhar: req.files.aadhar.name,
@@ -628,7 +718,7 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
     const usercredential = await user.update(
       { status: userData.status + 20 },
-  
+
       { where: { id: req.body.fk_proof_users_id } }
     );
     await user.update(
@@ -753,16 +843,15 @@ const addDeclaration = async (req, res) => {
   };
   const declarationData = await declaration.create(info);
   if (declarationData) {
-    
-  const usercredential = await user.update(
-    { status: userData.status + 20 },
+    const usercredential = await user.update(
+      { status: userData.status + 20 },
 
-    { where: { id: req.body.fk_declaration_users_id } }
-  );
-  await user.update(
-    { completed_status: "In Progress" },
-    { where: { id: req.body.fk_declaration_users_id } }
-  );
+      { where: { id: req.body.fk_declaration_users_id } }
+    );
+    await user.update(
+      { completed_status: "In Progress" },
+      { where: { id: req.body.fk_declaration_users_id } }
+    );
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -842,8 +931,7 @@ const forgotpassword = async (req, res) => {
   function forgotPassEmail(pass, email) {
     mailOptions.to = `${email}`;
     (mailOptions.subject = "Onboarding Application : Reset your password"),
-      (mailOptions.html = 
-        `Hi,<br>
+      (mailOptions.html = `Hi,<br>
             We have received your request to reset your Onboarding password.<br>
     Please enter auto generated password to reset new password.<br><br>
      
@@ -853,7 +941,7 @@ const forgotpassword = async (req, res) => {
     Thank you,<br>
     HR Department.<br>
     Stay Safe! Stay Healthy!<br>`);
-  
+
     const data = transporter.sendMail(mailOptions, function (err) {
       if (err) {
         console.log(err);
@@ -869,14 +957,14 @@ const checkPassword = async (req, res) => {
   let oldPass = req.body.autoPass;
   let newpas = req.body.password;
   let salt = genSaltSync(10);
-  console.log(salt,newpas)
+  console.log(salt, newpas);
   let chnagedPass = hashSync(newpas, salt);
-  console.log(chnagedPass)
+  console.log(chnagedPass);
   let Useremail = req.body.email;
   let userdata = await user.findOne({ where: { email: Useremail } });
-  console.log(userdata)
+  console.log(userdata);
   let admindata = await admin.findOne({ where: { email: Useremail } });
-  console.log(admindata)
+  console.log(admindata);
   if (userdata != null) {
     if ((oldPass, userdata.password)) {
       const usercredential = await user.update(
@@ -900,7 +988,7 @@ const checkPassword = async (req, res) => {
       if (usercredential) {
         res.send({ message: "Password Updated successfully" });
       } else {
-        res .send({ message: "Password cannot be updated" });
+        res.send({ message: "Password cannot be updated" });
       }
     }
   }
@@ -941,9 +1029,12 @@ const getStatus = async (req, res) => {
     attributes: ["status"],
   });
   const educational_info = await educationalInfo.findOne({
-    where: { fk_education_users_id: reqId, type: {
-      [Op.or]: ['Graduation', 'Diploma']
-    }},
+    where: {
+      fk_education_users_id: reqId,
+      type: {
+        [Op.or]: ["Graduation", "Diploma"],
+      },
+    },
     attributes: ["status"],
   });
   const employment = await employmentDetails.findOne({
@@ -969,20 +1060,19 @@ const getStatus = async (req, res) => {
 const getEmailAfterSubmit = async (req, res) => {
   let name = req.body.name;
   let designation = req.body.designation;
-  console.log(name,designation,req.body.empid)
+  console.log(name, designation, req.body.empid);
   let updated = await user.update(
     { completed_status: "In Review" },
     { where: { id: req.body.empid } }
   );
-  console.log(updated)
-    if(updated)
-    {
-      const mail = {
-        from: "diggisupport@diggibyte.com",
-        to: "rashika.rashu@diggibyte.com",
-        // to: "chaya.pu@diggibyte.com",
-        subject: `Onboarding Documents Received from ${name}`,
-        html: `Dear HR Team,<br>
+  console.log(updated);
+  if (updated) {
+    const mail = {
+      from: "diggisupport@diggibyte.com",
+      to: "rashika.rashu@diggibyte.com",
+      // to: "chaya.pu@diggibyte.com",
+      subject: `Onboarding Documents Received from ${name}`,
+      html: `Dear HR Team,<br>
         This mail is to inform you that <strong>${name}</strong> has successfully
         submitted all of the required onboarding documents.We have received and processed the following:<br>
         <ul>
@@ -997,17 +1087,16 @@ const getEmailAfterSubmit = async (req, res) => {
         Thank you,<br>
         ${name},<br>
         ${designation}.`,
-      };
-    
-      const data = transporter.sendMail(mail, function (err) {
-        if (err) {
-          res.send({ message: "Email not Sent" });
-        } else {
-          res.send({ message: "Email Sent Successfully" });;
-        }
-      });
-    }
-  
+    };
+
+    const data = transporter.sendMail(mail, function (err) {
+      if (err) {
+        res.send({ message: "Email not Sent" });
+      } else {
+        res.send({ message: "Email Sent Successfully" });
+      }
+    });
+  }
 };
 
 module.exports = {
