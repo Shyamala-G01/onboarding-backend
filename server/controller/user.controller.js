@@ -972,7 +972,7 @@ const checkPassword = async (req, res) => {
   console.log(userdata);
   let admindata = await admin.findOne({ where: { email: Useremail } });
   console.log(admindata);
-  if (userdata != null && userdata.password === oldPass) {
+  if (userdata != null && userdata.auto_password === oldPass) {
     if ((oldPass, userdata.password)) {
       const usercredential = await user.update(
         { password: chnagedPass },
