@@ -543,46 +543,57 @@ const deleteAdmin = async (req, res) => {
   res.send({ message: "deleted" });
 };
 const getOneEmployeeData = async (req, res) => {
-  let ids = await user.findOne({
-    attributes: ["id"],
-    where: { name: req.body.name },
-  });
-  console.log(ids);
-  let users = await user.findAll({
-    include: [
-      {
-        model: PersnonalInfo,
-        as: "personal_info",
-      },
-      {
-        model: Address,
-        as: "address",
-      },
-      {
-        model: EducationalInfo,
-        as: "educational_info",
-      },
-      {
-        model: EmploymentDetails,
-        as: "employment_details",
-      },
-      {
-        model: ProofCertificates,
-        as: "other_details",
-      },
-      {
-        model: BankDetails,
-        as: "bank_detail",
-      },
-      {
-        model: Declaration,
-        as: "other_declaration",
-      },
-    ],
-    where: { id: ids.id },
-  });
-  res.send(users);
+  try {
+    let ids = await user.findOne({
+      attributes: ["id"],
+      where: { name: req.body.name },
+    });
+
+    if (!ids) {
+      return res.status(404).send("Employee not found");
+    }
+
+    let users = await user.findAll({
+      include: [
+        {
+          model: PersnonalInfo,
+          as: "personal_info",
+        },
+        {
+          model: Address,
+          as: "address",
+        },
+        {
+          model: EducationalInfo,
+          as: "educational_info",
+        },
+        {
+          model: EmploymentDetails,
+          as: "employment_details",
+        },
+        {
+          model: ProofCertificates,
+          as: "other_details",
+        },
+        {
+          model: BankDetails,
+          as: "bank_detail",
+        },
+        {
+          model: Declaration,
+          as: "other_declaration",
+        },
+      ],
+      where: { id: ids.id },
+    });
+
+    res.send(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 };
+
 const getOneuserData = async (req, res) => {
   let data = await user.findOne({
     where: { name: req.body.name },
