@@ -46,9 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       }, status: {
         type: DataTypes.STRING,
       },
-      percentage_completed:{
-        type:DataTypes.INTEGER
-      }
+   
     },
     {
       freezeTableName: true,

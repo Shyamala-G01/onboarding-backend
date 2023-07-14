@@ -545,7 +545,7 @@ const deleteAdmin = async (req, res) => {
 const getOneEmployeeData = async (req, res) => {
   try {
     let ids = await user.findOne({
-      attributes: ["id"],
+     
       where: { name: req.body.name },
     });
 
