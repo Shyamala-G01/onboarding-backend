@@ -1,7 +1,5 @@
 const sq = require("sequelize");
-
 const db = require("../model");
-
 const user = db.user;
 const admin = db.admin;
 const comment = db.comments;
@@ -15,7 +13,6 @@ const BankDetails = db.bankDetails;
 const Declaration = db.declaration;
 const notification = db.notification;
 // const hbs = require('nodemailer-express-handlebars');
-//
 const Op = sq.Op;
 //encrypting and comparing
 const { genSaltSync, hashSync } = require("bcrypt");

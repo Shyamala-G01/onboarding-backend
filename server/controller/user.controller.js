@@ -444,10 +444,10 @@ const addEducation = async (req, res) => {
       ) {
         console.log("inside if");
         info.status = "In Progress";
-        await user.update(
-          { completed_status: "In Progress" },
-          { where: { id: req.body.fk_education_users_id } }
-        );
+        // await user.update(
+        //   { completed_status: "In Progress" },
+        //   { where: { id: req.body.fk_education_users_id } }
+        // );
         if (req.body.provisional_marks_card != "") {
           console.log("s");
           info.provisional_marks_card = req.files.provisional_marks_card.name;
@@ -463,7 +463,7 @@ const addEducation = async (req, res) => {
       console.log("length:" + edData.length);
       if (edData.length == 3) {
         const usercredential = await user.update(
-          { status: userData.status + 20 },
+          { status: userData.status + 20, completed_status: "In Progress" },
 
           { where: { id: req.body.fk_education_users_id } }
         );
@@ -475,8 +475,7 @@ const addEducation = async (req, res) => {
         res.status(400).send({ message: "Record Saved Unsuccessfully" });
       }
     }
-  } 
-  catch (error) {
+  } catch (error) {
     console.error(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
@@ -717,14 +716,14 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
     console.log("other detail inside");
     folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
     const usercredential = await user.update(
-      { status: userData.status + 20 },
+      { status: userData.status + 20, completed_status: "In Progress" },
 
       { where: { id: req.body.fk_proof_users_id } }
     );
-    await user.update(
-      { completed_status: "In Progress" },
-      { where: { id: req.body.fk_proof_users_id } }
-    );
+    // await user.update(
+    //   { completed_status: "In Progress" },
+    //   { where: { id: req.body.fk_proof_users_id } }
+    // );
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -844,14 +843,14 @@ const addDeclaration = async (req, res) => {
   const declarationData = await declaration.create(info);
   if (declarationData) {
     const usercredential = await user.update(
-      { status: userData.status + 20 },
+      { status: userData.status + 20, completed_status: "In Progress" },
 
       { where: { id: req.body.fk_declaration_users_id } }
     );
-    await user.update(
-      { completed_status: "In Progress" },
-      { where: { id: req.body.fk_declaration_users_id } }
-    );
+    // await user.update(
+    //   { completed_status: "In Progress" },
+    //   { where: { id: req.body.fk_declaration_users_id } }
+    // );
     res.status(200).send({ message: "Successful" });
   } else {
     res.status(400).send({ message: "Unsuccessful" });
@@ -907,6 +906,10 @@ const forgotpassword = async (req, res) => {
         { where: { email: userMail } }
       );
       if (usercredential) {
+        let affectedUserRows = await user.update(
+          { auto_password: pass },
+          { where: { email: userMail } }
+        );
         res.status(200).send({ message: "Password Updated successfully" });
       } else {
         res.status(400).send({ message: "Password cannot be updated" });
@@ -920,6 +923,10 @@ const forgotpassword = async (req, res) => {
         { where: { email: userMail } }
       );
       if (usercredential) {
+        let affectedAdminRows = await admin.update(
+          { auto_password: pass },
+          { where: { email: userMail } }
+        );
         res.status(200).send({ message: "Password Updated successfully" });
       } else {
         res.status(400).send({ message: "Password cannot be updated" });
@@ -965,7 +972,7 @@ const checkPassword = async (req, res) => {
   console.log(userdata);
   let admindata = await admin.findOne({ where: { email: Useremail } });
   console.log(admindata);
-  if (userdata != null) {
+  if (userdata != null && userdata.password === oldPass) {
     if ((oldPass, userdata.password)) {
       const usercredential = await user.update(
         { password: chnagedPass },
@@ -978,7 +985,7 @@ const checkPassword = async (req, res) => {
         res.send({ message: "Password cannot be updated" });
       }
     }
-  } else if (admindata != null) {
+  } else if (admindata != null && admindata.auto_password === oldPass) {
     if (compareSync(oldPass, admindata.password)) {
       const usercredential = await admin.update(
         { password: chnagedPass },
@@ -991,6 +998,8 @@ const checkPassword = async (req, res) => {
         res.send({ message: "Password cannot be updated" });
       }
     }
+  } else {
+    res.send({ message: "Invalid auto generated password" });
   }
 };
 const addImg = async (req, res) => {
@@ -1060,42 +1069,46 @@ const getStatus = async (req, res) => {
 const getEmailAfterSubmit = async (req, res) => {
   let name = req.body.name;
   let designation = req.body.designation;
-  console.log(name, designation, req.body.empid);
-  let updated = await user.update(
-    { completed_status: "In Review" },
-    { where: { id: req.body.empid } }
-  );
-  console.log(updated);
-  if (updated) {
-    const mail = {
-      from: "diggisupport@diggibyte.com",
-      to: "rashika.rashu@diggibyte.com",
-      // to: "chaya.pu@diggibyte.com",
-      subject: `Onboarding Documents Received from ${name}`,
-      html: `Dear HR Team,<br>
-        This mail is to inform you that <strong>${name}</strong> has successfully
-        submitted all of the required onboarding documents.We have received and processed the following:<br>
-        <ul>
-        <li> Personal Details </li>
-        <li> Educational Information </li>
-        <li> Other Details </li>
-        <li> Bank Details etc...</li>
-        </ul><br>
-        Please review and confirm that all necessary documents have been received. 
-        Once confirmed, please proceed with scheduling orientation and any necessary training for the 
-        new employee.<br><br>
-        Thank you,<br>
-        ${name},<br>
-        ${designation}.`,
-    };
 
-    const data = transporter.sendMail(mail, function (err) {
-      if (err) {
-        res.send({ message: "Email not Sent" });
-      } else {
+  try {
+    let userData = await user.findAll({ where: { id: req.body.empid } });
+
+    if (userData[0].status == 100) {
+      let updated = await user.update(
+        { completed_status: "In Review" },
+        { where: { id: req.body.empid } }
+      );
+      if (updated) {
+        const mail = {
+          from: "diggisupport@diggibyte.com",
+          to: "chaya.pu@diggibyte.com",
+          subject: `Onboarding Documents Received from ${name}`,
+          html: `Dear HR Team,<br>
+          This mail is to inform you that <strong>${name}</strong> has successfully
+          submitted all of the required onboarding documents. We have received and processed the following:<br>
+          <ul>
+          <li> Personal Details </li>
+          <li> Educational Information </li>
+          <li> Other Details </li>
+          <li> Bank Details etc...</li>
+          </ul><br>
+          Please review and confirm that all necessary documents have been received. 
+          Once confirmed, please proceed with scheduling orientation and any necessary training for the 
+          new employee.<br><br>
+          Thank you,<br>
+          ${name},<br>
+          ${designation}.`,
+        };
+
+        const data = await transporter.sendMail(mail);
+
         res.send({ message: "Email Sent Successfully" });
       }
-    });
+    } else {
+      res.status(404).send({ message: "Please submit all related documents" });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "An error occurred" });
   }
 };
 

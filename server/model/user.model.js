@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
       },
+      auto_password:{
+        type:DataTypes.STRING
+      },
       designation: {
         type: DataTypes.STRING,
       },
