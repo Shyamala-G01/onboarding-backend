@@ -1,4 +1,3 @@
-
 // Define the  admin schema
 module.exports = (sequelize, DataTypes) => {
   const Admin = sequelize.define(

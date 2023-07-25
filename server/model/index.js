@@ -3,17 +3,23 @@ const { Sequelize, DataTypes } = require("sequelize");
 const { database } = require("../config/db.config");
 
 // Creating instance or Configuring
-const sequelize = new Sequelize("ON_BOARDING","fullStack","root@123", {
-  host: "localhost",
-  dialect: "mysql",
-  operatorsAliases: true,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
-});
+const sequelize = new Sequelize(
+  config.database,
+  config.user,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+    operatorsAliases: false,
+
+    pool: {
+      max: config.pool.max,
+      min: config.pool.min,
+      acquire: config.pool.acquire,
+      idle: config.pool.idle
+    }
+  }
+);
 
 // Authenticate / To connect to database
 

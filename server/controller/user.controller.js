@@ -96,11 +96,12 @@ const updatePersonalInfo = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_person_users_id: req.body.fk_person_users_id,
   };
+ 
   const userData = await personalInfo.update(info, {
     where: { fk_person_users_id: req.body.fk_person_users_id },
   });
 
-  if (userData) {
+  if (userData == 1) {
     folderFunctions.uploadfile(req.files, req.body.id);
     res.status(200).send({ message: "updated" });
   } else {
@@ -1081,7 +1082,8 @@ const getEmailAfterSubmit = async (req, res) => {
       if (updated) {
         const mail = {
           from: "diggisupport@diggibyte.com",
-          to: "rashika.rashu@diggibyte.com",
+          // to: "rashika.rashu@diggibyte.com",
+          to: "chayauthaiah@gmail.com",
           subject: `Onboarding Documents Received from ${name}`,
           html: `Dear HR Team,<br>
           This mail is to inform you that <strong>${name}</strong> has successfully
