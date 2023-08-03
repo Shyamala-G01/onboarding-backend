@@ -96,17 +96,26 @@ const updatePersonalInfo = async (req, res) => {
     updated_by: req.body.updated_by,
     fk_person_users_id: req.body.fk_person_users_id,
   };
- 
-  const userData = await personalInfo.update(info, {
-    where: { fk_person_users_id: req.body.fk_person_users_id },
-  });
 
-  if (userData == 1) {
-    folderFunctions.uploadfile(req.files, req.body.id);
-    res.status(200).send({ message: "updated" });
-  } else {
-    res.status(400).send({ message: "Unsuccessful" });
-  }
+  await personalInfo
+    .update(info, {
+      where: { fk_person_users_id: req.body.fk_person_users_id },
+    })
+    .then((data) => {
+      if (data == 1) {
+        folderFunctions.uploadfile(req.files, req.body.id);
+        console.log("data", data);
+        res.status(200).send({ message: "Record Updated Successfully" });
+      } else {
+        res.status(400).send({ message: "Record Updated UnSuccessfully" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res
+        .status(400)
+        .send({ message: "Error in updating personal information" });
+    });
 };
 
 // Address
@@ -148,17 +157,23 @@ const updateAddAddress = async (req, res) => {
     updated_at: req.body.updated_at,
     updated_by: req.body.updated_by,
   };
-  const data = await address.update(info, {
-    where: {
-      fk_address_users_id: req.body.fk_address_users_id,
-      type: req.body.type,
-    },
-  });
-  if (data) {
-    res.status(200).send({ message: "Successful" });
-  } else {
-    res.status(400).send({ message: "Unsuccessful" });
-  }
+  await address
+    .update(info, {
+      where: {
+        fk_address_users_id: req.body.fk_address_users_id,
+        type: req.body.type,
+      },
+    })
+    .then((data) => {
+      if (data == 1) {
+        res.status(200).send({ message: "Successful" });
+      } else {
+        res.status(400).send({ message: "UnSuccessful" });
+      }
+    })
+    .catch((err) => {
+      res.status(400).send({ message: "Error in updating address" });
+    });
 };
 
 const changePassword = async (req, res) => {
@@ -348,7 +363,6 @@ const updateEmployemnt = async (req, res) => {
   });
   if (employmentData) {
     folderFunctions.uploadfile(req.files, req.body.fk_employment_users_id);
-    console.log("updated");
     res.send({ message: "updated" });
   }
 };
@@ -367,7 +381,6 @@ const deleteEmployemnt = async (req, res) => {
   const empData = await employmentDetails.findAll({
     where: { fk_employment_users_id: req.body.empid },
   });
-  console.log("length:" + empData.length);
   // if (empData.length <= 0) {
   //   const usercredential = await user.update(
   //     { status: userData.status - 20 },
@@ -403,7 +416,6 @@ const getPersonalInfoData = async (req, res) => {
     ],
     where: { id: id },
   });
-  console.log(data);
   res.send(data);
 };
 
@@ -443,14 +455,12 @@ const addEducation = async (req, res) => {
         req.body.type == "Diploma" ||
         req.body.type == "Masters/Post-Graduation"
       ) {
-        console.log("inside if");
         info.status = "In Progress";
         // await user.update(
         //   { completed_status: "In Progress" },
         //   { where: { id: req.body.fk_education_users_id } }
         // );
         if (req.body.provisional_marks_card != "") {
-          console.log("s");
           info.provisional_marks_card = req.files.provisional_marks_card.name;
         }
         if (req.body.convocation_certificate != "") {
@@ -458,17 +468,58 @@ const addEducation = async (req, res) => {
         }
       }
       const educationData = await educationalInfo.create(info);
+      // Assuming `educationalInfo` and `user` are Sequelize models
+
       const edData = await educationalInfo.findAll({
         where: { fk_education_users_id: req.body.fk_education_users_id },
       });
-      console.log("length:" + edData.length);
-      if (edData.length == 3) {
-        const usercredential = await user.update(
-          { status: userData.status + 20, completed_status: "In Progress" },
 
-          { where: { id: req.body.fk_education_users_id } }
-        );
+      // Extracting unique educational levels filled by the employee
+      const educationalLevels = edData.map((ed) => ed.type);
+      const uniqueEducationalLevels = [...new Set(educationalLevels)];
+
+      // Check if the employee has filled 10th, 12th, Graduation, or Diploma
+      const hasTenth = uniqueEducationalLevels.includes("10th");
+      const hasTwelfth = uniqueEducationalLevels.includes("12th");
+      const hasGraduation = uniqueEducationalLevels.includes("Graduation");
+      const hasDiploma = uniqueEducationalLevels.includes("Diploma");
+
+      let updatedStatus = userData.status;
+      let updatedCompletedStatus = userData.completed_status;
+
+      // Check if the employee has met the educational criteria for 10th and Diploma
+      if (hasTenth && hasDiploma) {
+        if (!hasTwelfth && !hasGraduation) {
+          // Increment status only if 12th and Graduation are not present
+          updatedStatus += 20;
+          updatedCompletedStatus = "In Progress";
+        }
       }
+
+      // Check if the employee has met the educational criteria for 10th, 12th, and Graduation
+      if (hasTenth && hasTwelfth && hasGraduation) {
+        // Increment status only if Diploma is not present
+        if (!hasDiploma) {
+          updatedStatus += 20;
+          updatedCompletedStatus = "In Progress";
+        }
+      }
+
+      // Check if the employee has met the educational criteria for 10th, 12th, and diploma
+      if (hasTenth && hasTwelfth && hasDiploma) {
+        // Increment status only if Diploma is not present
+        if (!hasGraduation) {
+          updatedStatus += 20;
+          updatedCompletedStatus = "In Progress";
+        }
+      }
+
+      // Update the user credentials based on the educational criteria
+      const usercredential = await user.update(
+        { status: updatedStatus, completed_status: updatedCompletedStatus },
+        { where: { id: req.body.fk_education_users_id } }
+      );
+
       if (educationData) {
         folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
         res.status(200).send({ message: "Record Saved Successfully" });
@@ -477,7 +528,6 @@ const addEducation = async (req, res) => {
       }
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
@@ -563,13 +613,22 @@ const getEducation = async (req, res) => {
   let educationData = await educationalInfo.findAll({
     where: { fk_education_users_id: id },
   });
+  
+  if (educationData.length == 0) {
+    const userData = await user.findOne({
+      where: { id: id },
+    });
+    if (userData.decre_edu_data == "true")
+      await user.update(
+        { decre_edu_data: "false" }, // Set the decremented flag to false
+        { where: { id: id } }
+      );
+  }
   res.send(educationData);
 };
 
 //update perticular/specific education i.e by id
 const updateEducation = async (req, res) => {
-  console.log(req.body);
-  console.log(req.files);
   let id = req.params.id;
   let dat = await educationalInfo.findOne({
     where: { id: id },
@@ -594,9 +653,7 @@ const updateEducation = async (req, res) => {
     req.body.type == "Masters/Post-Graduation"
   ) {
     if (typeof req.body.convocation_certificate != "string") {
-      console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
       info.convocation_certificate = req.files.convocation_certificate.name;
-      console.log(req.files.convocation_certificate.name);
       folderFunctions.removeFile(
         dat.convocation_certificate,
         req.body.fk_education_users_id
@@ -635,40 +692,65 @@ const updateEducation = async (req, res) => {
     where: { id: id },
   });
   folderFunctions.uploadfile(req.files, req.body.fk_education_users_id);
-  console.log(educationData);
   res.send({ message: "updated" });
 };
 
 //delete specific education details
 const deleteEducation = async (req, res) => {
-  console.log(req.body.empid);
   let id = Number(req.params.id);
-  let educationData = await educationalInfo.destroy({
+
+  // Delete the education entry
+  await educationalInfo.destroy({
     where: { id: id },
   });
+
   res.send({ message: "deleted" });
+
+  // Fetch the user data
   const userData = await user.findOne({
     where: { id: req.body.empid },
   });
 
+  // Fetch the education data for the user
   const edData = await educationalInfo.findAll({
     where: { fk_education_users_id: req.body.empid },
   });
-  console.log("length:" + edData.length);
-  if (edData.length <= 2 && userData.status != 0) {
-    const usercredential = await user.update(
-      { status: userData.status - 20 },
 
+  // Group education entries by type
+  const edDataByType = edData.reduce((acc, education) => {
+    acc[education.type] = (acc[education.type] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Check if the required education combinations are present
+  const has10th = edDataByType["10th"] > 0;
+  const hasDiploma = edDataByType["Diploma"] > 0;
+  const has12th = edDataByType["12th"] > 0;
+  const hasGraduation = edDataByType["Graduation"] > 0;
+  // Check if specific combinations are missing, userData.status is not already 0,
+  // and decrement has not happened before
+  const has10thAndDiploma = has10th && hasDiploma;
+  const has10thAnd12thAndGraduation = has10th && has12th && hasGraduation;
+  if (!has10thAndDiploma && userData.decre_edu_data == "false") {
+    const updatedStatus = userData.status - 20;
+    // Update the user's status/percentage
+    await user.update(
+      { status: updatedStatus, decre_edu_data: "true" }, // Set the decremented flag to true
       { where: { id: req.body.empid } }
     );
   }
+  if  (!has10thAnd12thAndGraduation && userData.decre_edu_data == "false") {
+    const updatedStatus = userData.status - 20;
+    // Update the user's status/percentage
+    await user.update(
+      { status: updatedStatus, decre_edu_data: "true" }, // Set the decremented flag to true
+      { where: { id: req.body.empid } }
+    );
+  }
+
 };
-// const deletefile = async(req,res) => {
-//   if(req.marks_card != null)
-//   {
-//     folderFunctions.removeFile(dat.marks_card, req.body.fk_education_users_id);
-//   }
-// }
+
+
 // adding other details
 const addOtherDetailsAndBankDetails = async (req, res) => {
   const userData = await user.findOne({
@@ -714,7 +796,6 @@ const addOtherDetailsAndBankDetails = async (req, res) => {
   const proofData = await otherDetails.create(info);
   const bankData = await bankdetails.create(bank);
   if (proofData && bankData) {
-    console.log("other detail inside");
     folderFunctions.uploadfile(req.files, req.body.fk_proof_users_id);
     const usercredential = await user.update(
       { status: userData.status + 20, completed_status: "In Progress" },
@@ -740,7 +821,6 @@ const getOtherDetailAndBankDetails = async (req, res) => {
     where: { fk_bank_users_id: id },
   });
   let datas = [proofData, bankData];
-  console.log(proofData);
   if (proofData && bankData) {
     res.send(datas);
   } else {
@@ -829,8 +909,6 @@ const addDeclaration = async (req, res) => {
   const userData = await user.findOne({
     where: { id: req.body.fk_declaration_users_id },
   });
-
-  console.log(req.body);
   const info = {
     joining_date: req.body.joiningDate,
     place: req.body.place,
@@ -864,14 +942,11 @@ const getDeclaration = async (req, res) => {
     where: { fk_declaration_users_id: id },
   });
   let dec = await user.findOne({ where: { id: id } });
-  console.log(declarationData);
-
   res.send([declarationData, dec.status]);
 };
 //update perticular/specific OtherDetail i.e by id
 const updateDeclaration = async (req, res) => {
   let id = req.params.id;
-  console.log(req.body);
   const info = {
     joining_date: req.body.joiningDate,
     place: req.body.place,
@@ -897,8 +972,6 @@ const forgotpassword = async (req, res) => {
   let pass = password.substring(0, 2) + "@#" + password.substring(2, 6);
   const salt = genSaltSync(10);
   let chnagedPass = hashSync(pass, salt);
-  console.log(userdata);
-  console.log(admindata);
   if (userdata != null) {
     if (forgotPassEmail(pass, userMail)) {
       const usercredential = await user.update(
@@ -965,14 +1038,10 @@ const checkPassword = async (req, res) => {
   let oldPass = req.body.autoPass;
   let newpas = req.body.password;
   let salt = genSaltSync(10);
-  console.log(salt, newpas);
   let chnagedPass = hashSync(newpas, salt);
-  console.log(chnagedPass);
   let Useremail = req.body.email;
   let userdata = await user.findOne({ where: { email: Useremail } });
-  console.log(userdata);
   let admindata = await admin.findOne({ where: { email: Useremail } });
-  console.log(admindata);
   if (userdata != null && userdata.auto_password === oldPass) {
     if ((oldPass, userdata.password)) {
       const usercredential = await user.update(
@@ -1024,7 +1093,6 @@ const addImg = async (req, res) => {
 const getImg = async (req, res) => {
   let reqId = req.params.id;
   const data = await user.findOne({ where: { id: reqId } });
-  console.log(data.photo);
   res.send(data);
 };
 const getOfferLetter = async (req, res) => {

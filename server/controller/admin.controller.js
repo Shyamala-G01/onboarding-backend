@@ -52,18 +52,20 @@ const addAdmin = async (req, res) => {
       // sending mail after registration
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
-      (mailOptions.subject = "Admin Portal - Welcome to Onboard"),
-        (mailOptions.html = `<pre>Welcome to Onboarding Web App, you have registered as "<b>Admin</b>" Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.You will be provided with the access to view, edit and delete the details and documents provided by the employees.
+      (mailOptions.subject = "Admin Portal - Welcome To Diggibyte"),
+        (mailOptions.html = `Dear ${info.name},<br><br>
+        Welcome to Onboarding Web App, you have registered as "<b>Admin</b>".<br><br>
+        Here you can be able to access all the data of the employees who have registered in our Onboarding Web App.You will be provided with the access to view, edit and delete the details and documents provided by the employees.<br><br>
 
-URL: http://52.172.88.185/
+URL: http://52.172.88.185/<br><br>
 
-username: ${info.email}
-password: ${pass}
+username: ${info.email}<br>
+password: ${pass}<br><br>
 
-Thank You,
-HR Department.
+Thank You,<br>
+HR Department.<br>
 Stay Safe! Stay Healthy! 
-</pre>`);
+`);
 
       transporter.sendMail(mailOptions, function (err, info) {
         console.log("transporter");
@@ -116,28 +118,27 @@ const addEmployee = async (req, res) => {
       //to send mail on adding user
       mailOptions.to = `${info.email}`;
       mailOptions.subject =
-        "Important!! - Welcome Aboard! Let's Get You Started";
+        "Important!! - Welcome To Diggibyte! Let's Get You Started";
       //   (mailOptions. attachments= [{
       //     path: "./assets/images/emailtemplate.png",
       //     filename: "emailtemplate.png",
       //     cid: "emailtemplate.png" + "@"
       //  }]);
-      mailOptions.html = `<pre>We take great pleasure in <b>welcoming you to Diggibyte Family!</b>
+      mailOptions.html = `Dear ${info.name},<br><br>We take great pleasure in <b>welcoming you to Diggibyte Family!</b><br><br>
 As you join us, we are sure that you would play an important role in helping us distinguish, enrich and propel us into our future.
-We value your feedback and would like to hear from you. 
+We value your feedback and would like to hear from you.<br><br> 
     
 
-Please complete your onboarding details by clicking below URL.
+Please complete your onboarding details by clicking below URL.<br><br>
             
-URL: http://52.172.88.185/
+URL: http://52.172.88.185/<br><br>
     
-Username: ${info.email}
-Password: ${pass}
+Username: ${info.email}<br>
+Password: ${pass}<br><br>
 
-Thank You,
-HR Department
+Thank You,<br>
+HR Department<br>
 Stay Safe! Stay Healthy!
-</pre>
 `;
 
       transporter.sendMail(mailOptions, function (err, info) {
@@ -220,7 +221,6 @@ const getEmployeeById = async (req, res) => {
     });
     res.send(users);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 };
@@ -245,9 +245,7 @@ const getImg = async (req, res) => {
 };
 const getRecentEmployees = async (req, res) => {
   const endDate = new Date();
-  console.log("end" + endDate);
   const startDate = new Date(Date.now() - 48 * 3600 * 1000);
-  console.log("start" + startDate);
   let users = await user.findAll({
     where: {
       created_at: {
@@ -297,7 +295,6 @@ const getPendingRecord = async (req, res) => {
 };
 
 const putProofDetails = async (req, res) => {
-  console.log(req.files);
   let ids = req.params.id;
   let dat = await ProofCertificates.findOne({
     where: { fk_proof_users_id: ids },
@@ -386,8 +383,6 @@ const putBankDetails = async (req, res) => {
 };
 const deleteFile = async (req, resp) => {
   let ids = req.params.id;
-  console.log("cumin");
-  console.log(req.body);
   folderFunctions.removeFile(req.body.fileName, ids);
 };
 const sendEmailForPendingProfile = async (req, res) => {
@@ -424,10 +419,8 @@ const sendEmailForPendingProfile = async (req, res) => {
     let data = transporter.sendMail(mail, function (err) {
       if (err) {
         res.send({ message: "Email Sent Unsuccessfully" });
-        console.log(err);
       } else {
         res.send({ message: "Email Sent Successfully" });
-        console.log("data" + data);
       }
     });
   });
@@ -444,7 +437,6 @@ const sendComments = async (req, res) => {
     updated_by_id: req.body.updated_by_id,
     fk_comment_users_id: ids.id,
   };
-  console.log(info);
   comment
     .create(info)
     .then((data) => {
@@ -458,14 +450,13 @@ const sendComments = async (req, res) => {
 
    URL: http://52.172.88.185/<br><br>
 
-    Regards,<br>
+    Thanks,<br>
     <strong>HR Department</strong> `,
       };
 
       transporter.sendMail(mail, function (err) {
         if (err) {
           res.send({ message: "Email Sent Unsuccessfully" });
-          console.log(err);
         } else {
           res.send({ message: "Email Sent Successfully", data: data });
         }
@@ -509,22 +500,21 @@ const sendApprovedEmail = async (req, res) => {
   await user.update({ completed_status: "Completed" }, { where: { id: id } });
 
   // let comments = req.body.comment
-  console.log(email);
+
   const mail = {
     from: "diggisupport@diggibyte.com",
     to: email,
     subject: `Approved`,
-    html: `Hi,<br><br>
-   Your data and  all documents have been approved<br><br>
+    html: `Dear ${req.body.name},<br><br>
+   We are pleased to inform you that your data and all documents has been successfully Approved by HR Department<br><br>
    Thank you for your prompt attention to this matter.<br><br>
-    Regards,<br>
-    <strong>HR Department</strong> `,
+   Thanks,<br>
+   <strong>HR Department</strong>`,
   };
 
   const data = transporter.sendMail(mail, function (err) {
     if (err) {
       res.send({ message: "Email Sent Unsuccessfully" });
-      console.log(err);
     } else {
       res.send({ message: "Email Sent Successfully" });
     }
@@ -589,7 +579,6 @@ const getOneEmployeeData = async (req, res) => {
 
     res.send(users);
   } catch (error) {
-    console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };

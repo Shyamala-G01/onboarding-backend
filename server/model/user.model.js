@@ -55,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
       completed_status:{
         type: DataTypes.STRING,
         defaultValue:'Yet To Start'
+      },
+      decre_edu_data:{
+        type:DataTypes.STRING,
+        defaultValue:false
       }
     },
     {

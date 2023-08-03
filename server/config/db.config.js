@@ -1,4 +1,7 @@
-require('dotenv').config()
+require("dotenv").config({
+  path: "/home/diggiserveradmin/back-end/onboarding-backend/server/text.env",
+});
+
 module.exports = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
